@@ -188,11 +188,11 @@ nav ul li a:hover { background: #e0f3f3; color: #1f6161; }
     max-width: 800px;
     margin: 20px auto;
     height: auto;
-    border: 4px solid #339999;   /* สีกรอบ */
-    border-radius: 12px;         /* มุมโค้ง */
-    overflow: hidden;            /* ให้ iframe ไม่ล้นกรอบ */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);  /* เงาสวย */
-    display: block;          /* ให้ block element จัดกลาง */
+    border: 4px solid #339999;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    display: block;
 }
 .video-container iframe {
     width: 100%;
@@ -207,41 +207,62 @@ nav ul li a:hover { background: #e0f3f3; color: #1f6161; }
     .video-container iframe { height: 200px; }
 }
 
-
-/* Menu icons section */
+/* Menu icons section as full images with links */
 .menu-icons {
     display: flex;
-    gap: 15px;
+    gap: 16px;
     flex-wrap: wrap;
-    margin: 20px 0;
+    margin: 60px 0 20px 0; /* เปลี่ยนจาก 20px เป็น 40px ด้านบน */
+    justify-content: center;
 }
+
 .menu-icons .menu-item {
-    flex: 1 1 160px;
-    background: white;
-    text-align: center;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    width: 282px;
+    height: 79px;
+    border-radius: 12px;
+    overflow: hidden;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    display: block;
 }
-.menu-icons .menu-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
-.menu-icons .menu-item img { width: 80px; height: 80px; object-fit: cover; margin-bottom: 8px; }
-.menu-icons .menu-item span { font-size: 16px; color: #1f6161; font-weight: 500; }
+
+.menu-icons .menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+}
+
+.menu-icons .menu-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
 
 /* Sidebar */
 .sidebar {
     background: white;
-    padding: 12px;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0 3px 12px rgba(0,0,0,0.1);
     text-align: center;
     position: sticky;
     top: 20px;
+
+    max-height: 300px;      /* กำหนดความสูงสูงสุดเท่ากับ Carousel */
+    overflow: hidden;       
 }
+.sidebar img {
+    width: 150px; 
+    height: 200px; 
+    object-fit: cover; 
+    border-radius: 6px; 
+    margin-bottom: 5px;
+}
+
 .sidebar img { width: 150px; height: 200px; object-fit: cover; border-radius: 6px; margin-bottom: 5px; }
-.sidebar h3 { color: #339999; font-size: 17px; margin: 0; line-height: 1.1; }
-.sidebar p { font-size: 14px; color: #444; margin: 2px 0 0 0; line-height: 1.1; }
+.sidebar h3 { color: #339999; font-size: 20px; margin: 0; line-height: 1.1; }
+.sidebar p { font-size: 16px; color: #444; margin: 2px 0 0 0; line-height: 1.1; }
 
 /* Footer */
 footer {
@@ -359,23 +380,33 @@ footer {
         </div>
         <div class="dots"></div>
 
-       <!-- YouTube Video -->
-<div class="section-title">สื่อวีดิทัศน์</div>
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/1zfnwjcOi04" 
-      title="YouTube video player" frameborder="0" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-      allowfullscreen>
-  </iframe>
-</div>
+        <!-- YouTube Video -->
+        <div class="section-title">สื่อวีดิทัศน์</div>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/1zfnwjcOi04" 
+                title="YouTube video player" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+            </iframe>
+        </div>
 
-
+        <!-- Menu Icons as Full Images -->
         <div class="menu-icons">
-            <div class="menu-item"><img src="images/menu1.png"><span>ระบบจองห้องประชุม</span></div>
-            <div class="menu-item"><img src="images/menu2.png"><span>ระบบจองห้องประชุมออนไลน์</span></div>
-            <div class="menu-item"><img src="images/menu3.png"><span>บริการสำหรับเจ้าหน้าที่</span></div>
-            <div class="menu-item"><img src="images/menu4.png"><span>ระบบสารบรรณอิเล็กทรอนิกส์</span></div>
-            <div class="menu-item"><img src="images/menu5.png"><span>ระบบหนังสือเวียนอิเล็กทรอนิกส์</span></div>
+            <a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank" class="menu-item">
+                <img src="images/menu1.png" alt="ระบบจองห้องประชุม">
+            </a>
+            <a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank" class="menu-item">
+                <img src="images/menu2.png" alt="ระบบจองห้องประชุมออนไลน์">
+            </a>
+            <a href="https://www.forest.go.th/product/th/zoom/" target="_blank" class="menu-item">
+                <img src="images/menu3.png" alt="บริการสำหรับเจ้าหน้าที่">
+            </a>
+            <a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank" class="menu-item">
+                <img src="images/menu4.png" alt="ระบบสารบรรณอิเล็กทรอนิกส์">
+            </a>
+            <a href="#" target="_blank" class="menu-item">
+                <img src="images/menu5.png" alt="ระบบหนังสือเวียนอิเล็กทรอนิกส์">
+            </a>
         </div>
     </div>
 
@@ -492,5 +523,3 @@ closeBtn.onclick = () => { modal.style.display = "none"; };
 
 </body>
 </html>
-
-
