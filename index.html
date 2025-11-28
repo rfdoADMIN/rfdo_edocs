@@ -186,24 +186,27 @@ nav ul li a:hover { background: #e0f3f3; color: #1f6161; }
 .video-container {
     width: 100%;
     max-width: 800px;
-    margin: 20px 0;
+    margin: 20px auto;
     height: auto;
+    border: 4px solid #339999;   /* สีกรอบ */
+    border-radius: 12px;         /* มุมโค้ง */
+    overflow: hidden;            /* ให้ iframe ไม่ล้นกรอบ */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);  /* เงาสวย */
+    display: block;          /* ให้ block element จัดกลาง */
 }
 .video-container iframe {
     width: 100%;
     height: 450px;
     border: none;
+    display: block;
 }
 @media (max-width: 860px) {
-    .video-container iframe {
-        height: 300px;
-    }
+    .video-container iframe { height: 300px; }
 }
 @media (max-width: 600px) {
-    .video-container iframe {
-        height: 200px;
-    }
+    .video-container iframe { height: 200px; }
 }
+
 
 /* Menu icons section */
 .menu-icons {
@@ -356,15 +359,16 @@ footer {
         </div>
         <div class="dots"></div>
 
-        <!-- YouTube Video -->
-        <div class="section-title">สื่อวีดิทัศน์</div>
-        <div class="video-container">
-         <iframe src="https://www.youtube.com/embed/1zfnwjcOi04" 
-    title="YouTube video player" frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    allowfullscreen>
-</iframe>
-        </div>
+       <!-- YouTube Video -->
+<div class="section-title">สื่อวีดิทัศน์</div>
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/1zfnwjcOi04" 
+      title="YouTube video player" frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      allowfullscreen>
+  </iframe>
+</div>
+
 
         <div class="menu-icons">
             <div class="menu-item"><img src="images/menu1.png"><span>ระบบจองห้องประชุม</span></div>
@@ -488,6 +492,5 @@ closeBtn.onclick = () => { modal.style.display = "none"; };
 
 </body>
 </html>
-
 
 
