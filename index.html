@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>สำนักวิจัยและพัฒนาการป่าไม้ - ระบบเอกสาร</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body {
+    margin: 0;
+    background: #f3f8f8;
+    font-family: "Prompt", sans-serif;
+}
+
+/* Head Section */
+.head-section {
+    position: relative;
+    background: url('images/head.jpg') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 15px 25px;
+    height: auto;
+    min-height: 300px;
+    gap: 8px;
+}
+
+.head-section img#logo { 
+    width: 120px; 
+    height: auto; 
+}
+
+.head-text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.head-text { 
+    font-size: 64px; 
+    font-weight: 600; 
+    color: white; 
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+}
+
+.sub-text {
+    font-size: 20px;
+    font-weight: 500;
+    color: rgb(255, 255, 255);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+}
+
+/* Nav Menu */
+nav {
+    background: #ffffff;
+    padding: 8px 25px;
+    border-bottom: 2px solid #339999;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+nav ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    flex-wrap: wrap;
+}
+nav ul li { position: relative; }
+nav ul li a {
+    text-decoration: none;
+    color: #339999;
+    font-size: 16px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: 0.3s;
+}
+nav ul li a:hover { background: #e0f3f3; color: #1f6161; }
+.home-icon { background: #339999; border-radius: 6px; }
+.home-icon svg { fill: #ffffff; }
+.home-icon:hover { background: #1f6161; }
+.dropdown:hover > a { background: #e0f3f3; color:#1f6161; }
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 220px;
+    padding: 5px 0;
+    z-index: 100;
+}
+.dropdown-menu li a {
+    color: #339999;
+    padding: 8px 15px;
+    display: block;
+    font-size: 14px;
+}
+.dropdown-menu li a:hover { background: #e0f3f3; color:#1f6161; }
+.dropdown:hover .dropdown-menu { display: block; }
+
+/* Layout */
+.main {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Carousel */
+.slideshow-container {
+    position: relative;
+    max-width: 100%;  
+    height: 500px;     
+    overflow: hidden;
+    margin: auto;
+    background: #ccc;
+    border-radius: 5px;
+}
+.slide-track {
+    display: flex;
+    gap: 0px;
+    transition: transform 0.7s ease-in-out;
+}
+.slide-item {
+    flex: 0 0 calc((70% - 50px)/3);
+    height: 500px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.slide-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    cursor: pointer;
+}
+
+/* Carousel Prev/Next */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 26px;
+    color: white;
+    background: rgba(0,0,0,0.35);
+    padding: 10px 13px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 50;
+}
+.prev:hover, .next:hover { background: rgba(0,0,0,0.55); }
+.prev { left: 10px; }
+.next { right: 10px; }
+
+/* Dots */
+.dots {
+    text-align: center;
+    margin-top: 10px;
+}
+.dot {
+    height: 12px;
+    width: 12px;
+    margin: 0 5px;
+    background-color: rgba(51,153,153,0.4);
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+.dot.active,
+.dot:hover { background-color: #339999; }
+
+/* Sections under Carousel */
+.section-title { font-size: 22px; font-weight: 600; color: #1f6161; margin: 20px 0 10px 0; }
+
+/* Video responsive */
+.video-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px 0;
+    height: auto;
+}
+.video-container iframe {
+    width: 100%;
+    height: 450px;
+    border: none;
+}
+@media (max-width: 860px) {
+    .video-container iframe {
+        height: 300px;
+    }
+}
+@media (max-width: 600px) {
+    .video-container iframe {
+        height: 200px;
+    }
+}
+
+/* Menu icons section */
+.menu-icons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+.menu-icons .menu-item {
+    flex: 1 1 160px;
+    background: white;
+    text-align: center;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: 0.3s;
+}
+.menu-icons .menu-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
+.menu-icons .menu-item img { width: 80px; height: 80px; object-fit: cover; margin-bottom: 8px; }
+.menu-icons .menu-item span { font-size: 16px; color: #1f6161; font-weight: 500; }
+
+/* Sidebar */
+.sidebar {
+    background: white;
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    position: sticky;
+    top: 20px;
+}
+.sidebar img { width: 150px; height: 200px; object-fit: cover; border-radius: 6px; margin-bottom: 5px; }
+.sidebar h3 { color: #339999; font-size: 17px; margin: 0; line-height: 1.1; }
+.sidebar p { font-size: 14px; color: #444; margin: 2px 0 0 0; line-height: 1.1; }
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #339999;
+    color: white;
+    margin-top: 55px;
+}
+
+/* Modal Lightbox */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+}
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 5px;
+}
+.close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Responsive Head Section */
+@media (max-width: 860px) {
+    .head-section img#logo { width: 100px; }
+    .head-text { font-size: 20px; }
+    .sub-text { font-size: 16px; }
+}
+@media (max-width: 600px) {
+    .head-section img#logo { width: 80px; }
+    .head-text { font-size: 18px; }
+    .sub-text { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Head Section -->
+<div class="head-section">
+    <img id="logo" src="images/logo.png" alt="logo" />
+    <div class="head-text-container">
+        <div class="head-text">ส่วนอำนวยการ</div>
+        <div class="sub-text">สำนักวิจัยและพัฒนาการป่าไม้</div>
+    </div>
+</div>
+
+<!-- Navigation -->
+<nav>
+<ul>
+    <li><a href="#" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
+    <li class="dropdown">
+        <a href="#">เกี่ยวกับเรา ▾</a>
+        <ul class="dropdown-menu">
+            <li><a href="#">ฝ่ายธุรการ</a></li>
+            <li><a href="#">ฝ่ายการเจ้าหน้าที่</a></li>
+            <li><a href="#">ฝ่ายการเงิน และบัญชี</a></li>
+            <li><a href="#">ฝ่ายการพัสดุ</a></li>
+            <li><a href="#">ฝ่ายแผนและติดตามประเมินผล</a></li>
+            <li><a href="#">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
+        <ul class="dropdown-menu">
+            <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบัญอิเล็กทรอนิกส์</a></li>
+            <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
+            <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
+        </ul>
+    </li>
+    <li><a href="#">ระบบหนังสือเวียนกรมป่าไม้</a></li>
+    <li><a href="https://www.forest.go.th/research/" target="_blank">สำนักวิจัยและพัฒนาการป่าไม้</a></li>
+    <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
+    <li><a href="#">ติดต่อ</a></li>
+</ul>
+</nav>
+
+<div class="main">
+    <!-- Carousel Section -->
+    <div>
+        <div class="section-title">ข่าวสาร</div>
+        <div class="slideshow-container">
+            <div class="slide-track">
+                <div class="slide-item"><img src="images/work1.png" class="zoomable"></div>
+                <div class="slide-item"><img src="images/work2.png" class="zoomable"></div>
+                <div class="slide-item"><img src="images/work3.png" class="zoomable"></div>
+                <div class="slide-item"><img src="images/work4.png" class="zoomable"></div>
+                <div class="slide-item"><img src="images/work5.png" class="zoomable"></div>
+                <div class="slide-item"><img src="images/work6.png" class="zoomable"></div>
+                <div class="slide-item"><img src="images/work7.png" class="zoomable"></div>
+                <div class="slide-item"><img src="images/work8.png" class="zoomable"></div>
+                <div class="slide-item"><img src="images/work9.png" class="zoomable"></div>
+                <div class="slide-item"><img src="images/work10.png" class="zoomable"></div>
+                <div class="slide-item"><img src="images/work11.png" class="zoomable"></div>
+            </div>
+            <span class="prev">&#10094;</span>
+            <span class="next">&#10095;</span>
+        </div>
+        <div class="dots"></div>
+
+        <!-- YouTube Video -->
+        <div class="section-title">สื่อวีดิทัศน์</div>
+        <div class="video-container">
+          <iframe src="https://www.youtube.com/embed/dz9A3uiwKkw" 
+              title="YouTube video player" frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+          </iframe>
+        </div>
+
+        <div class="menu-icons">
+            <div class="menu-item"><img src="images/menu1.png"><span>ระบบจองห้องประชุม</span></div>
+            <div class="menu-item"><img src="images/menu2.png"><span>ระบบจองห้องประชุมออนไลน์</span></div>
+            <div class="menu-item"><img src="images/menu3.png"><span>บริการสำหรับเจ้าหน้าที่</span></div>
+            <div class="menu-item"><img src="images/menu4.png"><span>ระบบสารบรรณอิเล็กทรอนิกส์</span></div>
+            <div class="menu-item"><img src="images/menu5.png"><span>ระบบหนังสือเวียนอิเล็กทรอนิกส์</span></div>
+        </div>
+    </div>
+
+    <!-- Sidebar Director -->
+    <div class="sidebar">
+        <img src="images/director_gamrai.png" alt="ผู้อำนวยการส่วนอำนวยการ">
+        <h3>นางกำไร ประมาณ</h3>
+        <p><strong>ผู้อำนวยการส่วนอำนวยการ</strong></p>
+    </div>
+</div>
+
+<footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
+
+<!-- Modal -->
+<div id="modal" class="modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="modal-img">
+</div>
+
+<script>
+// ===== Infinite Carousel =====
+const track = document.querySelector('.slide-track');
+let items = Array.from(document.querySelectorAll('.slide-item'));
+const visible = 3;
+const total = items.length;
+
+// Clone slides
+items.forEach(slide => {
+    const clone = slide.cloneNode(true);
+    clone.classList.add('clone');
+    track.appendChild(clone);
+});
+items.slice(-visible).forEach(slide => {
+    const clone = slide.cloneNode(true);
+    clone.classList.add('clone');
+    track.insertBefore(clone, track.firstChild);
+});
+
+let allSlides = Array.from(document.querySelectorAll('.slide-item'));
+let index = visible;
+let slideWidth = items[0].offsetWidth + 5;
+track.style.transform = `translateX(${-index * slideWidth}px)`;
+
+// Dots
+const dotsContainer = document.querySelector('.dots');
+for (let i = 0; i < total; i++) {
+    const dot = document.createElement("span");
+    dot.className = "dot";
+    if (i === 0) dot.classList.add("active");
+    dot.addEventListener("click", () => goToSlide(i));
+    dotsContainer.appendChild(dot);
+}
+const dots = document.querySelectorAll(".dot");
+
+function updateSlide(transition = true) {
+    track.style.transition = transition ? 'transform 0.7s ease-in-out' : 'none';
+    track.style.transform = `translateX(${-index * slideWidth}px)`;
+    updateDots();
+}
+
+function nextSlide() { index++; updateSlide(); track.addEventListener('transitionend', checkIndex); }
+function prevSlide() { index--; updateSlide(); track.addEventListener('transitionend', checkIndex); }
+
+function checkIndex() {
+    track.removeEventListener('transitionend', checkIndex);
+    if (allSlides[index].classList.contains('clone')) {
+        if (index >= total + visible) index = visible;
+        if (index < visible) index = total + visible -1;
+        updateSlide(false);
+    }
+}
+
+function goToSlide(i) {
+    index = i + visible;
+    updateSlide();
+}
+
+function updateDots() {
+    dots.forEach(dot => dot.classList.remove('active'));
+    let dotIndex = (index - visible) % total;
+    if(dotIndex < 0) dotIndex += total;
+    dots[dotIndex].classList.add('active');
+}
+
+// Prev/Next buttons
+document.querySelector(".next").addEventListener("click", nextSlide);
+document.querySelector(".prev").addEventListener("click", prevSlide);
+
+// Auto slide
+let autoSlide = setInterval(nextSlide, 3500);
+document.querySelector(".slideshow-container").addEventListener("mouseenter", () => clearInterval(autoSlide));
+document.querySelector(".slideshow-container").addEventListener("mouseleave", () => autoSlide = setInterval(nextSlide, 3500));
+
+// Adjust on resize
+window.addEventListener('resize', () => {
+    slideWidth = items[0].offsetWidth + 5;
+    updateSlide(false);
+});
+
+// ===== Lightbox =====
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modal-img");
+const closeBtn = document.getElementsByClassName("close")[0];
+
+document.querySelectorAll('.zoomable').forEach(img => {
+    img.onclick = () => {
+        modal.style.display = "block";
+        modalImg.src = img.src;
+    };
+});
+
+closeBtn.onclick = () => { modal.style.display = "none"; };
+</script>
+
+</body>
+</html>
