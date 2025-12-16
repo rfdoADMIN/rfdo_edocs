@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="icon" type="image/png" href="images/logorfdo.png">
-<script src="js/supabase.min.js"></script>
 
 <style>
 /* สไตล์ CSS */
@@ -17,8 +16,40 @@ body { margin: 0; background: #f3f8f8; }
 .container { text-align: center; margin: 25px auto; max-width: 90%; }
 .container a { background: #339999; color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: 500; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin: 0 5px 10px 5px; display: inline-block; transition: 0.3s; }
 .container a:hover { background: #267373; }
-table { width: 90%; margin: auto; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
-th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+table { 
+    width: 90%; 
+    margin: 20px auto; 
+    border-collapse: collapse; 
+    background: white; 
+    border-radius: 10px; 
+    overflow: hidden; 
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    table-layout: fixed; /* บังคับให้ตารางใช้ความกว้างเต็มที่ */
+}
+th, td { 
+    border: 1px solid #ddd; 
+    padding: 12px; 
+    text-align: center; 
+    vertical-align: top;
+    word-wrap: break-word; /* ให้ข้อความยาวขึ้นบรรทัดใหม่ */
+}
+
+/* กำหนดความกว้างคอลัมน์เพื่อให้ตารางดูดีขึ้น */
+th:nth-child(2), td:nth-child(2) { /* ชื่อเรื่อง */
+    width: 30%;
+    text-align: left;
+}
+th:nth-child(6), td:nth-child(6),
+th:nth-child(7), td:nth-child(7) { /* ไฟล์แนบ และ จัดการ */
+    width: 80px;
+}
+th:nth-child(5), td:nth-child(5) { /* วันที่ */
+    width: 100px;
+}
+th:nth-child(1), td:nth-child(1) { /* ID */
+    width: 50px;
+}
+
 th { background: #339999; color: white; font-weight: 500; font-size: 16px; }
 tr:nth-child(even) { background: #f6fbfb; }
 tr:hover { background: #e0f3f3; transition: 0.2s; }
@@ -29,10 +60,14 @@ a.delete { background: #cc4444; color: white; cursor: pointer; }
 a.delete:hover { background: #b23232; }
 
 @media(max-width: 768px){
-    table, th, td { font-size: 12px; }
-    .admin-header { font-size: 20px; padding: 15px 20px; }
-    .container a { padding: 8px 16px; font-size: 14px; }
-    table { width: 98%; }
+    table, th, td { font-size: 12px; }
+    .admin-header { font-size: 20px; padding: 15px 20px; }
+    .container a { padding: 8px 16px; font-size: 14px; }
+    table { width: 98%; }
+    th:nth-child(1), td:nth-child(1),
+    th:nth-child(3), td:nth-child(3) { /* ซ่อนคอลัมน์ที่ไม่สำคัญบนมือถือ */
+        display: none;
+    }
 }
 </style>
 </head>
@@ -41,110 +76,120 @@ a.delete:hover { background: #b23232; }
 <div class="admin-header">📂 หน้าผู้ดูแลระบบ (Document Admin Panel)</div>
 
 <div class="container">
-  <a href="uploads.html">➕ เพิ่มเอกสารใหม่</a>
-  <a href="index.html">🏠 กลับหน้าหลัก</a>
-  <a href="https://app.supabase.com/project/rxfqfmhrxoejpdsmnqhk/editor" target="_blank">⚙️ จัดการฐานข้อมูล (Supabase Studio)</a>
+  <a href="uploads.html">➕ เพิ่มเอกสารใหม่</a>
+  <a href="index.html">🏠 กลับหน้าหลัก</a>
+  <a href="https://app.supabase.com/project/rxfqfmhrxoejpdsmnqhk/editor" target="_blank">⚙️ จัดการฐานข้อมูล (Supabase Studio)</a>
 </div>
 
 <table id="adminTable">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>ชื่อเรื่อง</th>
-      <th>ระดับ</th>
-      <th>เลขที่เอกสาร</th>
-      <th>วันที่</th>
-      <th>ไฟล์แนบ</th>
-      <th>จัดการ</th>
-    </tr>
-  </thead>
-  <tbody id="documentList">
-    <tr><td colspan="7">กำลังโหลดข้อมูลเอกสาร...</td></tr>
-  </tbody>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>ชื่อเรื่อง</th>
+      <th>ระดับ</th>
+      <th>เลขที่เอกสาร</th>
+      <th>วันที่</th>
+      <th>ไฟล์แนบ</th>
+      <th>จัดการ</th>
+    </tr>
+  </thead>
+  <tbody id="documentList">
+    <tr><td colspan="7">กำลังโหลดข้อมูลเอกสาร...</td></tr>
+  </tbody>
 </table>
 
-<script>
+<script type="module">
 // *** ข้อมูล Supabase ที่ถูกต้อง ***
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; 
+
 const SUPABASE_URL = "https://rxfqfmhrxoejpdsmnqhk.supabase.co"; 
 const SUPABASE_KEY = "sb_publishable_1MMLp3mTRrIi5m1Om-HdQVW_0DrHub8g"; 
-// 🚨 แก้ไข ReferenceError/TypeError: ใช้ window.supabase.createClient
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// ✅ ป้องกันการสร้าง Client ซ้ำซ้อน (ป้องกัน Warning)
+if (!window.supabaseClient) {
+    window.supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+}
+
+const supabase = window.supabaseClient; 
 const documentList = document.getElementById('documentList');
 
 // 1. ฟังก์ชันดึงและแสดงข้อมูลเอกสาร
 async function loadDocuments() {
-    documentList.innerHTML = '<tr><td colspan="7">กำลังโหลดข้อมูลเอกสาร...</td></tr>';
-    
-    // ดึงข้อมูลทั้งหมดจากตาราง documents
-    const { data, error } = await supabase.from('documents').select('*').order('id', { ascending: true });
+    documentList.innerHTML = '<tr><td colspan="7">กำลังโหลดข้อมูลเอกสาร...</td></tr>';
+    
+    // ดึงข้อมูลทั้งหมดจากตาราง documents
+    const { data, error } = await supabase.from('documents').select('*').order('id', { ascending: true });
 
-    if (error) {
-        documentList.innerHTML = `<tr><td colspan="7">Error fetching data. (ตรวจสอบ RLS Policy): ${error.message}</td></tr>`;
-        return;
-    }
+    if (error) {
+        documentList.innerHTML = `<tr><td colspan="7">Error fetching data. (ตรวจสอบ Key หรือ RLS Policy): ${error.message}</td></tr>`;
+        console.error("Supabase Error:", error);
+        return;
+    }
 
-    if (!data || data.length === 0) {
-        documentList.innerHTML = '<tr><td colspan="7">ไม่พบเอกสารในระบบ</td></tr>';
-        return;
-    }
+    if (!data || data.length === 0) {
+        documentList.innerHTML = '<tr><td colspan="7">ไม่พบเอกสารในระบบ</td></tr>';
+        return;
+    }
 
-    documentList.innerHTML = ''; 
-    data.forEach(doc => {
-        // ใช้ doc.filename เป็นลิงก์ Google Drive
-        let fileUrl = doc.filename; 
+    documentList.innerHTML = ''; 
+    data.forEach(doc => {
+        // ใช้ doc.filename เป็นลิงก์ Google Drive
+        let fileUrl = doc.filename; 
 
-        // โค้ดเสริม: พยายามแปลงลิงก์ Google Drive ให้เป็น Direct Download 
-        if (fileUrl && fileUrl.includes('drive.google.com/file/d/')) {
-            const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)\//);
-            if (fileIdMatch && fileIdMatch[1]) {
-                fileUrl = `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`;
-            }
-        }
+        // โค้ดเสริม: พยายามแปลงลิงก์ Google Drive ให้เป็น Direct Download (ปรับปรุงให้ครอบคลุม)
+        if (fileUrl && fileUrl.includes('drive.google.com')) {
+            const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (fileIdMatch && fileIdMatch[1]) {
+                const fileId = fileIdMatch[1];
+                // URL สำหรับดาวน์โหลดโดยตรง
+                fileUrl = `https://drive.google.com/uc?export=download&id=${fileId}`; 
+            }
+        }
 
-        // แปลงวันที่ให้อยู่ในรูปแบบที่อ่านง่าย
+        // แปลงวันที่ให้อยู่ในรูปแบบที่อ่านง่าย
         const formattedDate = doc.date ? new Date(doc.date).toLocaleDateString('th-TH', { 
             year: 'numeric', month: 'short', day: 'numeric' 
         }) : '-';
         
-        const row = `
-            <tr>
-                <td>${doc.id}</td>
-                <td>${doc.title}</td>
-                <td>${doc.level || '-'}</td>
-                <td>${doc.doc_number || '-'}</td>
-                <td>${formattedDate}</td>
-                <td><a class="btn view" href="${fileUrl}" target="_blank">ดูไฟล์</a></td>
-                <td><a class="btn delete" data-id="${doc.id}" data-filename="${doc.filename}" href="#">ลบ</a></td>
-            </tr>
-        `;
-        documentList.innerHTML += row;
-    });
-    
-    // กำหนด Event Listener สำหรับปุ่มลบ
-    document.querySelectorAll('.delete').forEach(button => {
-        button.addEventListener('click', handleDelete);
-    });
+        const row = `
+            <tr>
+                <td>${doc.id}</td>
+                <td>${doc.title}</td>
+                <td>${doc.level || '-'}</td>
+                <td>${doc.doc_number || '-'}</td>
+                <td>${formattedDate}</td>
+                <td><a class="btn view" href="${fileUrl}" target="_blank">ดูไฟล์</a></td>
+                <td><a class="btn delete" data-id="${doc.id}" href="#">ลบ</a></td>
+            </tr>
+        `;
+        documentList.innerHTML += row;
+    });
+    
+    // กำหนด Event Listener สำหรับปุ่มลบ
+    document.querySelectorAll('.delete').forEach(button => {
+        button.addEventListener('click', handleDelete);
+    });
 }
 
 // 2. ฟังก์ชันจัดการการลบ
 async function handleDelete(event) {
-    event.preventDefault();
-    const docId = event.target.getAttribute('data-id');
-    
-    if (!confirm(`คุณแน่ใจหรือไม่ที่จะลบเอกสาร ID: ${docId} ออกจากฐานข้อมูล? (ไฟล์ภายนอกจะไม่ถูกลบ)`)) {
-        return;
-    }
-    
-    // ลบรายการจาก Database 
-    const { error: dbError } = await supabase.from('documents').delete().eq('id', docId);
+    event.preventDefault();
+    const docId = event.target.getAttribute('data-id');
+    
+    if (!confirm(`คุณแน่ใจหรือไม่ที่จะลบเอกสาร ID: ${docId} ออกจากฐานข้อมูล? (ไฟล์ภายนอกจะไม่ถูกลบ)`)) {
+        return;
+    }
+    
+    // ลบรายการจาก Database 
+    const { error: dbError } = await supabase.from('documents').delete().eq('id', docId);
 
-    if (dbError) {
-        alert(`เกิดข้อผิดพลาดในการลบรายการในฐานข้อมูล: ${dbError.message}`);
-    } else {
-        alert(`ลบเอกสาร ID: ${docId} ออกจากฐานข้อมูลเรียบร้อยแล้ว`);
-        loadDocuments(); 
-    }
+    if (dbError) {
+        alert(`เกิดข้อผิดพลาดในการลบรายการในฐานข้อมูล: ${dbError.message}`);
+        console.error("Delete Error:", dbError);
+    } else {
+        alert(`ลบเอกสาร ID: ${docId} ออกจากฐานข้อมูลเรียบร้อยแล้ว`);
+        loadDocuments(); // โหลดข้อมูลใหม่หลังจากลบ
+    }
 }
 
 // เริ่มโหลดเอกสารเมื่อหน้าเว็บโหลดเสร็จ
@@ -152,5 +197,4 @@ window.onload = loadDocuments;
 </script>
 
 </body>
-
 </html>
