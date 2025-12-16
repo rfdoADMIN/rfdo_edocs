@@ -1,162 +1,163 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RFDO e-Doc - เอกสารดาวน์โหลด</title>
-    <script src="js/script.js" type="module"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="images/logorfdo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFDO e-Doc - เอกสารดาวน์โหลด</title>
+        <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="images/logorfdo.png">
 
-    <style>
-        /* สไตล์หลัก (คัดลอกมาจาก index.html) */
-        body { margin: 0; background: #f3f8f8; font-family: "Prompt", sans-serif; }
-        .head-section { position: relative; background: url('images/head.jpg') no-repeat center center; background-size: cover; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 15px 25px; height: auto; min-height: 300px; gap: 8px; }
-        .head-section img#logo { width: 120px; height: auto; }
-        .head-text-container { display: flex; flex-direction: column; align-items: flex-start; }
-        .head-text { font-size: 64px; font-weight: 600; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
-        .sub-text { font-size: 20px; font-weight: 500; color: rgb(255, 255, 255); text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
-        nav { background: #ffffff; padding: 8px 25px; border-bottom: 2px solid #339999; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        nav ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; font-weight: 500; flex-wrap: wrap; }
-        nav ul li { position: relative; }
-        nav ul li a { text-decoration: none; color: #339999; font-size: 16px; padding: 6px 10px; border-radius: 6px; display: flex; align-items: center; gap: 5px; transition: 0.3s; }
-        nav ul li a:hover { background: #e0f3f3; color: #1f6161; }
-        .home-icon { background: #339999; border-radius: 6px; }
-        .home-icon svg { fill: #ffffff; }
-        .home-icon:hover { background: #1f6161; }
-        .dropdown:hover > a { background: #e0f3f3; color:#1f6161; }
-        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #ffffff; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 220px; padding: 5px 0; z-index: 100; }
-        .dropdown-menu li a { color: #339999; padding: 8px 15px; display: block; font-size: 14px; }
-        .dropdown-menu li a:hover { background: #e0f3f3; color:#1f6161; }
-        .dropdown:hover .dropdown-menu { display: block; }
+    <style>
+        /* สไตล์ทั้งหมดที่หายไป ถูกนำกลับมาที่นี่ */
+        body { margin: 0; background: #f3f8f8; font-family: "Prompt", sans-serif; }
+        .head-section { position: relative; background: url('images/head.jpg') no-repeat center center; background-size: cover; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 15px 25px; height: auto; min-height: 300px; gap: 8px; }
+        .head-section img#logo { width: 120px; height: auto; }
+        .head-text-container { display: flex; flex-direction: column; align-items: flex-start; }
+        .head-text { font-size: 64px; font-weight: 600; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
+        .sub-text { font-size: 20px; font-weight: 500; color: rgb(255, 255, 255); text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
+        nav { background: #ffffff; padding: 8px 25px; border-bottom: 2px solid #339999; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        nav ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; font-weight: 500; flex-wrap: wrap; }
+        nav ul li { position: relative; }
+        nav ul li a { text-decoration: none; color: #339999; font-size: 16px; padding: 6px 10px; border-radius: 6px; display: flex; align-items: center; gap: 5px; transition: 0.3s; }
+        nav ul li a:hover { background: #e0f3f3; color: #1f6161; }
+        .home-icon { background: #339999; border-radius: 6px; }
+        .home-icon svg { fill: #ffffff; }
+        .home-icon:hover { background: #1f6161; }
+        .dropdown:hover > a { background: #e0f3f3; color:#1f6161; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #ffffff; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 220px; padding: 5px 0; z-index: 100; }
+        .dropdown-menu li a { color: #339999; padding: 8px 15px; display: block; font-size: 14px; }
+        .dropdown-menu li a:hover { background: #e0f3f3; color:#1f6161; }
+        .dropdown:hover .dropdown-menu { display: block; }
 
-        /* Styles for Content Area */
-        .content-container { max-width: 1000px; margin: 40px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
-        .content-container h2 { font-size: 28px; color: #1f6161; border-bottom: 2px solid #339999; padding-bottom: 10px; margin-top: 0; }
-        
-        /* Table Styles */
-        .doc-table { width:100%; border-collapse:collapse; margin-top:10px; }
-        .doc-table th, .doc-table td { padding:12px; border-bottom:1px solid #eee; text-align:left; }
-        .doc-table th { background:#2e8f8f; color:#fff; font-weight:500; }
-        .doc-table a { color:#2a8c8c; text-decoration:none; font-weight:500; }
-        .doc-table a:hover { text-decoration:underline; }
+        /* Styles for Content Area */
+        .content-container { max-width: 1000px; margin: 40px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
+        .content-container h2 { font-size: 28px; color: #1f6161; border-bottom: 2px solid #339999; padding-bottom: 10px; margin-top: 0; }
+        
+        /* Table Styles */
+        .doc-table { width:100%; border-collapse:collapse; margin-top:10px; }
+        .doc-table th, .doc-table td { padding:12px; border-bottom:1px solid #eee; text-align:left; }
+        .doc-table th { background:#2e8f8f; color:#fff; font-weight:500; }
+        .doc-table a { color:#2a8c8c; text-decoration:none; font-weight:500; }
+        .doc-table a:hover { text-decoration:underline; }
 
-        footer { text-align: center; padding: 20px; background: #339999; color: white; margin-top: 55px; }
+        footer { text-align: center; padding: 20px; background: #339999; color: white; margin-top: 55px; }
 
-        /* Responsive */
-        @media (max-width: 860px) { .head-section img#logo { width: 100px; } .head-text { font-size: 20px; } .sub-text { font-size: 16px; } }
-        @media (max-width: 600px) { .head-section img#logo { width: 80px; } .head-text { font-size: 18px; } .sub-text { font-size: 14px; } }
-    </style>
+        /* Responsive */
+        @media (max-width: 860px) { .head-section img#logo { width: 100px; } .head-text { font-size: 20px; } .sub-text { font-size: 16px; } }
+        @media (max-width: 600px) { .head-section img#logo { width: 80px; } .head-text { font-size: 18px; } .sub-text { font-size: 14px; } }
+    </style>
 </head>
 <body>
 
-    <div class="head-section">
-        <img id="logo" src="images/logo.png" alt="logo" />
-        <div class="head-text-container">
-            <div class="head-text">ส่วนอำนวยการ</div>
-            <div class="sub-text">สำนักวิจัยและพัฒนาการป่าไม้</div>
-        </div>
-    </div>
+    <div class="head-section">
+        <img id="logo" src="images/logo.png" alt="logo" />
+        <div class="head-text-container">
+            <div class="head-text">ส่วนอำนวยการ</div>
+            <div class="sub-text">สำนักวิจัยและพัฒนาการป่าไม้</div>
+        </div>
+    </div>
 
-    <nav>
-        <ul>
-            <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
-            <li class="dropdown"><a href="#">เกี่ยวกับเรา ▾</a><ul class="dropdown-menu"><li><a href="#">ฝ่ายธุรการ</a></li><li><a href="#">ฝ่ายการเจ้าหน้าที่</a></li><li><a href="#">ฝ่ายการเงิน และบัญชี</a></li><li><a href="#">ฝ่ายการพัสดุ</a></li><li><a href="#">ฝ่ายแผนและติดตามประเมินผล</a></li><li><a href="#">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li></ul></li>
-            <li class="dropdown">
-                <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="uploads.html">อัปโหลดเอกสาร (uploads)</a></li>
-                    <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบัญอิเล็กทรอนิกส์</a></li>
-                    <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
-                    <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
-                </ul>
-            </li>
-            <li><a href="edocs.html">ระบบหนังสือเวียน (edocs)</a></li>
-            <li><a href="https://www.forest.go.th/research/" target="_blank">สำนักวิจัยและพัฒนาการป่าไม้</a></li>
-            <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
-            <li><a href="contact.html">ติดต่อ</a></li>
-        </ul>
-    </nav>
+    <nav>
+        <ul>
+            <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
+            <li class="dropdown"><a href="#">เกี่ยวกับเรา ▾</a><ul class="dropdown-menu"><li><a href="#">ฝ่ายธุรการ</a></li><li><a href="#">ฝ่ายการเจ้าหน้าที่</a></li><li><a href="#">ฝ่ายการเงิน และบัญชี</a></li><li><a href="#">ฝ่ายการพัสดุ</a></li><li><a href="#">ฝ่ายแผนและติดตามประเมินผล</a></li><li><a href="#">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li></ul></li>
+            <li class="dropdown">
+                <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="uploads.html">อัปโหลดเอกสาร (uploads)</a></li>
+                    <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบัญอิเล็กทรอนิกส์</a></li>
+                    <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
+                    <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
+                </ul>
+            </li>
+            <li><a href="edocs.html">ระบบหนังสือเวียน (edocs)</a></li>
+            <li><a href="https://www.forest.go.th/research/" target="_blank">สำนักวิจัยและพัฒนาการป่าไม้</a></li>
+            <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
+            <li><a href="contact.html">ติดต่อ</a></li>
+        </ul>
+    </nav>
 
-    <main class="content-container">
-        <h2>ระบบหนังสือเวียนกรมป่าไม้อิเล็กทรอนิกส์ ของสำนักวิจัยและพัฒนาการป่าไม้</h2>
-        <table id="docTable" class="doc-table">
-            <thead>
-                <tr>
-                    <th>ชื่อเรื่อง</th>
-                    <th>เลขที่</th>
-                    <th>ชั้นความลับ</th>
-                    <th>วันที่</th>
-                    <th>ไฟล์</th>
-                </tr>
-            </thead>
-            <tbody id="documentList">
-                <tr><td colspan="5">กำลังโหลดข้อมูลเอกสาร...</td></tr>
-            </tbody>
-        </table>
-    </main>
+    <main class="content-container">
+        <h2>ระบบหนังสือเวียนกรมป่าไม้อิเล็กทรอนิกส์ ของสำนักวิจัยและพัฒนาการป่าไม้</h2>
+        <table id="docTable" class="doc-table">
+            <thead>
+                <tr>
+                    <th>ชื่อเรื่อง</th>
+                    <th>เลขที่</th>
+                    <th>ชั้นความลับ</th>
+                    <th>วันที่</th>
+                    <th>ไฟล์</th>
+                </tr>
+            </thead>
+            <tbody id="documentList">
+                <tr><td colspan="5">กำลังโหลดข้อมูลเอกสาร...</td></tr>
+            </tbody>
+        </table>
+    </main>
 
-    <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
+    <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
 
-    <script>
-        // *** ข้อมูล Supabase ที่ถูกต้อง ***
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; // ✅ บรรทัดนี้ถูกต้อง
+    <script type="module">         // *** ข้อมูล Supabase ที่ถูกต้อง ***
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; 
 
-        const supabaseUrl = 'https://rxqfmhrxoepjdsmmnqhk.supabase.co'
-        const supabaseKey = process.env.SUPABASE_KEY
-        const supabase = createClient(supabaseUrl, supabaseKey) 
-        const SUPABASE_URL = "https://rxfqfmhrxoejpdsmnqhk.supabase.co"; 
-        const SUPABASE_KEY = "sb_publishable_1MMLp3mTRrIi5m1Om-HdQVW_0DrHub8g"; 
-        const documentList = document.getElementById('documentList');
+        const supabaseUrl = 'https://rxqfmhrxoepjdsmmnqhk.supabase.co'
+        // ⚠️ ควรใส่ Public (Anon) API Key ตัวจริงแทน process.env.SUPABASE_KEY
+        const supabaseKey = "sb_publishable_1MMLp3mTRrIi5m1Om-HdQVW_0DrHub8g"; // ใช้ Key ตัวจริงที่คุณมี
+        const supabase = createClient(supabaseUrl, supabaseKey) 
+        
+        // ลบตัวแปรซ้ำซ้อน:
+        // const SUPABASE_URL = "https://rxfqfmhrxoejpdsmnqhk.supabase.co"; // ❌ ลบออก
+        // const SUPABASE_KEY = "sb_publishable_1MMLp3mTRrIi5m1Om-HdQVW_0DrHub8g"; // ❌ ลบออก
+        
+        const documentList = document.getElementById('documentList');
 
-        async function loadDocuments() {
-            documentList.innerHTML = '<tr><td colspan="5">กำลังโหลดข้อมูลเอกสาร...</td></tr>';
-            
-            // ดึงข้อมูลทั้งหมดจากตาราง documents เรียงตามวันที่ล่าสุด
-            const { data, error } = await supabase.from('documents').select('*').order('date', { ascending:false });
+        async function loadDocuments() {
+            documentList.innerHTML = '<tr><td colspan="5">กำลังโหลดข้อมูลเอกสาร...</td></tr>';
+            
+            // ดึงข้อมูลทั้งหมดจากตาราง documents เรียงตามวันที่ล่าสุด
+            const { data, error } = await supabase.from('documents').select('*').order('date', { ascending:false });
 
-            if(error){
-                documentList.innerHTML = `<tr><td colspan="5">เกิดข้อผิดพลาดในการดึงข้อมูล (ตรวจสอบ RLS Policy): ${error.message}</td></tr>`;
-                console.error("Supabase API Error:", error);
-                return;
-            }
+            if(error){
+                documentList.innerHTML = `<tr><td colspan="5">เกิดข้อผิดพลาดในการดึงข้อมูล (ตรวจสอบ RLS Policy): ${error.message}</td></tr>`;
+                console.error("Supabase API Error:", error);
+                return;
+            }
 
-            if (!data || data.length === 0) {
-                 documentList.innerHTML = `<tr><td colspan="5">ไม่พบเอกสารในฐานข้อมูล</td></tr>`;
-                 return;
-            }
+            if (!data || data.length === 0) {
+                 documentList.innerHTML = `<tr><td colspan="5">ไม่พบเอกสารในฐานข้อมูล</td></tr>`;
+                 return;
+            }
 
-            documentList.innerHTML = '';
-            data.forEach(doc => {
-                // *** ใช้ doc.filename เป็นลิงก์ภายนอกโดยตรง ***
-                let fileUrl = doc.filename; 
+            documentList.innerHTML = '';
+            data.forEach(doc => {
+                let fileUrl = doc.filename; 
 
-                // โค้ดเสริม: พยายามแปลงลิงก์ Google Drive ให้เป็น Direct Download 
-                if (fileUrl && fileUrl.includes('drive.google.com/file/d/')) {
-                    const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)\//);
-                    if (fileIdMatch && fileIdMatch[1]) {
-                        fileUrl = `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`; 
-                    }
-                }
-                
-                // แปลงวันที่ให้อยู่ในรูปแบบที่อ่านง่าย
-                const formattedDate = doc.date ? new Date(doc.date).toLocaleDateString('th-TH', { 
-                    year: 'numeric', month: 'short', day: 'numeric' 
-                }) : '-';
+                // โค้ดเสริม: พยายามแปลงลิงก์ Google Drive ให้เป็น Direct Download 
+                if (fileUrl && fileUrl.includes('drive.google.com/file/d/')) {
+                    const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)\//);
+                    if (fileIdMatch && fileIdMatch[1]) {
+                        fileUrl = `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`; 
+                    }
+                }
+                
+                // แปลงวันที่ให้อยู่ในรูปแบบที่อ่านง่าย
+                const formattedDate = doc.date ? new Date(doc.date).toLocaleDateString('th-TH', { 
+                    year: 'numeric', month: 'short', day: 'numeric' 
+                }) : '-';
 
-                const row = `<tr>
-                    <td>${doc.title}</td>
-                    <td>${doc.doc_number || '-'}</td>
-                    <td>${doc.level || 'ปกติ'}</td>
-                    <td>${formattedDate}</td>
-                    <td><a href="${fileUrl}" target="_blank">ดาวน์โหลด</a></td>
-                </tr>`;
-                documentList.innerHTML += row;
-            });
-        }
+                const row = `<tr>
+                    <td>${doc.title}</td>
+                    <td>${doc.doc_number || '-'}</td>
+                    <td>${doc.level || 'ปกติ'}</td>
+                    <td>${formattedDate}</td>
+                    <td><a href="${fileUrl}" target="_blank">ดาวน์โหลด</a></td>
+                </tr>`;
+                documentList.innerHTML += row;
+            });
+        }
 
-        window.onload = loadDocuments;
-    </script>
+        window.onload = loadDocuments;
+    </script>
 
 </body>
 </html>
