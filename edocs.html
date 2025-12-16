@@ -10,7 +10,24 @@
 
     <style>
         /* สไตล์หลัก (คัดลอกมาจาก index.html) */
-        body { margin: 0; background: #f3f8f8; font-family: "Prompt", sans-serif; }
+        body { margin: 0; background: #f3f8f8; font-family: "Prompt", sans-serif;
+        /* ⬇️ เพิ่ม 3 บรรทัดนี้เพื่อทำ Sticky Footer ⬇️ */
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* บังคับให้ body มีความสูงอย่างน้อยเท่ากับหน้าจอ */
+        /* ⬆️ เพิ่ม 3 บรรทัดนี้เพื่อทำ Sticky Footer ⬆️ */
+}
+        /* ⬇️ เพิ่มสไตล์สำหรับ main/content เพื่อให้ขยายพื้นที่ ⬇️ */
+        main.content-container {
+        flex-grow: 1; /* ทำให้เนื้อหาหลักขยายตัวออกไปกินพื้นที่ว่างทั้งหมด */
+        max-width: 1000px; 
+        margin: 40px auto; 
+        padding: 30px; 
+        background: white; 
+        border-radius: 12px; 
+        box-shadow: 0 6px 18px rgba(0,0,0,0.1); 
+}
+/* ⬆️ เพิ่มสไตล์สำหรับ main/content เพื่อให้ขยายพื้นที่ ⬆️ */
         .head-section { position: relative; background: url('images/head.jpg') no-repeat center center; background-size: cover; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 15px 25px; height: auto; min-height: 300px; gap: 8px; }
         .head-section img#logo { width: 120px; height: auto; }
         .head-text-container { display: flex; flex-direction: column; align-items: flex-start; }
@@ -35,31 +52,44 @@
         .content-container h2 { font-size: 28px; color: #1f6161; border-bottom: 2px solid #339999; padding-bottom: 10px; margin-top: 0; }
         
         /* Table Styles */
-        .doc-table { 
-        width:100%; 
-        border-collapse:collapse; 
-        margin-top:10px; 
-        table-layout: fixed; /* ⬅️ เพิ่ม: บังคับให้ตารางใช้ความกว้าง 100% */
+.doc-table { 
+    width:100%; 
+    border-collapse:collapse; 
+    margin-top:10px; 
+    table-layout: fixed; /* ⬅️ สำคัญมาก: บังคับให้ตารางใช้ความกว้าง 100% และคอลัมน์คงที่ */
 }
-        .doc-table th, .doc-table td { 
-        padding:12px; 
-        border-bottom:1px solid #eee; 
-        text-align:left;
-        vertical-align: top; /* ⬅️ เพิ่ม: จัดข้อความด้านบนเมื่อขึ้นบรรทัดใหม่ */
+.doc-table th, .doc-table td { 
+    padding:12px; 
+    border-bottom:1px solid #eee; 
+    text-align:left;
+    vertical-align: top; /* จัดข้อความด้านบนเมื่อขึ้นบรรทัดใหม่ */
 }
-        .doc-table th { background:#2e8f8f; color:#fff; font-weight:500; }
 
-        /* ⬇️ เพิ่ม CSS ใหม่สำหรับคอลัมน์ชื่อเรื่อง ⬇️ */
-        .doc-table .title-col {
-        width: 35%; /* กำหนดให้คอลัมน์ชื่อเรื่องใช้ 35% ของความกว้างตาราง */
-        word-wrap: break-word; /* ให้ข้อความยาว ๆ ขึ้นบรรทัดใหม่ */
+/* ⬇️ กำหนดความกว้างคอลัมน์ผ่าน CSS ⬇️ */
+.doc-table th:nth-child(1), .doc-table td:nth-child(1) { /* ชื่อเรื่อง */
+    width: 35%; 
+    word-wrap: break-word; 
 }
-        /* ⬆️ เพิ่ม CSS ใหม่สำหรับคอลัมน์ชื่อเรื่อง ⬆️ */
+.doc-table th:nth-child(2), .doc-table td:nth-child(2) { /* เลขที่ */
+    width: 25%;
+}
+.doc-table th:nth-child(3), .doc-table td:nth-child(3) { /* ชั้นความลับ */
+    width: 15%;
+}
+.doc-table th:nth-child(4), .doc-table td:nth-child(4) { /* วันที่ */
+    width: 15%;
+}
+.doc-table th:nth-child(5), .doc-table td:nth-child(5) { /* ไฟล์ */
+    width: 10%;
+    text-align: center; /* จัดให้อยู่ตรงกลาง */
+}
+/* ⬆️ กำหนดความกว้างคอลัมน์ผ่าน CSS ⬆️ */
 
-        .doc-table a { color:#2a8c8c; text-decoration:none; font-weight:500; }
-        .doc-table a:hover { text-decoration:underline; }
+.doc-table th { background:#2e8f8f; color:#fff; font-weight:500; }
+.doc-table a { color:#2a8c8c; text-decoration:none; font-weight:500; }
+.doc-table a:hover { text-decoration:underline; }
 
-        footer { text-align: center; padding: 20px; background: #339999; color: white; margin-top: 55px; }
+        footer { text-align: center; padding: 20px; background: #339999; color: white; margin-top: 0px; }
 
         /* Responsive */
         @media (max-width: 860px) { .head-section img#logo { width: 100px; } .head-text { font-size: 20px; } .sub-text { font-size: 16px; } }
@@ -116,7 +146,7 @@
     <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
 
     <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; 
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; 
 
         //  แก้ไข: ประกาศตัวแปร Key และ URL ที่ถูกต้องและป้องกันการประกาศซ้ำซ้อน
         if (!window.supabaseClient) {
@@ -130,12 +160,11 @@
         
         // ใช้ Client ที่ถูกเก็บไว้
         const supabase = window.supabaseClient; 
+         const documentList = document.getElementById('documentList');
 
-        const documentList = document.getElementById('documentList');
+         async function loadDocuments() {
+         documentList.innerHTML = '<tr><td colspan="5">กำลังโหลดข้อมูลเอกสาร...</td></tr>';
 
-        async function loadDocuments() {
-            documentList.innerHTML = '<tr><td colspan="5">กำลังโหลดข้อมูลเอกสาร...</td></tr>';
-            
             // ดึงข้อมูลทั้งหมดจากตาราง documents เรียงตามวันที่ล่าสุด
             const { data, error } = await supabase.from('documents').select('*').order('date', { ascending:false });
 
@@ -153,15 +182,21 @@
             documentList.innerHTML = '';
             data.forEach(doc => {
                 // *** ใช้ doc.filename เป็นลิงก์ภายนอกโดยตรง ***
-                let fileUrl = doc.filename; 
+               let fileUrl = doc.filename; 
 
-                // โค้ดเสริม: พยายามแปลงลิงก์ Google Drive ให้เป็น Direct Download 
-                if (fileUrl && fileUrl.includes('drive.google.com/file/d/')) {
-                    const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)\//);
-                    if (fileIdMatch && fileIdMatch[1]) {
-                        fileUrl = `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`; 
-                    }
-                }
+    // ✅ โค้ดที่ครอบคลุมการดึง File ID และสร้าง Direct Download Link
+    if (fileUrl && fileUrl.includes('drive.google.com')) {
+        // ดึง File ID ออกมา, ID จะอยู่ระหว่าง /d/ และ /view หรือ /edit หรือ /
+        // ตัวอย่าง ID: 1j2k3l4m5n6o7p8q9r0s
+        const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)/); 
+        
+        if (fileIdMatch && fileIdMatch[1]) {
+            const fileId = fileIdMatch[1];
+            
+            // นี่คือ URL สำหรับดาวน์โหลดโดยตรง
+            fileUrl = `https://drive.google.com/uc?export=download&id=${fileId}`; 
+        }
+    }
                 
                 // แปลงวันที่ให้อยู่ในรูปแบบที่อ่านง่าย
                 const formattedDate = doc.date ? new Date(doc.date).toLocaleDateString('th-TH', { 
@@ -183,4 +218,5 @@
 
 </body>
 </html>
+
 
