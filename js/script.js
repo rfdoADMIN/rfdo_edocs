@@ -1,10 +1,6 @@
 // 1. นำเข้า Supabase Client ผ่าน CDN Module
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; 
 
-// 2. กำหนด URL และ Key ที่ถูกต้อง (แก้ไขแล้ว!)
-const SUPABASE_URL = "https://rxqfmhrxoepjdsmmnqhk.supabase.co"; 
-const SUPABASE_KEY = "sb_publishable_lMMLp3mTrIiSm1Om-HdQxw_oOrHub8g"; 
-
 // 3. สร้าง Supabase Client
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -71,5 +67,6 @@ function initialize() {
 }
 
 window.onload = initialize;
+
 
 
