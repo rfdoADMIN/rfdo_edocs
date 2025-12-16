@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RFDO e-Doc - เอกสารดาวน์โหลด</title>
-    <script src="js/script.js" type="module"></script>     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="js/script.js" type="module"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="images/logorfdo.png">
 
     <style>
-        /* สไตล์ทั้งหมดที่เกี่ยวข้องกับการแสดงผล */
+        /* สไตล์หลัก (คัดลอกมาจาก index.html) */
         body { margin: 0; background: #f3f8f8; font-family: "Prompt", sans-serif; }
         .head-section { position: relative; background: url('images/head.jpg') no-repeat center center; background-size: cover; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 15px 25px; height: auto; min-height: 300px; gap: 8px; }
         .head-section img#logo { width: 120px; height: auto; }
@@ -32,7 +33,7 @@
         /* Styles for Content Area */
         .content-container { max-width: 1000px; margin: 40px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
         .content-container h2 { font-size: 28px; color: #1f6161; border-bottom: 2px solid #339999; padding-bottom: 10px; margin-top: 0; }
-        
+        
         /* Table Styles */
         .doc-table { width:100%; border-collapse:collapse; margin-top:10px; }
         .doc-table th, .doc-table td { padding:12px; border-bottom:1px solid #eee; text-align:left; }
@@ -96,6 +97,66 @@
     </main>
 
     <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
-    
-    </body>
+
+    <script>
+        // *** ข้อมูล Supabase ที่ถูกต้อง ***
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; // ✅ บรรทัดนี้ถูกต้อง
+
+        const supabaseUrl = 'https://rxqfmhrxoepjdsmmnqhk.supabase.co'
+        const supabaseKey = process.env.SUPABASE_KEY
+        const supabase = createClient(supabaseUrl, supabaseKey) 
+        const SUPABASE_URL = "https://rxfqfmhrxoejpdsmnqhk.supabase.co"; 
+        const SUPABASE_KEY = "sb_publishable_1MMLp3mTRrIi5m1Om-HdQVW_0DrHub8g"; 
+        const documentList = document.getElementById('documentList');
+
+        async function loadDocuments() {
+            documentList.innerHTML = '<tr><td colspan="5">กำลังโหลดข้อมูลเอกสาร...</td></tr>';
+            
+            // ดึงข้อมูลทั้งหมดจากตาราง documents เรียงตามวันที่ล่าสุด
+            const { data, error } = await supabase.from('documents').select('*').order('date', { ascending:false });
+
+            if(error){
+                documentList.innerHTML = `<tr><td colspan="5">เกิดข้อผิดพลาดในการดึงข้อมูล (ตรวจสอบ RLS Policy): ${error.message}</td></tr>`;
+                console.error("Supabase API Error:", error);
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                 documentList.innerHTML = `<tr><td colspan="5">ไม่พบเอกสารในฐานข้อมูล</td></tr>`;
+                 return;
+            }
+
+            documentList.innerHTML = '';
+            data.forEach(doc => {
+                // *** ใช้ doc.filename เป็นลิงก์ภายนอกโดยตรง ***
+                let fileUrl = doc.filename; 
+
+                // โค้ดเสริม: พยายามแปลงลิงก์ Google Drive ให้เป็น Direct Download 
+                if (fileUrl && fileUrl.includes('drive.google.com/file/d/')) {
+                    const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)\//);
+                    if (fileIdMatch && fileIdMatch[1]) {
+                        fileUrl = `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`; 
+                    }
+                }
+                
+                // แปลงวันที่ให้อยู่ในรูปแบบที่อ่านง่าย
+                const formattedDate = doc.date ? new Date(doc.date).toLocaleDateString('th-TH', { 
+                    year: 'numeric', month: 'short', day: 'numeric' 
+                }) : '-';
+
+                const row = `<tr>
+                    <td>${doc.title}</td>
+                    <td>${doc.doc_number || '-'}</td>
+                    <td>${doc.level || 'ปกติ'}</td>
+                    <td>${formattedDate}</td>
+                    <td><a href="${fileUrl}" target="_blank">ดาวน์โหลด</a></td>
+                </tr>`;
+                documentList.innerHTML += row;
+            });
+        }
+
+        window.onload = loadDocuments;
+    </script>
+
+</body>
 </html>
