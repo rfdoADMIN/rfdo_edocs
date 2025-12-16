@@ -3,7 +3,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 // 2. กำหนด URL และ Key ที่ถูกต้อง (แก้ไขแล้ว!)
 const SUPABASE_URL = "https://rxqfmhrxoepjdsmmnqhk.supabase.co"; 
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4cWZtaHJ4b2VwamRzbW1ucWhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU3NjU5OTYsImV4cCI6MjA4MTM0MTk5Nn0.5KYdhe_rNfYvD_z969MUZZN75zyuSX_k_TdWNZign84"; 
+const SUPABASE_KEY = "sb_publishable_lMMLp3mTrIiSm1Om-HdQxw_oOrHub8g"; 
 
 // 3. สร้าง Supabase Client
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -71,4 +71,5 @@ function initialize() {
 }
 
 window.onload = initialize;
+
 
