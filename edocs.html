@@ -100,7 +100,7 @@
 
     <script>
         // *** ข้อมูล Supabase ที่ถูกต้อง ***
-        import { createClient } from '@supabase/supabase-js'
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; // ✅ บรรทัดนี้ถูกต้อง
 
         const supabaseUrl = 'https://rxqfmhrxoepjdsmmnqhk.supabase.co'
         const supabaseKey = process.env.SUPABASE_KEY
@@ -160,5 +160,6 @@
 
 </body>
 </html>
+
 
 
