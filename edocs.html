@@ -99,67 +99,76 @@
     <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
 
     <script type="module">
-        // *** ข้อมูล Supabase ที่ถูกต้อง ***
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; // ✅ บรรทัดนี้ถูกต้อง
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; 
 
-        const supabaseUrl = 'https://rxqfmhrxoepjdsmmnqhk.supabase.co'
-        const supabaseKey = "sb_publishable_lMMLp3mTrIiSm1Om-HdQxw_oOrHub8g"; // ⬅️ ต้องใส่ Key ตัวจริงของคุณ
-        const supabase = createClient(supabaseUrl, supabaseKey) 
-        const SUPABASE_URL = "https://rxfqfmhrxoejpdsmnqhk.supabase.co"; 
-        const SUPABASE_KEY = "sb_publishable_1MMLp3mTRrIi5m1Om-HdQVW_0DrHub8g"; 
-        const documentList = document.getElementById('documentList');
+    // ✅ ป้องกันการสร้าง Client ซ้ำซ้อนโดยการตรวจสอบ Global Scope (window)
+    if (!window.supabaseClient) {
+        console.log("Creating new Supabase Client instance..."); // ตรวจสอบว่าโค้ดนี้รันหรือไม่
 
-        async function loadDocuments() {
-            documentList.innerHTML = '<tr><td colspan="5">กำลังโหลดข้อมูลเอกสาร...</td></tr>';
-            
-            // ดึงข้อมูลทั้งหมดจากตาราง documents เรียงตามวันที่ล่าสุด
-            const { data, error } = await supabase.from('documents').select('*').order('date', { ascending:false });
+        const SUPABASE_URL = 'https://rxqfmhrxoepjdsmmnqhk.supabase.co';
+        // ⚠️ ต้องใส่ Public (Anon) Key ตัวจริงของคุณที่นี่
+        const SUPABASE_KEY = "sb_publishable_lMMLp3mTrIiSm1Om-HdQxw_oOrHub8g"; 
+        
+        // เก็บ Client ไว้ใน Global Scope เป็นครั้งแรก
+        window.supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY); 
+    }
+    
+    // ใช้ Client ที่ถูกเก็บไว้
+    const supabase = window.supabaseClient; 
 
-            if(error){
-                documentList.innerHTML = `<tr><td colspan="5">เกิดข้อผิดพลาดในการดึงข้อมูล (ตรวจสอบ RLS Policy): ${error.message}</td></tr>`;
-                console.error("Supabase API Error:", error);
-                return;
-            }
+    const documentList = document.getElementById('documentList');
 
-            if (!data || data.length === 0) {
-                 documentList.innerHTML = `<tr><td colspan="5">ไม่พบเอกสารในฐานข้อมูล</td></tr>`;
-                 return;
-            }
+    async function loadDocuments() {
+        documentList.innerHTML = '<tr><td colspan="5">กำลังโหลดข้อมูลเอกสาร...</td></tr>';
+        
+        // ดึงข้อมูลทั้งหมดจากตาราง documents
+        const { data, error } = await supabase.from('documents').select('*').order('date', { ascending:false });
 
-            documentList.innerHTML = '';
-            data.forEach(doc => {
-                // *** ใช้ doc.filename เป็นลิงก์ภายนอกโดยตรง ***
-                let fileUrl = doc.filename; 
-
-                // โค้ดเสริม: พยายามแปลงลิงก์ Google Drive ให้เป็น Direct Download 
-                if (fileUrl && fileUrl.includes('drive.google.com/file/d/')) {
-                    const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)\//);
-                    if (fileIdMatch && fileIdMatch[1]) {
-                        fileUrl = `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`; 
-                    }
-                }
-                
-                // แปลงวันที่ให้อยู่ในรูปแบบที่อ่านง่าย
-                const formattedDate = doc.date ? new Date(doc.date).toLocaleDateString('th-TH', { 
-                    year: 'numeric', month: 'short', day: 'numeric' 
-                }) : '-';
-
-                const row = `<tr>
-                    <td>${doc.title}</td>
-                    <td>${doc.doc_number || '-'}</td>
-                    <td>${doc.level || 'ปกติ'}</td>
-                    <td>${formattedDate}</td>
-                    <td><a href="${fileUrl}" target="_blank">ดาวน์โหลด</a></td>
-                </tr>`;
-                documentList.innerHTML += row;
-            });
+        if(error){
+            documentList.innerHTML = `<tr><td colspan="5">เกิดข้อผิดพลาดในการดึงข้อมูล (ตรวจสอบ RLS Policy หรือ Key): ${error.message}</td></tr>`;
+            console.error("Supabase API Error:", error);
+            return;
         }
 
-        window.onload = loadDocuments;
-    </script>
+        if (!data || data.length === 0) {
+            documentList.innerHTML = `<tr><td colspan="5">ไม่พบเอกสารในฐานข้อมูล</td></tr>`;
+            return;
+        }
+
+        // ... (โค้ดสร้างตารางที่เหลือเหมือนเดิม) ...
+
+        documentList.innerHTML = '';
+        data.forEach(doc => {
+            let fileUrl = doc.filename; 
+            // โค้ดแปลงลิงก์ Google Drive
+            if (fileUrl && fileUrl.includes('drive.google.com/file/d/')) {
+                const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)\//);
+                if (fileIdMatch && fileIdMatch[1]) {
+                    fileUrl = `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`; 
+                }
+            }
+            
+            const formattedDate = doc.date ? new Date(doc.date).toLocaleDateString('th-TH', { 
+                year: 'numeric', month: 'short', day: 'numeric' 
+            }) : '-';
+
+            const row = `<tr>
+                <td>${doc.title}</td>
+                <td>${doc.doc_number || '-'}</td>
+                <td>${doc.level || 'ปกติ'}</td>
+                <td>${formattedDate}</td>
+                <td><a href="${fileUrl}" target="_blank">ดาวน์โหลด</a></td>
+            </tr>`;
+            documentList.innerHTML += row;
+        });
+    }
+
+    window.onload = loadDocuments;
+</script>
 
 </body>
 </html>
+
 
 
 
