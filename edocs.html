@@ -35,9 +35,27 @@
         .content-container h2 { font-size: 28px; color: #1f6161; border-bottom: 2px solid #339999; padding-bottom: 10px; margin-top: 0; }
         
         /* Table Styles */
-        .doc-table { width:100%; border-collapse:collapse; margin-top:10px; }
-        .doc-table th, .doc-table td { padding:12px; border-bottom:1px solid #eee; text-align:left; }
+        .doc-table { 
+        width:100%; 
+        border-collapse:collapse; 
+        margin-top:10px; 
+        table-layout: fixed; /* ⬅️ เพิ่ม: บังคับให้ตารางใช้ความกว้าง 100% */
+}
+        .doc-table th, .doc-table td { 
+        padding:12px; 
+        border-bottom:1px solid #eee; 
+        text-align:left;
+        vertical-align: top; /* ⬅️ เพิ่ม: จัดข้อความด้านบนเมื่อขึ้นบรรทัดใหม่ */
+}
         .doc-table th { background:#2e8f8f; color:#fff; font-weight:500; }
+
+        /* ⬇️ เพิ่ม CSS ใหม่สำหรับคอลัมน์ชื่อเรื่อง ⬇️ */
+        .doc-table .title-col {
+        width: 35%; /* กำหนดให้คอลัมน์ชื่อเรื่องใช้ 35% ของความกว้างตาราง */
+        word-wrap: break-word; /* ให้ข้อความยาว ๆ ขึ้นบรรทัดใหม่ */
+}
+        /* ⬆️ เพิ่ม CSS ใหม่สำหรับคอลัมน์ชื่อเรื่อง ⬆️ */
+
         .doc-table a { color:#2a8c8c; text-decoration:none; font-weight:500; }
         .doc-table a:hover { text-decoration:underline; }
 
@@ -80,20 +98,19 @@
 
     <main class="content-container">
         <h2>ระบบหนังสือเวียนกรมป่าไม้อิเล็กทรอนิกส์ ของสำนักวิจัยและพัฒนาการป่าไม้</h2>
-        <table id="docTable" class="doc-table">
-            <thead>
-                <tr>
-                    <th>ชื่อเรื่อง</th>
-                    <th>เลขที่</th>
-                    <th>ชั้นความลับ</th>
-                    <th>วันที่</th>
-                    <th>ไฟล์</th>
-                </tr>
-            </thead>
-            <tbody id="documentList">
-                <tr><td colspan="5">กำลังโหลดข้อมูลเอกสาร...</td></tr>
-            </tbody>
-        </table>
+       <table id="docTable" class="doc-table">
+        <thead>
+        <tr>
+            <th class="title-col">ชื่อเรื่อง</th>
+            <th>เลขที่หนังสือ</th>
+            <th>ชั้นความลับ</th>
+            <th>วันที่</th>
+            <th>ไฟล์</th>
+        </tr>
+    </thead>
+    <tbody id="documentList">
+        </tbody>
+    </table>
     </main>
 
     <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
@@ -152,8 +169,7 @@
                 }) : '-';
 
                 const row = `<tr>
-                    <td>${doc.title}</td>
-                    <td>${doc.doc_number || '-'}</td>
+                    <td class="title-col">${doc.title}</td> <td>${doc.doc_number || '-'}</td>
                     <td>${doc.level || 'ปกติ'}</td>
                     <td>${formattedDate}</td>
                     <td><a href="${fileUrl}" target="_blank">ดาวน์โหลด</a></td>
@@ -167,3 +183,4 @@
 
 </body>
 </html>
+
