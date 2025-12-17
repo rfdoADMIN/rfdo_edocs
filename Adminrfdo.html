@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ฝ่ายธุรการ - ส่วนอำนวยการ</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" type="image/png" href="images/logorfdo.png">
+
+    <style>
+        /* CSS ทั่วไป (Head, Nav, Footer เหมือนเดิม) */
+        body {
+            margin: 0;
+            background: #f3f8f8;
+            font-family: "Prompt", sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Head Section */
+        .head-section { position: relative; background: url('images/head.jpg') no-repeat center center; background-size: cover; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 15px 25px; height: auto; min-height: 300px; gap: 8px; }
+        .head-section img#logo { width: 120px; height: auto; }
+        .head-text-container { display: flex; flex-direction: column; align-items: flex-start; }
+        .head-text { font-size: 64px; font-weight: 600; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
+        .sub-text { font-size: 20px; font-weight: 500; color: rgb(255, 255, 255); text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
+
+        /* Nav Menu */
+        nav { background: #ffffff; padding: 8px 25px; border-bottom: 2px solid #339999; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        nav ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; font-weight: 500; flex-wrap: wrap; }
+        nav ul li { position: relative; }
+        nav ul li a { text-decoration: none; color: #339999; font-size: 16px; padding: 6px 10px; border-radius: 6px; display: flex; align-items: center; gap: 5px; transition: 0.3s; }
+        nav ul li a:hover { background: #e0f3f3; color: #1f6161; }
+        .home-icon { background: #339999; border-radius: 6px; }
+        .home-icon svg { fill: #ffffff; }
+        .home-icon:hover { background: #1f6161; }
+        .dropdown:hover > a { background: #e0f3f3; color:#1f6161; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #ffffff; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 220px; padding: 5px 0; z-index: 100; }
+        .dropdown-menu li a { color: #339999; padding: 8px 15px; display: block; font-size: 14px; }
+        .dropdown-menu li a:hover { background: #e0f3f3; color:#1f6161; }
+        .dropdown:hover .dropdown-menu { display: block; }
+        
+        /* Layout (สำหรับ Main content) */
+        .content-container {
+            flex-grow: 1; 
+            max-width: 960px; 
+            margin: 40px auto; 
+            padding: 30px; 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1); 
+            width: 90%; 
+        }
+        .content-container h2 { 
+            font-size: 30px; 
+            color: #339999; 
+            border-bottom: 3px solid #339999; 
+            padding-bottom: 10px; 
+            margin-top: 0; 
+            margin-bottom: 25px;
+        }
+
+        /* Section Header Styles */
+        .section-header { 
+            font-size: 22px; 
+            font-weight: 600; 
+            color: #1f6161; 
+            margin-top: 30px; 
+            margin-bottom: 15px;
+            border-left: 4px solid #339999;
+            padding-left: 10px;
+        }
+        
+        /* 1. หน้าที่รับผิดชอบ (Responsibilities) */
+        .responsibilities ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .responsibilities li {
+            padding: 8px 0;
+            line-height: 1.6;
+            color: #444;
+            font-size: 16px;
+        }
+
+        /* 2. บุคลากร (Personnel) */
+        
+        /* Card ทั่วไป */
+        .person-card {
+            text-align: center;
+            padding: 15px 5px; 
+            background: #f7fcfc;
+            border: 1px solid #e0f3f3;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .person-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* รูปภาพ */
+        .person-image {
+            width: 120px;
+            height: 120px;
+            background: #ccc;
+            margin: 0 auto 10px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #339999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .person-image span {
+            color: #444;
+            display: block;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        /* ปรับขนาดฟอนต์ชื่อและตำแหน่งของพนักงานทั่วไป */
+        .person-name {
+            font-weight: 600;
+            color: #1f6161;
+            margin-bottom: 2px;
+            line-height: 1.2;
+            font-size: 15px; 
+        }
+
+        .person-position {
+            font-size: 13px; 
+            color: #666;
+            line-height: 1.3;
+        }
+        
+        /* สไตล์สำหรับหัวหน้าฝ่าย (บนสุด) */
+        .head-card {
+            max-width: 300px; 
+            margin: 0 auto 30px auto; 
+            border: 1px solid #339999; 
+            background: #e0f3f3; 
+        }
+        .head-card .person-image {
+            width: 150px; 
+            height: 150px;
+            border-color: #1f6161;
+        }
+        .head-card .person-name {
+            font-size: 17px; 
+            color: #339999;
+        }
+        .head-card .person-position {
+            font-size: 14px; 
+        }
+
+        /* Grid สำหรับพนักงานคนอื่นๆ */
+        /* ***ส่วนที่แก้ไขให้เป็น 3 คอลัมน์ตายตัว*** */
+        .personnel-grid-members {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 คอลัมน์เท่ากัน */
+            gap: 20px;
+        }
+        
+        /* 3. ติดต่อเรา (Contact Info) */
+        .contact-section {
+            padding: 20px;
+            background: #e0f3f3;
+            border-radius: 8px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        .contact-section p {
+            font-size: 18px;
+            margin: 8px 0;
+            font-weight: 500;
+            color: #1f6161;
+        }
+        .contact-section i {
+            color: #339999;
+            margin-right: 10px;
+        }
+        .contact-section .tel {
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #339999;
+            color: white;
+            margin-top: 55px; 
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) { /* สำหรับ Tablet/จอเล็ก จะปรับเป็น 2 คอลัมน์ */
+            .personnel-grid-members {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .head-section img#logo { width: 80px; }
+            .head-text { font-size: 18px; }
+            .sub-text { font-size: 14px; }
+            .personnel-grid-members {
+                grid-template-columns: 1fr; /* หน้าจอเล็กสุดเหลือ 1 คอลัมน์ */
+            }
+            .person-name { font-size: 14px; } 
+            .person-position { font-size: 12px; } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="head-section">
+    <img id="logo" src="images/logorfdo.png" alt="logo" /> 
+    <div class="head-text-container">
+        <div class="head-text">ส่วนอำนวยการ</div>
+        <div class="sub-text">สำนักวิจัยและพัฒนาการป่าไม้</div>
+    </div>
+</div>
+
+<nav>
+    <ul>
+        <li>
+            <a href="index.html" class="home-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg>
+            </a>
+        </li>
+        <li class="dropdown">
+            <a href="#">เกี่ยวกับเรา ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
+                <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
+                <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
+                <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
+                <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
+                <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบัญอิเล็กทรอนิกส์</a></li>
+                <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
+                <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
+            </ul>
+        </li>
+        <li><a href="edocs.html">ระบบหนังสือเวียนกรมป่าไม้</a></li>
+        <li><a href="https://www.forest.go.th/research/" target="_blank">สำนักวิจัยและพัฒนาการป่าไม้</a></li>
+        <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
+        <li><a href="contact.html">ติดต่อ</a></li>
+    </ul>
+</nav>
+
+<main class="content-container">
+    <h2><i class="fas fa-clipboard-list"></i> ฝ่ายธุรการ</h2>
+    
+    <div class="responsibilities">
+        <h3 class="section-header"><i class="fas fa-tasks"></i> หน้าที่และความรับผิดชอบ</h3>
+        <ul>
+            <li>- ลงทะเบียนรับ - ส่งหนังสือของสำนักวิจัยและพัฒนาการป่าไม้</li>
+            <li>- ตรวจสอบ เสนอ และติดตามหนังสือราชการเข้า - ออก ทั้งภายในและภายนอกหน่วยงาน</li>
+            <li>- อำนวยความสะดวก ให้คำแนะนำ ตอบและแก้ไขปัญหาในการปฏิบัติงานให้แก่ผู้รับบริการ ทั้งภายในและภายนอกหน่วยงาน</li>
+            <li>- จัดเตรียมเอกสารวาระการประชุม บันทึกการประชุม สรุปมติ และจัดทำรายงานการประชุม</li>
+            <li>- ลงทะเบียนรับ-ส่ง หนังสือ (ลับ) ของสำนักวิจัยและพัฒนาการป่าไม้</li>
+            <li>- จัดการดูแลด้านการถ่ายเอกสาร</li>
+            <li>- จัดส่งเอกสารหนังสือเวียนให้หน่วยงานส่วนภูมิภาค ทาง E-mail</li>
+            <li>- จัดส่งเอกสาร หนังสือราชการ ทางไปรษณีย์</li>
+            <li>- ตรวจสอบหนังสือสั่งการ หนังสือเวียน ฯลฯ ในระบบ Line Internet และแจ้งผู้เกี่ยวข้องทราบ</li>
+            <li>- ประสานหน่วยงานที่มาขอใช้หรือจองห้องประชุม</li>
+            <li>- ปฏิบัติงานให้เป็นไปตามระเบียบของสำนักวิจัยและพัฒนาการป่าไม้</li>
+        </ul>
+    </div>
+    
+    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
+
+    <div class="personnel">
+        <h3 class="section-header"><i class="fas fa-users"></i> บุคลากรฝ่ายธุรการ</h3>
+        
+        <div class="person-card head-card">
+            <div class="person-image">
+                <img src="images/chatchrapee.jpg" alt="รูปนางสาวชัชระพี" style="width: 100%; height: 100%; object-fit: cover; display: none;"> 
+                <span>นางสาวชัชระพี</span>
+            </div>
+            <div class="person-name">นางสาวชัชระพี สอนไวย์</div>
+            <div class="person-position">นักจัดการงานทั่วไปปฏิบัติการ <br> ทำหน้าที่หัวหน้าฝ่ายธุรการ </div>
+        </div>
+        
+        <div class="personnel-grid-members">
+            
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/parita.jpg" alt="รูปนางสาวปาริตา" style="width: 100%; height: 100%; object-fit: cover; display: none;"> 
+                    <span>**ใส่รูป** นางสาวปาริตา</span>
+                </div>
+                <div class="person-name">นางสาวปาริตา มงคล</div>
+                <div class="person-position">นักจัดการงานทั่วไป</div>
+            </div>
+
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/natthamon.jpg" alt="รูปนางสาวนัทธมน" style="width: 100%; height: 100%; object-fit: cover; display: none;"> 
+                    <span>**ใส่รูป** นางสาวนัทธมน</span>
+                </div>
+                <div class="person-name">นางสาวนัทธมน นุชบางเดื่อ</div>
+                <div class="person-position">นักจัดการงานทั่วไป</div>
+            </div>
+            
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/jidapa.jpg" alt="รูปนางสาวจิดาภา" style="width: 100%; height: 100%; object-fit: cover; display: none;"> 
+                    <span>**ใส่รูป** นางสาวจิดาภา</span>
+                </div>
+                <div class="person-name">นางสาวจิดาภา ลีละวัฒนากูล</div>
+                <div class="person-position">เจ้าพนักงานคอมพิวเตอร์</div>
+            </div>
+
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/nattanit.jpg" alt="รูปนางสาวณัฏฐนิช" style="width: 100%; height: 100%; object-fit: cover; display: none;"> 
+                    <span>**ใส่รูป** นางสาวณัฏฐนิช</span>
+                </div>
+                <div class="person-name">นางสาวณัฏฐนิช บุญสวน</div>
+                <div class="person-position">เจ้าหน้าที่ป่าไม้</div>
+            </div>
+
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/kwanphatawan.jpg" alt="รูปนางสาวขวัญพ์ตะวัน" style="width: 100%; height: 100%; object-fit: cover; display: none;"> 
+                    <span>**ใส่รูป** นางสาวขวัญพ์ตะวัน</span>
+                </div>
+                <div class="person-name">นางสาวขวัญพ์ตะวัน วงศ์ชัยนเรศ</div>
+                <div class="person-position">เจ้าพนักงานธุรการ</div>
+            </div>
+
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/nattapol.jpg" alt="รูปนายณัฐพล" style="width: 100%; height: 100%; object-fit: cover; display: none;"> 
+                    <span>**ใส่รูป** นายณัฐพล</span>
+                </div>
+                <div class="person-name">นายณัฐพล บัวสุวรรณ</div>
+                <div class="person-position">เจ้าหน้าที่ธุรการ</div>
+            </div>
+
+        </div>
+    </div>
+    
+    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
+
+    <div class="contact-section">
+        <h3 class="section-header" style="margin-top: 0;"><i class="fas fa-envelope-open-text"></i> ติดต่อฝ่ายธุรการ</h3>
+        <p>
+            <i class="fas fa-phone-alt"></i> 
+            <span class="tel">0 2561 4292 - 3 ต่อ 5474</span>
+        </p>
+        <p>
+            <i class="fas fa-envelope"></i> 
+            adm.rfd5474@gmail.com
+        </p>
+    </div>
+
+</main>
+
+<footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
+
+</body>
+</html>
