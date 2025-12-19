@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ฝ่ายธุรการ - ส่วนอำนวยการ</title>
+    <title>ฝ่ายการเงินและบัญชี - ส่วนอำนวยการ</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="icon" type="image/png" href="images/logorfdo.png">
 
     <style>
-        /* CSS ทั่วไป (Head, Nav, Footer เหมือนเดิม) */
+        /* CSS ทั่วไป */
         body {
             margin: 0;
             background: #f3f8f8;
@@ -76,7 +76,7 @@
         /* 1. หน้าที่รับผิดชอบ (Responsibilities) */
         .responsibilities ul {
             list-style: none;
-            padding: 0;
+            padding-left: 0; 
             margin: 0;
         }
         .responsibilities li {
@@ -85,14 +85,13 @@
             color: #444;
             font-size: 16px;
         }
-        /* เพิ่มสัญลักษณ์นำหน้าลิสต์ */
         .responsibilities li:before { 
             content: "• "; 
             color: #339999;
             margin-right: 8px;
             font-weight: bold;
         }
-
+        
         /* CSS สำหรับ Quick Links */
         .quick-links ul {
             list-style: none;
@@ -154,12 +153,6 @@
             font-size: 12px;
             font-weight: 500;
         }
-        .person-image span {
-            color: #444;
-            display: block;
-            text-align: center;
-            padding: 10px;
-        }
         
         /* ปรับขนาดฟอนต์ชื่อและตำแหน่งของพนักงานทั่วไป */
         .person-name {
@@ -197,10 +190,23 @@
         }
 
         /* Grid สำหรับพนักงานคนอื่นๆ */
-        .personnel-grid-members {
+        .personnel-grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 คอลัมน์เท่ากัน */
+            grid-template-columns: repeat(3, 1fr); 
             gap: 20px;
+        }
+
+        /* Card แถวล่าง จะต้องถูกจัดให้อยู่ตรงกลาง */
+        .centered-row {
+            grid-column: 1 / span 3; 
+            display: flex; 
+            justify-content: center;
+            gap: 20px; 
+            margin-top: 20px; 
+        }
+        .centered-row .person-card {
+            flex-basis: calc(33.33% - 10px); 
+            max-width: 250px; 
         }
         
         /* 3. ติดต่อเรา (Contact Info) */
@@ -237,20 +243,34 @@
         }
 
         /* Responsive */
-        @media (max-width: 768px) { /* สำหรับ Tablet/จอเล็ก จะปรับเป็น 2 คอลัมน์ */
-            .personnel-grid-members {
+        @media (max-width: 768px) {
+            .personnel-grid-container {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            .centered-row {
+                grid-column: 1 / span 2;
+                flex-wrap: wrap;
+            }
+             .centered-row .person-card {
+                flex-basis: calc(50% - 10px);
+                max-width: 100%;
             }
         }
         @media (max-width: 600px) {
             .head-section img#logo { width: 80px; }
             .head-text { font-size: 18px; }
             .sub-text { font-size: 14px; }
-            .personnel-grid-members {
-                grid-template-columns: 1fr; /* หน้าจอเล็กสุดเหลือ 1 คอลัมน์ */
+            .personnel-grid-container {
+                grid-template-columns: 1fr;
             }
-            .person-name { font-size: 14px; } 
-            .person-position { font-size: 12px; } 
+            .centered-row {
+                grid-column: 1 / span 1;
+                flex-direction: column;
+            }
+            .centered-row .person-card {
+                flex-basis: auto;
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -298,21 +318,15 @@
 </nav>
 
 <main class="content-container">
-    <h2><i class="fas fa-clipboard-list"></i> ฝ่ายธุรการ</h2>
+    <h2><i class="fas fa-hand-holding-usd"></i> ฝ่ายการเงินและบัญชี</h2>
     
     <div class="responsibilities">
         <h3 class="section-header"><i class="fas fa-tasks"></i> หน้าที่และความรับผิดชอบ</h3>
         <ul>
-            <li>ลงทะเบียนรับ - ส่งหนังสือของสำนักวิจัยและพัฒนาการป่าไม้</li>
-            <li>ตรวจสอบ เสนอ และติดตามหนังสือราชการเข้า - ออก ทั้งภายในและภายนอกหน่วยงาน</li>
-            <li>อำนวยความสะดวก ให้คำแนะนำ ตอบและแก้ไขปัญหาในการปฏิบัติงานให้แก่ผู้รับบริการ ทั้งภายในและภายนอกหน่วยงาน</li>
-            <li>ประสานหน่วยงานที่มาขอใช้หรือจองห้องประชุม จัดเตรียมเอกสารวาระการประชุม บันทึกการประชุม สรุปมติ และจัดทำรายงานการประชุม</li>
-            <li>ลงทะเบียนรับ-ส่ง หนังสือ (ลับ) ของสำนักวิจัยและพัฒนาการป่าไม้</li>
-            <li>จัดการดูแลด้านการถ่ายเอกสาร</li>
-            <li>จัดส่งเอกสารหนังสือเวียนให้หน่วยงานส่วนภูมิภาค ทาง E-mail</li>
-            <li>จัดส่งเอกสาร หนังสือราชการ ทางไปรษณีย์</li>
-            <li>ตรวจสอบหนังสือสั่งการ หนังสือเวียน ฯลฯ ในระบบ Line Internet และแจ้งผู้เกี่ยวข้องทราบ</li>
-            <li>ปฏิบัติงานให้เป็นไปตามระเบียบของสำนักวิจัยและพัฒนาการป่าไม้</li>
+            <li>ตรวจสอบใบสำคัญคู่จ่าย และหลักฐานเอกสารทางการเงิน เงินงบดำเนินงาน</li>
+            <li>เก็บรักษาเอกสารทางการเงินของสำนักวิจัยและพัฒนาการป่าไม้</li>
+            <li>ดำเนินการเบิกเงินสวัสดิการต่าง ๆ ได้แก่ ค่าเช่าบ้าน การศึกษาของบุตร ค่ารักษาพยาบาล และสวัสดิการอื่น ๆ ที่เกี่ยวข้อง</li>
+            <li>ดำเนินการเบิกค่าใช้จ่ายในการสรรหาและเลือกสรรพนักงานราชการทั่วไปของสำนักวิจัยและพัฒนาการป่าไม้</li>
         </ul>
     </div>
     
@@ -322,100 +336,79 @@
         <h3 class="section-header"><i class="fas fa-link"></i> เมนู</h3>
         <ul>
             <li>
-                <a href="https://drive.google.com/drive/folders/1GIW0YoFPy9ZFDdLDhNcHFnhu13gXvWFr" target="_blank">
-                    <i class="fas fa-car-side"></i> แบบฟอร์มขออนุญาตใช้รถส่วนกลาง </a>
-            </li>
-            <li>
-                <a href="https://drive.google.com/drive/folders/10SOwh5PjeJuKpVVH87oGCCczr8spitS8" target="_blank">
-                    <i class="fas fa-home"></i> แบบรายงานสรุปผลการปฏิบัติงาน
+                <a href="https://www.forest.go.th/person/form1/" target="_blank">
+                    <i class="fas fa-file-download"></i> ดาวน์โหลดแบบฟอร์มการเงินต่าง ๆ
                 </a>
             </li>
         </ul>
     </div>
     <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
-    
+
     <div class="personnel">
-        <h3 class="section-header"><i class="fas fa-users"></i> บุคลากรฝ่ายธุรการ</h3>
+        <h3 class="section-header"><i class="fas fa-users"></i> บุคลากรฝ่ายการเงินและบัญชี</h3>
         
         <div class="person-card head-card">
             <div class="person-image">
-                <img src="images/chatchrapee.jpg" alt="รูปนางสาวชัชระพี" style="width: 100%; height: 100%; object-fit: cover;"> 
-                <span style="display: none;">นางสาวชัชระพี</span>
+                <img src="images/atchara.png" alt="รูปนางสาวอัจฉรา" style="width: 100%; height: 100%; object-fit: cover;"> 
             </div>
-            <div class="person-name">นางสาวชัชระพี สอนไวย์</div>
-            <div class="person-position">นักจัดการงานทั่วไปปฏิบัติการ <br> ทำหน้าที่หัวหน้าฝ่ายธุรการ </div>
+            <div class="person-name">นางสาวอัจฉรา หล่ายแปด</div>
+            <div class="person-position">นักจัดการงานทั่วไปปฏิบัติการ <br> ทำหน้าที่หัวหน้าฝ่ายการเงิน และบัญชี </div>
         </div>
         
-        <div class="personnel-grid-members">
+        <div class="personnel-grid-container">
             
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/parita.jpg" alt="รูปนางสาวปาริตา" style="width: 100%; height: 100%; object-fit: cover;"> 
-                    <span style="display: none;">**ใส่รูป** นางสาวปาริตา</span>
+                    <img src="images/wilaiwan_sp.jpg" alt="รูปนางสาววิไลวรรณ แสนภักดี" style="width: 100%; height: 100%; object-fit: cover;"> 
                 </div>
-                <div class="person-name">นางสาวปาริตา มงคล</div>
+                <div class="person-name">นางสาววิไลวรรณ แสนภักดี</div>
                 <div class="person-position">นักจัดการงานทั่วไป</div>
             </div>
 
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/natthamon.jpg" alt="รูปนางสาวนัทธมน" style="width: 100%; height: 100%; object-fit: cover;"> 
-                    <span style="display: none;">**ใส่รูป** นางสาวนัทธมน</span>
+                    <img src="images/none.jpg" alt="รูปนายชวัล" style="width: 100%; height: 100%; object-fit: cover;"> 
                 </div>
-                <div class="person-name">นางสาวนัทธมน นุชบางเดื่อ</div>
-                <div class="person-position">นักจัดการงานทั่วไป</div>
+                <div class="person-name">นายชวัล แซ่ฟู</div>
+                <div class="person-position">นักวิชาการเงินและบัญชี</div>
             </div>
             
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/jidapa.jpg" alt="รูปนางสาวจิดาภา" style="width: 100%; height: 100%; object-fit: cover;"> 
-                    <span style="display: none;">**ใส่รูป** นางสาวจิดาภา</span>
+                    <img src="images/anchalee.jpg" alt="รูปนางสาวอัญชลี" style="width: 100%; height: 100%; object-fit: cover;"> 
                 </div>
-                <div class="person-name">นางสาวจิดาภา ลีละวัฒนากูล</div>
-                <div class="person-position">เจ้าพนักงานคอมพิวเตอร์</div>
-            </div>
-
-            <div class="person-card">
-                <div class="person-image">
-                    <img src="images/nattanit.jpg" alt="รูปนางสาวณัฏฐนิช" style="width: 100%; height: 100%; object-fit: cover;"> 
-                    <span style="display: none;">**ใส่รูป** นางสาวณัฏฐนิช</span>
-                </div>
-                <div class="person-name">นางสาวณัฏฐนิช บุญสวน</div>
-                <div class="person-position">เจ้าหน้าที่ป่าไม้</div>
-            </div>
-
-            <div class="person-card">
-                <div class="person-image">
-                    <img src="images/kwanphatawan.jpg" alt="รูปนางสาวขวัญพ์ตะวัน" style="width: 100%; height: 100%; object-fit: cover;"> 
-                    <span style="display: none;">**ใส่รูป** นางสาวขวัญพ์ตะวัน</span>
-                </div>
-                <div class="person-name">นางสาวขวัญพ์ตะวัน วงศ์ชัยนเรศ</div>
+                <div class="person-name">นางสาวอัญชลี ขวัญเนตร์</div>
                 <div class="person-position">เจ้าพนักงานธุรการ</div>
             </div>
 
-            <div class="person-card">
-                <div class="person-image">
-                    <img src="images/nattapol.jpg" alt="รูปนายณัฐพล" style="width: 100%; height: 100%; object-fit: cover;"> 
-                    <span style="display: none;">**ใส่รูป** นายณัฐพล</span>
+            <div class="centered-row">
+                <div class="person-card">
+                    <div class="person-image">
+                        <img src="images/supawita.jpg" alt="รูปนางสุภาวิตา" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    </div>
+                    <div class="person-name">นางสุภาวิตา สุวรรณดี</div>
+                    <div class="person-position">เจ้าหน้าที่ธุรการ</div>
                 </div>
-                <div class="person-name">นายณัฐพล บัวสุวรรณ</div>
-                <div class="person-position">เจ้าหน้าที่ธุรการ</div>
+                
+                <div class="person-card">
+                    <div class="person-image">
+                        <img src="images/sornsawan.jpg" alt="รูปนางสาวศรสวรรค์" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    </div>
+                    <div class="person-name">นางสาวศรสวรรค์ รอดปัญญา</div>
+                    <div class="person-position">เจ้าหน้าที่ธุรการ</div>
+                </div>
             </div>
-
+            
         </div>
     </div>
     
     <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
 
     <div class="contact-section">
-        <h3 class="section-header" style="margin-top: 0;"><i class="fas fa-envelope-open-text"></i> ติดต่อฝ่ายธุรการ</h3>
+        <h3 class="section-header" style="margin-top: 0;"><i class="fas fa-envelope-open-text"></i> ติดต่อฝ่ายการเงินและบัญชี</h3>
         <p>
             <i class="fas fa-phone-alt"></i> 
-            <span class="tel">0 2561 4292 - 3 ต่อ 5474</span>
-        </p>
-        <p>
-            <i class="fas fa-envelope"></i> 
-            adm.rfd5474@gmail.com
+            <span class="tel">0 2561 4292 - 3 ต่อ 5661</span>
         </p>
     </div>
 

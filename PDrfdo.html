@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ฝ่ายธุรการ - ส่วนอำนวยการ</title>
+    <title>ฝ่ายการพัสดุ - ส่วนอำนวยการ</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="icon" type="image/png" href="images/logorfdo.png">
 
     <style>
-        /* CSS ทั่วไป (Head, Nav, Footer เหมือนเดิม) */
+        /* CSS ทั่วไป */
         body {
             margin: 0;
             background: #f3f8f8;
@@ -76,7 +76,7 @@
         /* 1. หน้าที่รับผิดชอบ (Responsibilities) */
         .responsibilities ul {
             list-style: none;
-            padding: 0;
+            padding-left: 0; 
             margin: 0;
         }
         .responsibilities li {
@@ -85,14 +85,13 @@
             color: #444;
             font-size: 16px;
         }
-        /* เพิ่มสัญลักษณ์นำหน้าลิสต์ */
         .responsibilities li:before { 
             content: "• "; 
             color: #339999;
             margin-right: 8px;
             font-weight: bold;
         }
-
+        
         /* CSS สำหรับ Quick Links */
         .quick-links ul {
             list-style: none;
@@ -133,6 +132,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             transition: transform 0.2s;
+            height: 100%; /* เพื่อให้ card ทุกใบสูงเท่ากันใน grid row */
         }
         .person-card:hover {
             transform: translateY(-3px);
@@ -153,12 +153,6 @@
             justify-content: center;
             font-size: 12px;
             font-weight: 500;
-        }
-        .person-image span {
-            color: #444;
-            display: block;
-            text-align: center;
-            padding: 10px;
         }
         
         /* ปรับขนาดฟอนต์ชื่อและตำแหน่งของพนักงานทั่วไป */
@@ -196,11 +190,47 @@
             font-size: 14px; 
         }
 
+        /* สไตล์สำหรับข้าราชการ (เน้นด้วยเส้นขอบสีหน่วยงาน) */
+        .officer-card {
+            background: #ffffff; /* พื้นหลังสีขาว */
+            border: 2px solid #339999; /* ขอบสีหน่วยงานที่ชัดเจน */
+            box-shadow: 0 4px 10px rgba(51, 153, 153, 0.2); /* เงาสีเดียวกับขอบ */
+        }
+        .officer-card .person-image {
+            border-color: #1f6161; /* เน้นขอบรูป */
+        }
+        .officer-card .person-name {
+            color: #339999; /* เปลี่ยนสีชื่อเป็นสีหลัก */
+        }
+        .officer-card:hover {
+            transform: scale(1.03); /* ให้เด่นขึ้นมาอีก */
+        }
+
+
         /* Grid สำหรับพนักงานคนอื่นๆ */
-        .personnel-grid-members {
+        .personnel-grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 คอลัมน์เท่ากัน */
+            grid-template-columns: repeat(3, 1fr); 
             gap: 20px;
+        }
+
+        /* สำหรับแถวที่มีจำนวนไม่เต็ม 3 คอลัมน์ */
+        .grid-row-center {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            grid-column: 1 / span 3; /* ให้แถวนี้ใช้ความกว้าง 3 คอลัมน์ */
+            margin-bottom: 20px;
+        }
+        
+        /* เพิ่มระยะห่างด้านล่างสำหรับแถวของข้าราชการโดยเฉพาะ */
+        .officer-row {
+            margin-bottom: 40px; /* เพิ่มระยะห่างด้านล่างมากขึ้น */
+        }
+
+        .grid-row-center .person-card {
+            max-width: 250px;
+            flex-basis: 45%; /* ให้ card มีขนาดเหมาะสมเมื่ออยู่ตรงกลาง 2 คน */
         }
         
         /* 3. ติดต่อเรา (Contact Info) */
@@ -237,20 +267,34 @@
         }
 
         /* Responsive */
-        @media (max-width: 768px) { /* สำหรับ Tablet/จอเล็ก จะปรับเป็น 2 คอลัมน์ */
-            .personnel-grid-members {
+        @media (max-width: 768px) {
+            .personnel-grid-container {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-row-center {
+                grid-column: 1 / span 2;
+                flex-wrap: wrap; 
+            }
+             .grid-row-center .person-card {
+                flex-basis: calc(50% - 10px);
+                max-width: 100%;
             }
         }
         @media (max-width: 600px) {
             .head-section img#logo { width: 80px; }
             .head-text { font-size: 18px; }
             .sub-text { font-size: 14px; }
-            .personnel-grid-members {
-                grid-template-columns: 1fr; /* หน้าจอเล็กสุดเหลือ 1 คอลัมน์ */
+            .personnel-grid-container {
+                grid-template-columns: 1fr;
             }
-            .person-name { font-size: 14px; } 
-            .person-position { font-size: 12px; } 
+            .grid-row-center {
+                grid-column: 1 / span 1;
+                flex-direction: column;
+            }
+            .grid-row-center .person-card {
+                flex-basis: auto;
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -298,124 +342,161 @@
 </nav>
 
 <main class="content-container">
-    <h2><i class="fas fa-clipboard-list"></i> ฝ่ายธุรการ</h2>
+    <h2><i class="fas fa-box-open"></i> ฝ่ายการพัสดุ</h2>
     
     <div class="responsibilities">
         <h3 class="section-header"><i class="fas fa-tasks"></i> หน้าที่และความรับผิดชอบ</h3>
         <ul>
-            <li>ลงทะเบียนรับ - ส่งหนังสือของสำนักวิจัยและพัฒนาการป่าไม้</li>
-            <li>ตรวจสอบ เสนอ และติดตามหนังสือราชการเข้า - ออก ทั้งภายในและภายนอกหน่วยงาน</li>
-            <li>อำนวยความสะดวก ให้คำแนะนำ ตอบและแก้ไขปัญหาในการปฏิบัติงานให้แก่ผู้รับบริการ ทั้งภายในและภายนอกหน่วยงาน</li>
-            <li>ประสานหน่วยงานที่มาขอใช้หรือจองห้องประชุม จัดเตรียมเอกสารวาระการประชุม บันทึกการประชุม สรุปมติ และจัดทำรายงานการประชุม</li>
-            <li>ลงทะเบียนรับ-ส่ง หนังสือ (ลับ) ของสำนักวิจัยและพัฒนาการป่าไม้</li>
-            <li>จัดการดูแลด้านการถ่ายเอกสาร</li>
-            <li>จัดส่งเอกสารหนังสือเวียนให้หน่วยงานส่วนภูมิภาค ทาง E-mail</li>
-            <li>จัดส่งเอกสาร หนังสือราชการ ทางไปรษณีย์</li>
-            <li>ตรวจสอบหนังสือสั่งการ หนังสือเวียน ฯลฯ ในระบบ Line Internet และแจ้งผู้เกี่ยวข้องทราบ</li>
-            <li>ปฏิบัติงานให้เป็นไปตามระเบียบของสำนักวิจัยและพัฒนาการป่าไม้</li>
+            <li>ปฏิบัติงานเกี่ยวกับการพัสดุ จัดหาพัสดุ ให้เป็นไปตามระเบียบของทางราชการ</li>
+            <li>จัดทำรายงานจัดซื้อจัดจ้าง เพื่อจัดหาพัสดุและจำหน่ายพัสดุที่ชำรุด</li>
+            <li>จัดทำทะเบียนคุมครุภัณฑ์ บัญชีวัสดุ ขอหมายเลขครุภัณฑ์ ตลอดจนกระทั่งตรวจสอบพัสดุประจำปี</li>
+            <li>ดูแล ควบคุมการใช้ เก็บรักษา และซ่อมแซม รถยนต์ราชการส่วนกลาง</li>
+            <li>ดูแล บำรุงรักษาอุปกรณ์ เครื่องใช้สำนักงานที่ต้องใช้ร่วมกัน ซ่อมแซมอาคาร ระบบสาธารณูปโภค ตลอดจนบริเวณโดยรอบที่อยู่ติดอาคาร และลานจอดรถ</li>
+            <li>สนับสนุน ช่วยเหลือความต้องการของผู้รับบริการและผู้มีส่วนได้ส่วนเสีย ให้บริการผู้บริหารและหน่วยงานภายใน ภายนอกได้อย่างรวดเร็วถูกต้อง</li>
+            <li>ประสานงานกับหน่วยงานที่เกี่ยวข้องเพื่อบูรณาการความร่วมมือกับภาคส่วนต่างๆ</li>
         </ul>
     </div>
     
     <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
     
-    <div class="quick-links">
-        <h3 class="section-header"><i class="fas fa-link"></i> เมนู</h3>
-        <ul>
-            <li>
-                <a href="https://drive.google.com/drive/folders/1GIW0YoFPy9ZFDdLDhNcHFnhu13gXvWFr" target="_blank">
-                    <i class="fas fa-car-side"></i> แบบฟอร์มขออนุญาตใช้รถส่วนกลาง </a>
-            </li>
-            <li>
-                <a href="https://drive.google.com/drive/folders/10SOwh5PjeJuKpVVH87oGCCczr8spitS8" target="_blank">
-                    <i class="fas fa-home"></i> แบบรายงานสรุปผลการปฏิบัติงาน
-                </a>
-            </li>
-        </ul>
-    </div>
-    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
-    
+
     <div class="personnel">
-        <h3 class="section-header"><i class="fas fa-users"></i> บุคลากรฝ่ายธุรการ</h3>
+        <h3 class="section-header"><i class="fas fa-users"></i> บุคลากรฝ่ายการพัสดุ</h3>
         
         <div class="person-card head-card">
             <div class="person-image">
-                <img src="images/chatchrapee.jpg" alt="รูปนางสาวชัชระพี" style="width: 100%; height: 100%; object-fit: cover;"> 
-                <span style="display: none;">นางสาวชัชระพี</span>
+                <img src="images/none.jpg" alt="รูปนายมนต์ชัย" style="width: 100%; height: 100%; object-fit: cover;"> 
             </div>
-            <div class="person-name">นางสาวชัชระพี สอนไวย์</div>
-            <div class="person-position">นักจัดการงานทั่วไปปฏิบัติการ <br> ทำหน้าที่หัวหน้าฝ่ายธุรการ </div>
+            <div class="person-name">นายมนต์ชัย เพิ่มผลนิรันดร์</div>
+            <div class="person-position">นายช่างเครื่องกลชำนาญงาน <br> ทำหน้าที่หัวหน้าฝ่ายการพัสดุ </div>
         </div>
         
-        <div class="personnel-grid-members">
+        <div class="personnel-grid-container">
+            
+            <div class="grid-row-center officer-row">
+                <div class="person-card officer-card">
+                    <div class="person-image">
+                        <img src="images/none.jpg" alt="รูปนางสาวภัสราภรณ์" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    </div>
+                    <div class="person-name">นางสาวภัสราภรณ์ จงรู้รอบ</div>
+                    <div class="person-position">นักวิชาการพัสดุปฏิบัติการ</div>
+                </div>
+
+                <div class="person-card officer-card">
+                    <div class="person-image">
+                        <img src="images/none.jpg" alt="รูปนางชุติมณฑน์" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    </div>
+                    <div class="person-name">นางชุติมณฑน์ อินทอง</div>
+                    <div class="person-position">เจ้าพนักงานธุรการชำนาญงาน</div>
+                </div>
+            </div>
             
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/parita.jpg" alt="รูปนางสาวปาริตา" style="width: 100%; height: 100%; object-fit: cover;"> 
-                    <span style="display: none;">**ใส่รูป** นางสาวปาริตา</span>
+                    <img src="images/none.jpg" alt="รูปนายฉัตรชัย" style="width: 100%; height: 100%; object-fit: cover;"> 
                 </div>
-                <div class="person-name">นางสาวปาริตา มงคล</div>
+                <div class="person-name">นายฉัตรชัย ประสงค์เงิน</div>
+                <div class="person-position">พนักงานขับเครื่องจักรกลขนาดกลาง ช1</div>
+            </div>
+
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/supit.jpg" alt="รูปนางสาวสุพิศค์" style="width: 100%; height: 100%; object-fit: cover;"> 
+                </div>
+                <div class="person-name">นางสาวสุพิศค์ สนิทวงศ์</div>
+                <div class="person-position">นักประชาสัมพันธ์</div>
+            </div>
+
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/saichon.jpg" alt="รูปนางสายชล" style="width: 100%; height: 100%; object-fit: cover;"> 
+                </div>
+                <div class="person-name">นางสายชล นนท์แก้ว</div>
                 <div class="person-position">นักจัดการงานทั่วไป</div>
             </div>
 
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/natthamon.jpg" alt="รูปนางสาวนัทธมน" style="width: 100%; height: 100%; object-fit: cover;"> 
-                    <span style="display: none;">**ใส่รูป** นางสาวนัทธมน</span>
+                    <img src="images/kanueng.jpg" alt="รูปนางสาวคนึง" style="width: 100%; height: 100%; object-fit: cover;"> 
                 </div>
-                <div class="person-name">นางสาวนัทธมน นุชบางเดื่อ</div>
+                <div class="person-name">นางสาวคนึง เข็มกลัด</div>
                 <div class="person-position">นักจัดการงานทั่วไป</div>
-            </div>
-            
-            <div class="person-card">
-                <div class="person-image">
-                    <img src="images/jidapa.jpg" alt="รูปนางสาวจิดาภา" style="width: 100%; height: 100%; object-fit: cover;"> 
-                    <span style="display: none;">**ใส่รูป** นางสาวจิดาภา</span>
-                </div>
-                <div class="person-name">นางสาวจิดาภา ลีละวัฒนากูล</div>
-                <div class="person-position">เจ้าพนักงานคอมพิวเตอร์</div>
             </div>
 
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/nattanit.jpg" alt="รูปนางสาวณัฏฐนิช" style="width: 100%; height: 100%; object-fit: cover;"> 
-                    <span style="display: none;">**ใส่รูป** นางสาวณัฏฐนิช</span>
+                    <img src="images/chutima.jpg" alt="รูปนางสาวชุติมา" style="width: 100%; height: 100%; object-fit: cover;"> 
                 </div>
-                <div class="person-name">นางสาวณัฏฐนิช บุญสวน</div>
+                <div class="person-name">นางสาวชุติมา เจริญศรี</div>
+                <div class="person-position">นักจัดการงานทั่วไป</div>
+            </div>
+
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/piyaorn.jpg" alt="รูปนางสาวปิยะอร" style="width: 100%; height: 100%; object-fit: cover;"> 
+                </div>
+                <div class="person-name">นางสาวปิยะอร ผู้แต้ม</div>
+                <div class="person-position">นักจัดการงานทั่วไป</div>
+            </div>
+
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/warakorn.jpg" alt="รูปนายวรากร" style="width: 100%; height: 100%; object-fit: cover;"> 
+                </div>
+                <div class="person-name">นายวรากร ตรงศิริ</div>
+                <div class="person-position">นักจัดการงานทั่วไป</div>
+            </div>
+
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/chairit.jpg" alt="รูปนายชัยฤทธิ์" style="width: 100%; height: 100%; object-fit: cover;"> 
+                </div>
+                <div class="person-name">นายชัยฤทธิ์ สุวรรณพงศ์</div>
+                <div class="person-position">นายช่างเครื่องยนต์</div>
+            </div>
+            
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/kittipong.jpg" alt="รูปนายกิตติพงษ์" style="width: 100%; height: 100%; object-fit: cover;"> 
+                </div>
+                <div class="person-name">นายกิตติพงษ์ สิงห์ปัญญา</div>
+                <div class="person-position">ช่างไฟฟ้า</div>
+            </div>
+            
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/samrit.jpg" alt="รูปนายสัมฤทธิ์" style="width: 100%; height: 100%; object-fit: cover;"> 
+                </div>
+                <div class="person-name">นายสัมฤทธิ์ กาญจนพัฒน์</div>
+                <div class="person-position">ช่างไฟฟ้า</div>
+            </div>
+            
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/pakjira.jpg" alt="รูปนางสาวภัคจิรา" style="width: 100%; height: 100%; object-fit: cover;"> 
+                </div>
+                <div class="person-name">นางสาวภัคจิรา นามแสน</div>
                 <div class="person-position">เจ้าหน้าที่ป่าไม้</div>
             </div>
 
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/kwanphatawan.jpg" alt="รูปนางสาวขวัญพ์ตะวัน" style="width: 100%; height: 100%; object-fit: cover;"> 
-                    <span style="display: none;">**ใส่รูป** นางสาวขวัญพ์ตะวัน</span>
+                    <img src="images/nattapol_b.jpg" alt="รูปนายณัฐพล" style="width: 100%; height: 100%; object-fit: cover;"> 
                 </div>
-                <div class="person-name">นางสาวขวัญพ์ตะวัน วงศ์ชัยนเรศ</div>
-                <div class="person-position">เจ้าพนักงานธุรการ</div>
+                <div class="person-name">นายณัฐพล บุญยงค์</div>
+                <div class="person-position">พนักงานขับเครื่องจักร</div>
             </div>
-
-            <div class="person-card">
-                <div class="person-image">
-                    <img src="images/nattapol.jpg" alt="รูปนายณัฐพล" style="width: 100%; height: 100%; object-fit: cover;"> 
-                    <span style="display: none;">**ใส่รูป** นายณัฐพล</span>
-                </div>
-                <div class="person-name">นายณัฐพล บัวสุวรรณ</div>
-                <div class="person-position">เจ้าหน้าที่ธุรการ</div>
-            </div>
-
+            
         </div>
     </div>
     
     <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
 
     <div class="contact-section">
-        <h3 class="section-header" style="margin-top: 0;"><i class="fas fa-envelope-open-text"></i> ติดต่อฝ่ายธุรการ</h3>
+        <h3 class="section-header" style="margin-top: 0;"><i class="fas fa-envelope-open-text"></i> ติดต่อฝ่ายการพัสดุ</h3>
         <p>
             <i class="fas fa-phone-alt"></i> 
-            <span class="tel">0 2561 4292 - 3 ต่อ 5474</span>
-        </p>
-        <p>
-            <i class="fas fa-envelope"></i> 
-            adm.rfd5474@gmail.com
+            <span class="tel">0 2561 4292 - 3 ต่อ 5086</span>
         </p>
     </div>
 
