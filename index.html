@@ -1,530 +1,423 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<title>สำนักวิจัยและพัฒนาการป่าไม้ - ระบบเอกสาร</title>
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-body {
-    margin: 0;
-    background: #f3f8f8;
-    font-family: "Prompt", sans-serif;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ฝ่ายการเจ้าหน้าที่ - ส่วนอำนวยการ</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" type="image/png" href="images/logorfdo.png">
 
-/* Head Section */
-.head-section {
-    position: relative;
-    background: url('images/head.jpg') no-repeat center center;
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 15px 25px;
-    height: auto;
-    min-height: 300px;
-    gap: 8px;
-}
+    <style>
+        /* CSS ทั่วไป (ใช้ CSS เดิมที่คุณส่งมาทั้งหมด) */
+        body {
+            margin: 0;
+            background: #f3f8f8;
+            font-family: "Prompt", sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-.head-section img#logo { 
-    width: 120px; 
-    height: auto; 
-}
+        /* Head Section */
+        .head-section { position: relative; background: url('images/head.jpg') no-repeat center center; background-size: cover; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 15px 25px; height: auto; min-height: 300px; gap: 8px; }
+        .head-section img#logo { width: 120px; height: auto; }
+        .head-text-container { display: flex; flex-direction: column; align-items: flex-start; }
+        .head-text { font-size: 64px; font-weight: 600; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
+        .sub-text { font-size: 20px; font-weight: 500; color: rgb(255, 255, 255); text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
 
-.head-text-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
+        /* Nav Menu */
+        nav { background: #ffffff; padding: 8px 25px; border-bottom: 2px solid #339999; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        nav ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; font-weight: 500; flex-wrap: wrap; }
+        nav ul li { position: relative; }
+        nav ul li a { text-decoration: none; color: #339999; font-size: 16px; padding: 6px 10px; border-radius: 6px; display: flex; align-items: center; gap: 5px; transition: 0.3s; }
+        nav ul li a:hover { background: #e0f3f3; color: #1f6161; }
+        .home-icon { background: #339999; border-radius: 6px; }
+        .home-icon svg { fill: #ffffff; }
+        .home-icon:hover { background: #1f6161; }
+        .dropdown:hover > a { background: #e0f3f3; color:#1f6161; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #ffffff; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 220px; padding: 5px 0; z-index: 100; }
+        .dropdown-menu li a { color: #339999; padding: 8px 15px; display: block; font-size: 14px; }
+        .dropdown-menu li a:hover { background: #e0f3f3; color:#1f6161; }
+        .dropdown:hover .dropdown-menu { display: block; }
+        
+        /* Layout (สำหรับ Main content) */
+        .content-container {
+            flex-grow: 1; 
+            max-width: 960px; 
+            margin: 40px auto; 
+            padding: 30px; 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1); 
+            width: 90%; 
+        }
+        .content-container h2 { 
+            font-size: 30px; 
+            color: #339999; 
+            border-bottom: 3px solid #339999; 
+            padding-bottom: 10px; 
+            margin-top: 0; 
+            margin-bottom: 25px;
+        }
 
-.head-text { 
-    font-size: 64px; 
-    font-weight: 600; 
-    color: white; 
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
-}
+        /* Section Header Styles */
+        .section-header { 
+            font-size: 22px; 
+            font-weight: 600; 
+            color: #1f6161; 
+            margin-top: 30px; 
+            margin-bottom: 15px;
+            border-left: 4px solid #339999;
+            padding-left: 10px;
+        }
+        
+        /* 1. หน้าที่รับผิดชอบ (Responsibilities) */
+        .responsibilities ul {
+            list-style: none;
+            padding-left: 0; 
+            margin: 0;
+        }
+        .responsibilities li {
+            padding: 8px 0;
+            line-height: 1.6;
+            color: #444;
+            font-size: 16px;
+        }
+        .responsibilities li:before { 
+            content: "• "; 
+            color: #339999;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        
+        /* CSS สำหรับ Quick Links */
+        .quick-links ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 20px;
+        }
+        .quick-links li {
+            margin-bottom: 10px;
+        }
+        .quick-links li a {
+            display: block;
+            padding: 12px 15px;
+            background: #f0fafa;
+            border: 1px solid #c9e6e6;
+            border-radius: 6px;
+            color: #1f6161;
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+        .quick-links li a:hover {
+            background: #d4eaea;
+            border-color: #339999;
+        }
+        .quick-links li i {
+            margin-right: 10px;
+            color: #339999;
+        }
+        
+        /* 2. บุคลากร (Personnel) */
+        
+        /* Card ทั่วไป */
+        .person-card {
+            text-align: center;
+            padding: 15px 5px; 
+            background: #f7fcfc;
+            border: 1px solid #e0f3f3;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .person-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
 
-.sub-text {
-    font-size: 20px;
-    font-weight: 500;
-    color: rgb(255, 255, 255);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
-}
+        /* รูปภาพ */
+        .person-image {
+            width: 120px;
+            height: 120px;
+            background: #ccc;
+            margin: 0 auto 10px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #339999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        /* ปรับขนาดฟอนต์ชื่อและตำแหน่งของพนักงานทั่วไป */
+        .person-name {
+            font-weight: 600;
+            color: #1f6161;
+            margin-bottom: 2px;
+            line-height: 1.2;
+            font-size: 15px; 
+        }
 
-/* Nav Menu */
-nav {
-    background: #ffffff;
-    padding: 8px 25px;
-    border-bottom: 2px solid #339999;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-nav ul {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    font-weight: 500;
-    flex-wrap: wrap;
-}
-nav ul li { position: relative; }
-nav ul li a {
-    text-decoration: none;
-    color: #339999;
-    font-size: 16px;
-    padding: 6px 10px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: 0.3s;
-}
-nav ul li a:hover { background: #e0f3f3; color: #1f6161; }
-.home-icon { background: #339999; border-radius: 6px; }
-.home-icon svg { fill: #ffffff; }
-.home-icon:hover { background: #1f6161; }
-.dropdown:hover > a { background: #e0f3f3; color:#1f6161; }
+        .person-position {
+            font-size: 13px; 
+            color: #666;
+            line-height: 1.3;
+        }
+        
+        /* สไตล์สำหรับหัวหน้าฝ่าย (บนสุด) */
+        .head-card {
+            max-width: 300px; 
+            margin: 0 auto 30px auto; 
+            border: 1px solid #339999; 
+            background: #e0f3f3; 
+        }
+        .head-card .person-image {
+            width: 150px; 
+            height: 150px;
+            border-color: #1f6161;
+        }
+        .head-card .person-name {
+            font-size: 17px; 
+            color: #339999;
+        }
+        .head-card .person-position {
+            font-size: 14px; 
+        }
 
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #ffffff;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    min-width: 220px;
-    padding: 5px 0;
-    z-index: 100;
-}
-.dropdown-menu li a {
-    color: #339999;
-    padding: 8px 15px;
-    display: block;
-    font-size: 14px;
-}
-.dropdown-menu li a:hover { background: #e0f3f3; color:#1f6161; }
-.dropdown:hover .dropdown-menu { display: block; }
+        /* Grid สำหรับพนักงานคนอื่นๆ */
+        .personnel-grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px;
+        }
 
-/* Layout */
-.main {
-    display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 20px;
-    padding: 20px;
-}
+        .centered-row {
+            grid-column: 1 / span 3; 
+            display: flex; 
+            justify-content: center;
+            gap: 20px; 
+            margin-top: 20px; 
+        }
+        .centered-row .person-card {
+            flex-basis: calc(33.33% - 10px); 
+            max-width: 250px; 
+        }
+        
+        /* 3. ติดต่อเรา (Contact Info) */
+        .contact-section {
+            padding: 20px;
+            background: #e0f3f3;
+            border-radius: 8px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        .contact-section p {
+            font-size: 18px;
+            margin: 8px 0;
+            font-weight: 500;
+            color: #1f6161;
+        }
+        .contact-section i {
+            color: #339999;
+            margin-right: 10px;
+        }
+        .contact-section .tel {
+            font-weight: 700;
+            font-size: 20px;
+        }
 
-/* Carousel */
-.slideshow-container {
-    position: relative;
-    max-width: 100%;  
-    height: 500px;     
-    overflow: hidden;
-    margin: auto;
-    background: #ccc;
-    border-radius: 5px;
-}
-.slide-track {
-    display: flex;
-    gap: 0px;
-    transition: transform 0.7s ease-in-out;
-}
-.slide-item {
-    flex: 0 0 calc((70% - 50px)/3);
-    height: 500px;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    box-sizing: border-box;
-}
-.slide-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    cursor: pointer;
-}
 
-/* Carousel Prev/Next */
-.prev, .next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 26px;
-    color: white;
-    background: rgba(0,0,0,0.35);
-    padding: 10px 13px;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 50;
-}
-.prev:hover, .next:hover { background: rgba(0,0,0,0.55); }
-.prev { left: 10px; }
-.next { right: 10px; }
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #339999;
+            color: white;
+            margin-top: 55px; 
+        }
 
-/* Dots */
-.dots {
-    text-align: center;
-    margin-top: 10px;
-}
-.dot {
-    height: 12px;
-    width: 12px;
-    margin: 0 5px;
-    background-color: rgba(51,153,153,0.4);
-    border-radius: 50%;
-    display: inline-block;
-    cursor: pointer;
-}
-.dot.active,
-.dot:hover { background-color: #339999; }
-
-/* Sections under Carousel */
-.section-title { font-size: 22px; font-weight: 600; color: #1f6161; margin: 20px 0 10px 0; }
-
-/* Video responsive */
-.video-container {
-    width: 100%;
-    max-width: 800px;
-    margin: 20px auto;
-    height: auto;
-    border: 4px solid #339999;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    display: block;
-}
-.video-container iframe {
-    width: 100%;
-    height: 450px;
-    border: none;
-    display: block;
-}
-@media (max-width: 860px) {
-    .video-container iframe { height: 300px; }
-}
-@media (max-width: 600px) {
-    .video-container iframe { height: 200px; }
-}
-
-/* Menu icons section as full images with links */
-.menu-icons {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin: 60px 0 20px 0; /* เปลี่ยนจาก 20px เป็น 40px ด้านบน */
-    justify-content: center;
-}
-
-.menu-icons .menu-item {
-    width: 282px;
-    height: 79px;
-    border-radius: 12px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-    display: block;
-}
-
-.menu-icons .menu-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.18);
-}
-
-.menu-icons .menu-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-/* Sidebar */
-.sidebar {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
-    text-align: center;
-    position: sticky;
-    top: 20px;
-
-    max-height: 300px;      /* กำหนดความสูงสูงสุดเท่ากับ Carousel */
-    overflow: hidden;       
-}
-.sidebar img {
-    width: 150px; 
-    height: 200px; 
-    object-fit: cover; 
-    border-radius: 6px; 
-    margin-bottom: 5px;
-}
-
-.sidebar img { width: 150px; height: 200px; object-fit: cover; border-radius: 6px; margin-bottom: 5px; }
-.sidebar h3 { color: #339999; font-size: 20px; margin: 0; line-height: 1.1; }
-.sidebar p { font-size: 16px; color: #444; margin: 2px 0 0 0; line-height: 1.1; }
-
-/* Footer */
-footer {
-    text-align: center;
-    padding: 20px;
-    background: #339999;
-    color: white;
-    margin-top: 55px;
-}
-
-/* Modal Lightbox */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    padding-top: 60px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.8);
-}
-.modal-content {
-    margin: auto;
-    display: block;
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 5px;
-}
-.close {
-    position: absolute;
-    top: 20px;
-    right: 35px;
-    color: #fff;
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* Responsive Head Section */
-@media (max-width: 860px) {
-    .head-section img#logo { width: 100px; }
-    .head-text { font-size: 20px; }
-    .sub-text { font-size: 16px; }
-}
-@media (max-width: 600px) {
-    .head-section img#logo { width: 80px; }
-    .head-text { font-size: 18px; }
-    .sub-text { font-size: 14px; }
-}
-</style>
+        /* Responsive */
+        @media (max-width: 768px) {
+            .personnel-grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .centered-row {
+                grid-column: 1 / span 2;
+            }
+             .centered-row .person-card {
+                flex-basis: calc(50% - 10px);
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 600px) {
+            .head-section img#logo { width: 80px; }
+            .head-text { font-size: 18px; }
+            .sub-text { font-size: 14px; }
+            .personnel-grid-container {
+                grid-template-columns: 1fr;
+            }
+            .centered-row {
+                grid-column: 1 / span 1;
+                flex-direction: column;
+            }
+            .centered-row .person-card {
+                flex-basis: auto;
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<!-- Head Section -->
 <div class="head-section">
-    <img id="logo" src="images/logo.png" alt="logo" />
+    <img id="logo" src="images/logorfdo.png" alt="logo" /> 
     <div class="head-text-container">
         <div class="head-text">ส่วนอำนวยการ</div>
         <div class="sub-text">สำนักวิจัยและพัฒนาการป่าไม้</div>
     </div>
 </div>
 
-<!-- Navigation -->
 <nav>
-<ul>
-    <li><a href="#" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
-    <li class="dropdown">
-        <a href="#">เกี่ยวกับเรา ▾</a>
-        <ul class="dropdown-menu">
-            <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
-            <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
-            <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
-            <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
-            <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
-            <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
-        </ul>
-    </li>
-    <li class="dropdown">
-        <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
-        <ul class="dropdown-menu">
-            <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบัญอิเล็กทรอนิกส์</a></li>
-            <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
-            <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
-        </ul>
-    </li>
-    <li><a href="edocs.html">ระบบหนังสือเวียนกรมป่าไม้</a></li>
-    <li><a href="https://www.forest.go.th/research/" target="_blank">สำนักวิจัยและพัฒนาการป่าไม้</a></li>
-    <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
-    <li><a href="contact.html">ติดต่อ</a></li>    
-</ul>
+    <ul>
+        <li>
+            <a href="index.html" class="home-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg>
+            </a>
+        </li>
+        <li class="dropdown">
+            <a href="#">เกี่ยวกับเรา ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
+                <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
+                <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
+                <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
+                <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
+                <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบัญอิเล็กทรอนิกส์</a></li>
+                <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
+                <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
+            </ul>
+        </li>
+        <li><a href="edocs.html">ระบบหนังสือเวียนกรมป่าไม้</a></li>
+        <li><a href="https://www.forest.go.th/research/" target="_blank">สำนักวิจัยและพัฒนาการป่าไม้</a></li>
+        <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
+        <li><a href="contact.html">ติดต่อ</a></li>
+    </ul>
 </nav>
 
-<div class="main">
-    <!-- Carousel Section -->
-    <div>
-        <div class="section-title">ข่าวสาร</div>
-        <div class="slideshow-container">
-            <div class="slide-track">
-                <div class="slide-item"><img src="images/work1.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work2.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work3.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work4.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work5.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work6.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work7.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work8.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work9.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work10.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work11.png" class="zoomable"></div>
+<main class="content-container">
+    <h2><i class="fas fa-user-friends"></i> ฝ่ายการเจ้าหน้าที่</h2>
+    
+    <div class="responsibilities">
+        <h3 class="section-header"><i class="fas fa-tasks"></i> หน้าที่และความรับผิดชอบ</h3>
+        <ul>
+            <li>จัดทำและดูแลโครงสร้างของสำนักวิจัยและพัฒนาการป่าไม้</li>
+            <li>ดูแลอัตรากำลังข้าราชการ ลูกจ้าง พนักงานราชการ และข้าราชการที่มาช่วยราชการของสำนักฯ</li>
+            <li>ดำเนินการเกี่ยวกับสิทธิประโยชน์ของบุคลากร เช่น เครื่องราชอิสริยาภรณ์ เงินเดือน วันลา และสวัสดิการอื่น ๆ</li>
+            <li>วางแผนและดำเนินการฝึกอบรม ประเมินผล และการพัฒนาสมรรถนะของบุคลากร</li>
+        </ul>
+    </div>
+    
+    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
+    
+    <div class="quick-links">
+        <h3 class="section-header"><i class="fas fa-link"></i> เมนู</h3>
+        <ul>
+            <li>
+                <a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">
+                    <i class="fas fa-file-download"></i> ดาวน์โหลดแบบฟอร์มต่าง ๆ
+                </a>
+            </li>
+            <li>
+                <a href="edocs.html">
+                    <i class="fas fa-envelope-open-text"></i> ระบบหนังสือเวียนกรมป่าไม้อิเล็กทรอนิกส์ ของสำนักวิจัยและพัฒนาการป่าไม้
+                </a>
+            </li>
+        </ul>
+    </div>
+    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
+
+    <div class="personnel">
+        <h3 class="section-header"><i class="fas fa-users"></i> บุคลากรฝ่ายการเจ้าหน้าที่</h3>
+        
+        <div class="person-card head-card">
+            <div class="person-image">
+                <img src="images/none.jpg" alt="รูปนางสาวณัฐพร" style="width: 100%; height: 100%; object-fit: cover;"> 
             </div>
-            <span class="prev">&#10094;</span>
-            <span class="next">&#10095;</span>
+            <div class="person-name">นางสาวณัฐพร แตงหมี</div>
+            <div class="person-position">เจ้าพนักงานธุรการอาวุโส <br> ทำหน้าที่หัวหน้าฝ่ายการเจ้าหน้าที่ </div>
         </div>
-        <div class="dots"></div>
+        
+        <div class="personnel-grid-container">
+            
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/wassana.jpg" alt="รูปนางสาววาสนา" style="width: 100%; height: 100%; object-fit: cover;"> 
+                </div>
+                <div class="person-name">นางสาววาสนา ป้านภูมิ</div>
+                <div class="person-position">นักจัดการงานทั่วไป</div>
+            </div>
 
-        <!-- YouTube Video -->
-        <div class="section-title">สื่อวีดิทัศน์</div>
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/1zfnwjcOi04" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowfullscreen>
-            </iframe>
-        </div>
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/nongnart.jpg" alt="รูปนางสาวนงนาถ" style="width: 100%; height: 100%; object-fit: cover;"> 
+                </div>
+                <div class="person-name">นางสาวนงนาถ สมแสวง</div>
+                <div class="person-position">นักจัดการงานทั่วไป</div>
+            </div>
+            
+            <div class="person-card">
+                <div class="person-image">
+                    <img src="images/maneerat.jpg" alt="รูปนางสาวมณีรัตน์" style="width: 100%; height: 100%; object-fit: cover;"> 
+                </div>
+                <div class="person-name">นางสาวมณีรัตน์ เอี่ยมไพบูลย์</div>
+                <div class="person-position">นักจัดการงานทั่วไป</div>
+            </div>
 
-        <!-- Menu Icons as Full Images -->
-        <div class="menu-icons">
-            <a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank" class="menu-item">
-                <img src="images/menu1.png" alt="ระบบจองห้องประชุม">
-            </a>
-            <a href="https://www.forest.go.th/product/th/zoom/" target="_blank" class="menu-item">
-                <img src="images/menu5.png" alt="ระบบจองห้องประชุมออนไลน์">
-            </a>
-            <a href="https://www.forest.go.th/services/personnel/" target="_blank" class="menu-item">
-                <img src="images/menu2.png" alt="บริการสำหรับเจ้าหน้าที่">
-            </a>
-            <a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank" class="menu-item">
-                <img src="images/menu3.png" alt="ระบบสารบรรณอิเล็กทรอนิกส์">
-            </a>
-            <a href="#" target="_blank" class="menu-item">
-                <img src="images/menu4.png" alt="ระบบหนังสือเวียนอิเล็กทรอนิกส์">
-            </a>
+            <div class="centered-row">
+                <div class="person-card">
+                    <div class="person-image">
+                        <img src="images/pornatcha.jpg" alt="รูปนางสาวพรนัชชา" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    </div>
+                    <div class="person-name">นางสาวพรนัชชา แดงทอง</div>
+                    <div class="person-position">นักจัดการงานทั่วไป</div>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-image">
+                        <img src="images/wilaiwan.jpg" alt="รูปนางสาววิไลวรรณ" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    </div>
+                    <div class="person-name">นางสาววิไลวรรณ ใคร่ครวญ</div>
+                    <div class="person-position">เจ้าหน้าที่ป่าไม้</div>
+                </div>
+            </div>
+            
         </div>
     </div>
+    
+    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
 
-    <!-- Sidebar Director -->
-    <div class="sidebar">
-        <img src="images/director_gamrai.png" alt="ผู้อำนวยการส่วนอำนวยการ">
-        <h3>นางกำไร ประมาณ</h3>
-        <p><strong>ผู้อำนวยการส่วนอำนวยการ</strong></p>
+    <div class="contact-section">
+        <h3 class="section-header" style="margin-top: 0;"><i class="fas fa-envelope-open-text"></i> ติดต่อฝ่ายการเจ้าหน้าที่</h3>
+        <p>
+            <i class="fas fa-phone-alt"></i> 
+            <span class="tel">0 2561 4292 - 3 ต่อ 5662</span>
+        </p>
     </div>
-</div>
+
+</main>
 
 <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
 
-<!-- Modal -->
-<div id="modal" class="modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="modal-img">
-</div>
-
-<script>
-// ===== Infinite Carousel =====
-const track = document.querySelector('.slide-track');
-let items = Array.from(document.querySelectorAll('.slide-item'));
-const visible = 3;
-const total = items.length;
-
-// Clone slides
-items.forEach(slide => {
-    const clone = slide.cloneNode(true);
-    clone.classList.add('clone');
-    track.appendChild(clone);
-});
-items.slice(-visible).forEach(slide => {
-    const clone = slide.cloneNode(true);
-    clone.classList.add('clone');
-    track.insertBefore(clone, track.firstChild);
-});
-
-let allSlides = Array.from(document.querySelectorAll('.slide-item'));
-let index = visible;
-let slideWidth = items[0].offsetWidth + 5;
-track.style.transform = `translateX(${-index * slideWidth}px)`;
-
-// Dots
-const dotsContainer = document.querySelector('.dots');
-for (let i = 0; i < total; i++) {
-    const dot = document.createElement("span");
-    dot.className = "dot";
-    if (i === 0) dot.classList.add("active");
-    dot.addEventListener("click", () => goToSlide(i));
-    dotsContainer.appendChild(dot);
-}
-const dots = document.querySelectorAll(".dot");
-
-function updateSlide(transition = true) {
-    track.style.transition = transition ? 'transform 0.7s ease-in-out' : 'none';
-    track.style.transform = `translateX(${-index * slideWidth}px)`;
-    updateDots();
-}
-
-function nextSlide() { index++; updateSlide(); track.addEventListener('transitionend', checkIndex); }
-function prevSlide() { index--; updateSlide(); track.addEventListener('transitionend', checkIndex); }
-
-function checkIndex() {
-    track.removeEventListener('transitionend', checkIndex);
-    if (allSlides[index].classList.contains('clone')) {
-        if (index >= total + visible) index = visible;
-        if (index < visible) index = total + visible -1;
-        updateSlide(false);
-    }
-}
-
-function goToSlide(i) {
-    index = i + visible;
-    updateSlide();
-}
-
-function updateDots() {
-    dots.forEach(dot => dot.classList.remove('active'));
-    let dotIndex = (index - visible) % total;
-    if(dotIndex < 0) dotIndex += total;
-    dots[dotIndex].classList.add('active');
-}
-
-// Prev/Next buttons
-document.querySelector(".next").addEventListener("click", nextSlide);
-document.querySelector(".prev").addEventListener("click", prevSlide);
-
-// Auto slide
-let autoSlide = setInterval(nextSlide, 3500);
-document.querySelector(".slideshow-container").addEventListener("mouseenter", () => clearInterval(autoSlide));
-document.querySelector(".slideshow-container").addEventListener("mouseleave", () => autoSlide = setInterval(nextSlide, 3500));
-
-// Adjust on resize
-window.addEventListener('resize', () => {
-    slideWidth = items[0].offsetWidth + 5;
-    updateSlide(false);
-});
-
-// ===== Lightbox =====
-const modal = document.getElementById("modal");
-const modalImg = document.getElementById("modal-img");
-const closeBtn = document.getElementsByClassName("close")[0];
-
-document.querySelectorAll('.zoomable').forEach(img => {
-    img.onclick = () => {
-        modal.style.display = "block";
-        modalImg.src = img.src;
-    };
-});
-
-closeBtn.onclick = () => { modal.style.display = "none"; };
-</script>
-
 </body>
 </html>
-
-
-
-
-
