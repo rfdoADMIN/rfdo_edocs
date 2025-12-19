@@ -11,13 +11,13 @@
     <style>
         /* สไตล์หลัก (คัดลอกมาจาก index.html) */
         body { margin: 0; background: #f3f8f8; font-family: "Prompt", sans-serif;
-        /* ⬇️ เพิ่ม 3 บรรทัดนี้เพื่อทำ Sticky Footer ⬇️ */
+
         display: flex;
         flex-direction: column;
         min-height: 100vh; /* บังคับให้ body มีความสูงอย่างน้อยเท่ากับหน้าจอ */
-        /* ⬆️ เพิ่ม 3 บรรทัดนี้เพื่อทำ Sticky Footer ⬆️ */
+   
 }
-        /* ⬇️ เพิ่มสไตล์สำหรับ main/content เพื่อให้ขยายพื้นที่ ⬇️ */
+
         main.content-container {
         flex-grow: 1; /* ทำให้เนื้อหาหลักขยายตัวออกไปกินพื้นที่ว่างทั้งหมด */
         max-width: 1000px; 
@@ -27,7 +27,6 @@
         border-radius: 12px; 
         box-shadow: 0 6px 18px rgba(0,0,0,0.1); 
 }
-/* ⬆️ เพิ่มสไตล์สำหรับ main/content เพื่อให้ขยายพื้นที่ ⬆️ */
         .head-section { position: relative; background: url('images/head.jpg') no-repeat center center; background-size: cover; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 15px 25px; height: auto; min-height: 300px; gap: 8px; }
         .head-section img#logo { width: 120px; height: auto; }
         .head-text-container { display: flex; flex-direction: column; align-items: flex-start; }
@@ -56,13 +55,13 @@
     width:100%; 
     border-collapse:collapse; 
     margin-top:10px; 
-    table-layout: fixed; /* ⬅️ สำคัญมาก: บังคับให้ตารางใช้ความกว้าง 100% และคอลัมน์คงที่ */
+    table-layout: fixed; 
 }
 .doc-table th, .doc-table td { 
     padding:12px; 
     border-bottom:1px solid #eee; 
     text-align:left;
-    vertical-align: top; /* จัดข้อความด้านบนเมื่อขึ้นบรรทัดใหม่ */
+    vertical-align: top; 
 }
 
 /* ⬇️ กำหนดความกว้างคอลัมน์ผ่าน CSS ⬇️ */
@@ -81,9 +80,8 @@
 }
 .doc-table th:nth-child(5), .doc-table td:nth-child(5) { /* ไฟล์ */
     width: 10%;
-    text-align: center; /* จัดให้อยู่ตรงกลาง */
+    text-align: center; 
 }
-/* ⬆️ กำหนดความกว้างคอลัมน์ผ่าน CSS ⬆️ */
 
 .doc-table th { background:#2e8f8f; color:#fff; font-weight:500; }
 .doc-table a { color:#2a8c8c; text-decoration:none; font-weight:500; }
@@ -126,7 +124,7 @@
                     <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
                 </ul>
             </li>
-            <li><a href="edocs.html">ระบบหนังสือเวียน (edocs)</a></li>
+            <li><a href="edocs.html">ระบบหนังสือเวียนกรมป่าไม้</a></li>
             <li><a href="https://www.forest.go.th/research/" target="_blank">สำนักวิจัยและพัฒนาการป่าไม้</a></li>
             <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
             <li><a href="contact.html">ติดต่อ</a></li>
@@ -225,4 +223,5 @@
 
 </body>
 </html>
+
 
