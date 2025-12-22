@@ -10,6 +10,21 @@
     <link rel="icon" type="image/png" href="images/logorfdo.png">
 
     <style>
+        /* === โค้ดสำหรับป้องกันการเซฟรูปภาพ (CSS) === */
+        img {
+            user-select: none; /* ป้องกันการเลือกข้อความ/รูปภาพ */
+            -webkit-user-select: none; 
+            -moz-user-select: none; 
+            pointer-events: none; /* ปิดการตอบสนองของเมาส์ต่อรูปภาพโดยตรง */
+            -webkit-user-drag: none; /* ป้องกันการลากรูปภาพ */
+        }
+        /* อนุญาตให้องค์ประกอบที่เป็นลิงก์/ปุ่มคลิกได้ตามปกติ */
+        a, button, .dropdown:hover > a, .quick-links li a { 
+            pointer-events: auto !important; 
+            cursor: pointer; /* ให้เคอร์เซอร์ยังเป็นรูปมือ */
+        }
+        /* ================================== */
+        
         /* CSS ทั่วไป (ใช้ CSS เดิมที่คุณส่งมาทั้งหมด) */
         body {
             margin: 0;
@@ -248,6 +263,7 @@
             }
             .centered-row {
                 grid-column: 1 / span 2;
+                flex-wrap: wrap;
             }
              .centered-row .person-card {
                 flex-basis: calc(50% - 10px);
@@ -292,6 +308,7 @@
         <li class="dropdown">
             <a href="#">เกี่ยวกับเรา ▾</a>
             <ul class="dropdown-menu">
+                <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
                 <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
                 <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
                 <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
@@ -308,6 +325,15 @@
                 <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
             </ul>
         </li>
+                        <li class="dropdown"><a href="#" class="active-link">จัดซื้อจัดจ้าง ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
+                        <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานและราคากลาง</a></li>
+                        <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
+                        <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
+                    </ul>
+                </li>
+        <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
         <li><a href="edocs.html">ระบบหนังสือเวียนกรมป่าไม้</a></li>
         <li><a href="https://www.forest.go.th/research/" target="_blank">สำนักวิจัยและพัฒนาการป่าไม้</a></li>
         <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
@@ -418,6 +444,14 @@
 </main>
 
 <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
+
+<script>
+// === โค้ด JavaScript สำหรับป้องกันการคลิกขวา (Context Menu) และการลาก/เซฟรูปภาพ ===
+document.addEventListener('contextmenu', function(e) {
+    // ป้องกันการแสดงเมนูคลิกขวาบนทั้งหน้า
+    e.preventDefault();
+});
+</script>
 
 </body>
 </html>
