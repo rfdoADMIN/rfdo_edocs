@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โครงสร้างส่วนอำนวยการ</title>
+    <title>โครงสร้างและฝ่ายภายในส่วนอำนวยการ</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -41,7 +41,7 @@
         .dropdown-menu li a { color: #339999; padding: 8px 15px; display: block; font-size: 14px; }
         .dropdown-menu li a:hover { background: #e0f3f3; color:#1f6161; }
         .dropdown:hover .dropdown-menu { display: block; }
-        
+
         /* Layout (สำหรับ Main content) */
         .content-container {
             flex-grow: 1; 
@@ -58,21 +58,77 @@
             color: #1f6161; 
             border-bottom: 2px solid #339999; 
             padding-bottom: 10px; 
-            margin-top: 0; 
-            font-weight: 600;
-        }
-
-        /* Department Contact List Styles (โครงสร้างเจ้าหน้าที่) */
-        .department-list { margin-top: 35px; }
-        .department-list h3 { 
-            font-size: 24px; 
-            color: #1f6161; 
-            border-left: 6px solid #339999; 
-            padding-left: 15px; 
+            margin-top: 40px; /* เพิ่มระยะห่างด้านบนสำหรับหัวข้อที่สอง */
             margin-bottom: 25px;
             font-weight: 600;
         }
+        /* หัวข้อแรกให้ไม่มี margin-top */
+        .content-container h2:first-of-type {
+             margin-top: 0; 
+             text-align: left;
+        }
 
+        /* Department Contact List Styles (โครงสร้างเจ้าหน้าที่) */
+        .director-group {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .director-row {
+            display: block; 
+            margin-bottom: 20px;
+        }
+        
+        .director-card {
+            width: 300px;
+            padding: 25px;
+            border-radius: 15px;
+            background: #e0f3f3; 
+            border: 2px solid #339999;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            display: inline-block; 
+        }
+        
+        .top-director-card-style {}
+        .top-director-card-style .staff-name {
+            font-size: 22px; 
+            font-weight: 800;
+            color: #1f6161;
+        }
+        .top-director-card-style .staff-position {
+            font-weight: 600;
+            color: #339999;
+        }
+        .top-director-card-style .staff-img {
+            border-color: #1f6161;
+        }
+
+        .director-card .staff-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            border: 3px solid #339999;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .director-card .staff-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f6161;
+        }
+        
+        .director-card .staff-position {
+            font-weight: 600;
+            font-size: 15px;
+            color: #339999;
+            min-height: 40px; 
+        }
+
+
+        /* Staff Grid */
         .staff-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -140,58 +196,40 @@
             background: #1f6161;
             text-decoration: none;
         }
-
-        /* *** ปรับปรุง: แยกตำแหน่ง ผอ.สำนัก และ ผอ.ส่วนอำนวยการ เป็นคนละแถวและใช้สีเดียวกัน *** */
-        .director-group {
-            margin-bottom: 40px;
-            text-align: center;
-        }
         
-        .director-row {
-            display: block; 
-            margin-bottom: 20px;
-        }
-        
-        .director-card {
-            width: 300px;
-            padding: 25px;
-            border-radius: 15px;
-            background: #e0f3f3; /* ใช้สีพื้นหลังเดียวกับของกำไร */
-            border: 2px solid #339999;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-            text-align: center;
-            display: inline-block; 
-        }
-        
-        .top-director-card-style {
- 
-        }
-        .top-director-card-style .staff-name {
-            font-size: 22px; 
-            font-weight: 800;
-            color: #1f6161;
-        }
-        .top-director-card-style .staff-position {
-            font-weight: 600;
-            color: #339999;
-        }
-        .top-director-card-style .staff-img {
-            border-color: #1f6161;
+        /* --- CSS สำหรับเมนูรูปภาพ (Menu Icons) --- */
+        .menu-icons-list {
+            display: flex;
+            gap: 25px; 
+            flex-wrap: wrap;
+            justify-content: center; 
+            padding: 10px 0; 
         }
 
-        .director-card .staff-img {
-            width: 120px;
-            height: 120px;
+        .menu-icons-list .menu-item {
+            width: 282px;
+            height: 79px; 
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: block;
+            text-decoration: none;
+            position: relative; 
         }
 
-        .director-card .staff-name {
-            font-size: 20px;
-            color: #1f6161;
+        .menu-icons-list .menu-item:hover {
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(51, 153, 153, 0.3); 
+            filter: brightness(1.05); 
         }
-        
-        .director-card .staff-position {
-            font-weight: 600;
-            color: #339999;
+
+        .menu-icons-list .menu-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         /* Footer */
@@ -208,12 +246,19 @@
             .head-section img#logo { width: 100px; }
             .head-text { font-size: 48px; }
             .sub-text { font-size: 18px; }
+            .menu-icons-list .menu-item {
+                width: calc(50% - 15px); 
+                height: auto;
+            }
         }
         @media (max-width: 600px) {
             .head-section img#logo { width: 80px; }
             .head-text { font-size: 36px; }
             .sub-text { font-size: 16px; }
             .director-card { width: 90%; max-width: 350px; }
+            .menu-icons-list .menu-item {
+                width: 90%; 
+            }
         }
     </style>
 </head>
@@ -237,14 +282,14 @@
         <li class="dropdown">
             <a href="#">เกี่ยวกับเรา ▾</a>
             <ul class="dropdown-menu">
-                 <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
-                <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
+                <li><a href="Structure.html" style="background: #e0f3f3; color:#1f6161; font-weight: 600;">โครงสร้างส่วนอำนวยการ</a></li> 
+                  <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
                 <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
                 <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
                 <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
                 <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
                 <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
-            </ul>
+                </ul>
         </li>
         <li class="dropdown">
             <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
@@ -254,7 +299,7 @@
                 <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
             </ul>
         </li>
-        <li class="dropdown"><a href="#" class="active-link">จัดซื้อจัดจ้าง ▾</a>
+        <li class="dropdown"><a href="#">จัดซื้อจัดจ้าง ▾</a>
             <ul class="dropdown-menu">
                 <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
                 <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานและราคากลาง</a></li>
@@ -271,7 +316,8 @@
 </nav>
 
 <div class="content-container">
-    <h2><i class="fas fa-sitemap"></i> โครงสร้างส่วนอำนวยการ</h2>
+    
+    <h2><i class="fas fa-sitemap"></i> โครงสร้างผู้บริหารส่วนอำนวยการ</h2>
 
     <div class="director-group">
         
@@ -292,9 +338,12 @@
         </div>
         
     </div>
+
+    <hr style="border: 0; border-top: 1px solid #ccc; margin: 40px 0;">
+    
+    <h2><i class="fas fa-users-cog"></i> หัวหน้าฝ่าย</h2>
     
     <div class="department-list">
-        <h3><i class="fas fa-users-cog"></i> หัวหน้าฝ่ายงาน</h3>
         
         <div class="staff-grid">
             
@@ -342,6 +391,39 @@
             
         </div>
     </div>
+
+    <hr style="border: 0; border-top: 1px solid #ccc; margin: 40px 0;">
+
+    <h2><i class="fas fa-layer-group"></i> ฝ่ายภายในส่วนอำนวยการ</h2>
+
+    <div class="menu-icons-list">
+        
+        <a href="Adminrfdo.html" class="menu-item" title="ฝ่ายธุรการ">
+            <img src="images/D1.png" alt="ฝ่ายธุรการ">
+        </a>
+        
+        <a href="HRrfdo.html" class="menu-item" title="ฝ่ายการเจ้าหน้าที่">
+            <img src="images/D2.png" alt="ฝ่ายการเจ้าหน้าที่">
+        </a>
+        
+        <a href="FArfdo.html" class="menu-item" title="ฝ่ายการเงิน และบัญชี">
+            <img src="images/D3.png" alt="ฝ่ายการเงิน และบัญชี">
+        </a>
+        
+        <a href="PDrfdo.html" class="menu-item" title="ฝ่ายการพัสดุ">
+            <img src="images/D4.png" alt="ฝ่ายการพัสดุ">
+        </a>
+        
+        <a href="Planrfdo.html" class="menu-item" title="ฝ่ายแผนและติดตามประเมินผล">
+            <img src="images/D5.png" alt="ฝ่ายแผนและติดตามประเมินผล">
+        </a>
+        
+        <a href="Researchrfdo.html" class="menu-item" title="ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้">
+            <img src="images/D6.png" alt="ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้">
+        </a>
+
+    </div>
+
 </div>
 
 <footer>
