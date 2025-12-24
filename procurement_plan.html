@@ -6,109 +6,296 @@
     <title>RFDO e-Doc - แผนการจัดซื้อจัดจ้าง</title> 
     
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="icon" type="image/png" href="images/logorfdo.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <style>
-        /* สไตล์หลัก */
-        body { 
-            margin: 0; 
-            background: #f3f8f8; 
-            font-family: "Prompt", sans-serif;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+<style>
+    :root {
+        --primary-color: #339999;
+        --primary-dark: #206b6b;
+        --primary-light: #e6f7f7;
+        --text-color: #333;
+        --text-muted: #666;
+        --bg-color: #f8fcfc;
+        --white: #ffffff;
+        --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+        --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
+        --radius: 12px;
+    }
 
-        /* Head Section Styles */
-        .head-section { 
-            position: relative; 
-            background: url('images/head.jpg') no-repeat center center; 
-            background-size: cover; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: flex-start; 
-            justify-content: center; 
-            padding: 15px 25px; 
-            height: auto; 
-            min-height: 300px; 
-            gap: 8px; 
-        }
-        .head-section img#logo { width: 120px; height: auto; }
-        .head-text-container { display: flex; flex-direction: column; align-items: flex-start; }
-        .head-text { font-size: 64px; font-weight: 600; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
-        .sub-text { font-size: 20px; font-weight: 500; color: rgb(255, 255, 255); text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
-        
-        /* Navigation Styles */
-        nav { background: #ffffff; padding: 8px 25px; border-bottom: 2px solid #339999; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        nav ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; font-weight: 500; flex-wrap: wrap; }
-        nav ul li { position: relative; }
-        nav ul li a { text-decoration: none; color: #339999; font-size: 16px; padding: 6px 10px; border-radius: 6px; display: flex; align-items: center; gap: 5px; transition: 0.3s; }
-        nav ul li a:hover { background: #e0f3f3; color: #1f6161; }
-        .home-icon { background: #339999; border-radius: 6px; }
-        .home-icon svg { fill: #ffffff; }
-        .home-icon:hover { background: #1f6161; }
-        .dropdown:hover > a { background: #e0f3f3; color:#1f6161; }
-        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #ffffff; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 220px; padding: 5px 0; z-index: 100; }
-        .dropdown-menu li a { color: #339999; padding: 8px 15px; display: block; font-size: 14px; }
-        .dropdown-menu li a:hover { background: #e0f3f3; color:#1f6161; }
-        .dropdown:hover .dropdown-menu { display: block; }
+    body {
+        margin: 0;
+        background-color: var(--bg-color);
+        font-family: "Prompt", sans-serif;
+        color: var(--text-color);
+        line-height: 1.6;
+    }
 
-        /* Styles for Content Area */
-        main.content-container {
+    /* === Header Section === */
+    .head-section {
+        position: relative;
+        background: linear-gradient(rgba(196, 196, 196, 0.3), rgba(53, 53, 53, 0.5)), url('images/head.jpg') no-repeat center center;
+        background-size: cover;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 60px 5%;
+        min-height: 250px;
+        gap: 20px;
+        color: var(--white);
+    }
+
+    .head-section img#logo { 
+        width: 100px; 
+        height: auto;
+        filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+    }
+
+    .head-text-container { display: flex; flex-direction: column; }
+
+    .head-text { 
+        font-size: 48px; 
+        font-weight: 700; 
+        line-height: 1.2;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
+
+    /* === Navigation === */
+    nav {
+        background: linear-gradient(90deg, var(--primary-color) 100%, var(--primary-dark) 0%);
+        padding: 0 20px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    nav ul {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        list-style: none;
+        margin: 0;
+        padding: 8px 0;
+        flex-wrap: wrap;
+        align-items: center;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    nav ul li { position: relative; }
+
+    nav ul li a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 16px;
+        font-weight: 500;
+        padding: 10px 14px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+        white-space: nowrap; 
+    }
+
+    nav ul li a:hover, nav ul li a.active-link {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
+    .home-icon svg { fill: white; }
+    .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
+
+    /* === Dropdown Menu === */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0; 
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        min-width: 260px;
+        padding: 8px 0;
+        z-index: 1001;
+        opacity: 0;
+        transition: all 0.3s;
+        border: 1px solid rgba(0,0,0,0.05);
+        margin-top: 5px;
+    }
+
+    .dropdown:hover > .dropdown-menu {
+        display: block;
+        opacity: 1;
+        animation: fadeIn 0.2s ease-out forwards;
+    }
+
+    .dropdown-menu li {
+        position: relative;
+    }
+
+    .dropdown-menu li a { 
+        color: var(--text-color); 
+        padding: 10px 20px; 
+        border-radius: 0;
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+    }
+    
+    .dropdown-menu li a:hover { 
+        background: var(--primary-light); 
+        color: var(--primary-dark); 
+        padding-left: 25px;
+    }
+
+    /* === Nested Dropdown === */
+    .submenu {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: 0;
+        margin-left: 5px;
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        min-width: 250px;
+        padding: 8px 0;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .nested-dropdown:hover > .submenu {
+        display: block;
+        animation: fadeIn 0.2s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+        /* === Content Layout === */
+        main.content-container { 
             flex-grow: 1; 
+            width: 100%;
             max-width: 1000px; 
             margin: 40px auto; 
-            padding: 30px; 
-            background: white; 
-            border-radius: 12px; 
-            box-shadow: 0 6px 18px rgba(0,0,0,0.1); 
-            min-height: 500px;
+            padding: 40px; 
+            background: var(--white); 
+            border-radius: var(--radius); 
+            box-shadow: var(--shadow-md); 
+            min-height: 500px; 
+            box-sizing: border-box;
         }
-        .content-container h2 { font-size: 28px; color: #1f6161; border-bottom: 2px solid #339999; padding-bottom: 10px; margin-top: 0; }
-        
-        /* Table Styles (ตารางข้อมูล 3 คอลัมน์) */
+        .content-container h2 { 
+            font-size: 28px; 
+            color: var(--primary-dark); 
+            border-bottom: 3px solid var(--primary-light); 
+            padding-bottom: 15px; 
+            margin-top: 0; 
+            margin-bottom: 25px;
+        }
+
+        /* === Table Styles === */
         .doc-table { 
             width:100%; 
-            border-collapse:collapse; 
+            border-collapse: separate; 
+            border-spacing: 0;
             margin-top:10px; 
             table-layout: fixed; 
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
         }
         .doc-table th, .doc-table td { 
-            padding:12px; 
-            border-bottom:1px solid #eee; 
-            text-align:left;
-            vertical-align: top;
+            padding: 15px; 
+            border-bottom: 1px solid #eee; 
+            text-align: left; 
+            vertical-align: top; 
+            font-size: 15px;
         }
+        
+        /* Column Widths (สำหรับ 3 คอลัมน์) */
+        .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 70%; word-wrap: break-word; }
+        .doc-table th:nth-child(2), .doc-table td:nth-child(2) { width: 20%; }
+        .doc-table th:nth-child(3), .doc-table td:nth-child(3) { width: 10%; text-align: center; }
+        
+        .doc-table th { 
+            background: var(--primary-color); 
+            color: #fff; 
+            font-weight: 500; 
+            border: none;
+        }
+        .doc-table tr:hover td { background-color: #fafafa; }
 
-        /* 2. กำหนดความกว้างคอลัมน์ใหม่ (70%, 20%, 10%) */
-        .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 70%; word-wrap: break-word; position: relative; } /* ชื่อเรื่อง */
-        .doc-table th:nth-child(2), .doc-table td:nth-child(2) { width: 20%; } /* วันที่ */
-        .doc-table th:nth-child(3), .doc-table td:nth-child(3) { width: 10%; text-align: center; } /* ไฟล์ */
-
-        .doc-table th { background:#2e8f8f; color:#fff; font-weight:500; } 
-        .doc-table a { color:#2a8c8c; text-decoration:none; font-weight:500; }
-        .doc-table a:hover { text-decoration:underline; }
-
-        /* สไตล์สำหรับป้าย 'NEW' (สีแดง) */
-        .new-badge {
+        .doc-table a { 
+            color: var(--primary-color); 
+            text-decoration: none; 
+            font-weight: 600; 
+            border: 1px solid var(--primary-color);
+            padding: 4px 10px;
+            border-radius: 20px;
+            transition: 0.2s;
+            font-size: 13px;
             display: inline-block;
-            background-color: #ff5757; 
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 3px 6px;
-            border-radius: 4px;
-            margin-left: 8px; 
-            line-height: 1;
-            vertical-align: top;
-            transform: translateY(-2px);
+        }
+        .doc-table a:hover { 
+            background: var(--primary-color); 
+            color: white; 
         }
 
-        footer { text-align: center; padding: 20px; background: #339999; color: white; margin-top: 0px; }
+        /* Badge NEW */
+        .new-badge { 
+            display: inline-block; 
+            background-color: #e74c3c; 
+            color: white; 
+            font-size: 10px; 
+            font-weight: 700; 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            margin-left: 8px; 
+            vertical-align: middle; 
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        /* Footer (แบบบาง) */
+        footer { 
+            text-align: center; 
+            padding: 15px 20px; 
+            background: var(--primary-color); 
+            color: rgba(255,255,255,0.8); 
+            font-size: 14px; 
+            margin-top: auto; 
+        }
 
         /* Responsive */
-        @media (max-width: 860px) { .head-section img#logo { width: 100px; } .head-text { font-size: 20px; } .sub-text { font-size: 16px; } }
-        @media (max-width: 600px) { .head-section img#logo { width: 80px; } .head-text { font-size: 18px; } .sub-text { font-size: 14px; } }
+        @media (max-width: 860px) { 
+            .head-section img#logo { width: 100px; } 
+            .head-text { font-size: 28px; } 
+            main.content-container { padding: 20px; margin: 20px auto; width: 95%; }
+        }
+        @media (max-width: 600px) { 
+            .head-section { flex-direction: column; text-align: center; } 
+            .head-text { font-size: 24px; } 
+            nav { padding: 5px 0; }
+            nav ul { justify-content: center; gap: 5px; }
+            nav ul li a { padding: 6px 12px; font-size: 13px; }
+            
+            .submenu {
+                position: static;
+                box-shadow: none;
+                margin-left: 20px;
+                border-left: 2px solid #eee;
+                min-width: auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -124,16 +311,25 @@
     <nav>
         <ul>
             <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
-            <li class="dropdown"><a href="#">เกี่ยวกับเรา ▾</a>
+            
+            <li class="dropdown">
+                <a href="#">เกี่ยวกับเรา ▾</a>
                 <ul class="dropdown-menu">
                     <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
-                    <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
-                    <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
-                    <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
-                    <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
-                    <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
-                    <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
-                </ul></li>
+                    <li class="nested-dropdown">
+                        <a href="#">ฝ่ายภายในส่วนอำนวยการ ▸</a>
+                        <ul class="submenu">
+                            <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
+                            <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
+                            <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
+                            <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
+                            <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
+                            <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
             <li class="dropdown">
                 <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
                 <ul class="dropdown-menu">
@@ -142,7 +338,9 @@
                     <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
                 </ul>
             </li>
-            <li class="dropdown"><a href="#" class="active-link">จัดซื้อจัดจ้าง ▾</a>
+
+            <li class="dropdown">
+                <a href="#" class="active-link">จัดซื้อจัดจ้าง ▾</a>
                 <ul class="dropdown-menu">
                     <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
                     <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานและราคากลาง</a></li>
@@ -150,11 +348,12 @@
                     <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
                 </ul>
             </li>
-            <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
-            <li><a href="edocs.html">ระบบหนังสือเวียนกรมป่าไม้</a></li>
-            <li><a href="https://www.forest.go.th/research/" target="_blank">สำนักวิจัยและพัฒนาการป่าไม้</a></li>
-            <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
-            <li><a href="contact.html">ติดต่อ</a></li>
+
+         <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
+        <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
+        <li><a href="https://www.forest.go.th/research/" target="_blank">เว็บไซต์ สวพ.</a></li>
+        <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
+        <li><a href="contact.html">ติดต่อ</a></li>        
         </ul>
     </nav>
 
@@ -184,37 +383,33 @@
         const supabase = createClient(SUPABASE_URL, SUPABASE_KEY_VALUE); 
         const documentList = document.getElementById('documentList');
         
-        // 4. กำหนดชื่อตารางที่ใช้
         const TARGET_TABLE = 'procurement_plan';
 
         async function loadDocuments() {
-            // แก้ข้อความกำลังโหลด
-            documentList.innerHTML = '<tr><td colspan="3">กำลังโหลดข้อมูลแผนการจัดซื้อจัดจ้าง...</td></tr>';
+            documentList.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:#666;">กำลังโหลดข้อมูลแผนการจัดซื้อจัดจ้าง...</td></tr>';
 
-            // 4. ดึงข้อมูลจากตาราง 'procurement_plan' และเลือกเฉพาะ 3 คอลัมน์ที่จำเป็น
             const { data, error } = await supabase.from(TARGET_TABLE)
                 .select('title, date, filename')
                 .order('date', { ascending: false });
 
             if(error){
-                documentList.innerHTML = `<tr><td colspan="3">เกิดข้อผิดพลาดในการดึงข้อมูลจากตาราง ${TARGET_TABLE} (ตรวจสอบ RLS Policy): ${error.message}</td></tr>`;
+                documentList.innerHTML = `<tr><td colspan="3" style="color:red; text-align:center;">เกิดข้อผิดพลาด: ${error.message}</td></tr>`;
                 console.error("Supabase API Error:", error);
                 return;
             }
 
             if (!data || data.length === 0) {
-                documentList.innerHTML = `<tr><td colspan="3">ไม่พบข้อมูลแผนการจัดซื้อจัดจ้าง</td></tr>`;
+                documentList.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px;">ไม่พบข้อมูลแผนการจัดซื้อจัดจ้าง</td></tr>`;
                 return;
             }
 
-            // Logic การเช็คเอกสารใหม่ 10 วัน (ตามที่ตกลงกัน)
+            // Logic NEW: 10 วัน 
             const NEW_THRESHOLD_DAYS = 10; 
             const currentTime = new Date().getTime();
             const newDocTimeLimit = currentTime - (NEW_THRESHOLD_DAYS * 24 * 60 * 60 * 1000);
 
             documentList.innerHTML = '';
             data.forEach(doc => {
-                // สร้าง Direct Download Link จาก Google Drive (เหมือนเดิม)
                 let fileUrl = doc.filename; 
                 if (fileUrl && fileUrl.includes('drive.google.com')) {
                     const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)/); 
@@ -224,12 +419,10 @@
                     }
                 }
                 
-                // แปลงวันที่ (เหมือนเดิม)
                 const formattedDate = doc.date ? new Date(doc.date).toLocaleDateString('th-TH', { 
                     year: 'numeric', month: 'short', day: 'numeric' 
                 }) : '-';
 
-                // ตรวจสอบป้าย NEW (เหมือนเดิม)
                 let newBadge = '';
                 if (doc.date) {
                     const docDateTimestamp = new Date(doc.date).getTime();
@@ -238,7 +431,6 @@
                     }
                 }
 
-                // 5. เปลี่ยน row ให้แสดงแค่ 3 คอลัมน์ (title, date, file)
                 const row = `<tr>
                     <td class="title-col">${doc.title} ${newBadge}</td> 
                     <td>${formattedDate}</td>

@@ -8,60 +8,183 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="icon" type="image/png" href="images/logorfdo.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <style>
-        /* === โค้ดสำหรับป้องกันการเซฟรูปภาพ (CSS) === */
-        img {
-            user-select: none; /* ป้องกันการเลือกข้อความ/รูปภาพ */
-            -webkit-user-select: none; 
-            -moz-user-select: none; 
-            pointer-events: none; /* ปิดการตอบสนองของเมาส์ต่อรูปภาพโดยตรง */
-            -webkit-user-drag: none; /* ป้องกันการลากรูปภาพ */
-        }
-        /* อนุญาตให้องค์ประกอบที่เป็นลิงก์/ปุ่มคลิกได้ตามปกติ */
-        a, button, .dropdown:hover > a, .quick-links li a { 
-            pointer-events: auto !important; 
-            cursor: pointer; /* ให้เคอร์เซอร์ยังเป็นรูปมือ */
-        }
-        /* ================================== */
+<style>
+    :root {
+        --primary-color: #339999;
+        --primary-dark: #206b6b;
+        --primary-light: #e6f7f7;
+        --text-color: #333;
+        --text-muted: #666;
+        --bg-color: #f8fcfc;
+        --white: #ffffff;
+        --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+        --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
+        --radius: 12px;
+    }
 
+    body {
+        margin: 0;
+        background-color: var(--bg-color);
+        font-family: "Prompt", sans-serif;
+        color: var(--text-color);
+        line-height: 1.6;
+    }
 
-        /* CSS ทั่วไป (Head, Nav, Footer เหมือนเดิม) */
-        body {
-            margin: 0;
-            background: #f3f8f8;
-            font-family: "Prompt", sans-serif;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+    /* === Header Section === */
+    .head-section {
+        position: relative;
+        background: linear-gradient(rgba(196, 196, 196, 0.3), rgba(53, 53, 53, 0.5)), url('images/head.jpg') no-repeat center center;
+        background-size: cover;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 60px 5%;
+        min-height: 250px;
+        gap: 20px;
+        color: var(--white);
+    }
 
-        /* Head Section */
-        .head-section { position: relative; background: url('images/head.jpg') no-repeat center center; background-size: cover; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 15px 25px; height: auto; min-height: 300px; gap: 8px; }
-        .head-section img#logo { width: 120px; height: auto; }
-        .head-text-container { display: flex; flex-direction: column; align-items: flex-start; }
-        .head-text { font-size: 64px; font-weight: 600; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
-        .sub-text { font-size: 20px; font-weight: 500; color: rgb(255, 255, 255); text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
+    .head-section img#logo { 
+        width: 100px; 
+        height: auto;
+        filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+    }
 
-        /* Nav Menu */
-        nav { background: #ffffff; padding: 8px 25px; border-bottom: 2px solid #339999; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        nav ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; font-weight: 500; flex-wrap: wrap; }
-        nav ul li { position: relative; }
-        nav ul li a { text-decoration: none; color: #339999; font-size: 16px; padding: 6px 10px; border-radius: 6px; display: flex; align-items: center; gap: 5px; transition: 0.3s; }
-        nav ul li a:hover { background: #e0f3f3; color: #1f6161; }
-        .home-icon { background: #339999; border-radius: 6px; }
-        .home-icon svg { fill: #ffffff; }
-        .home-icon:hover { background: #1f6161; }
-        .dropdown:hover > a { background: #e0f3f3; color:#1f6161; }
-        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #ffffff; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 220px; padding: 5px 0; z-index: 100; }
-        .dropdown-menu li a { color: #339999; padding: 8px 15px; display: block; font-size: 14px; }
-        .dropdown-menu li a:hover { background: #e0f3f3; color:#1f6161; }
-        .dropdown:hover .dropdown-menu { display: block; }
-        
-        /* Layout (สำหรับ Main content) */
+    .head-text-container { display: flex; flex-direction: column; }
+
+    .head-text { 
+        font-size: 48px; 
+        font-weight: 700; 
+        line-height: 1.2;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
+
+    /* === Navigation === */
+    nav {
+        background: linear-gradient(90deg, var(--primary-color) 100%, var(--primary-dark) 0%);
+        padding: 0 20px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    nav ul {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        list-style: none;
+        margin: 0;
+        padding: 8px 0;
+        flex-wrap: wrap;
+        align-items: center;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    nav ul li { position: relative; }
+
+    nav ul li a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 16px;
+        font-weight: 500;
+        padding: 10px 14px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+        white-space: nowrap; 
+    }
+
+    nav ul li a:hover, nav ul li a.active-link {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
+    .home-icon svg { fill: white; }
+    .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
+
+    /* === Dropdown Menu === */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0; 
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        min-width: 260px;
+        padding: 8px 0;
+        z-index: 1001;
+        opacity: 0;
+        transition: all 0.3s;
+        border: 1px solid rgba(0,0,0,0.05);
+        margin-top: 5px;
+    }
+
+    .dropdown:hover > .dropdown-menu {
+        display: block;
+        opacity: 1;
+        animation: fadeIn 0.2s ease-out forwards;
+    }
+
+    .dropdown-menu li {
+        position: relative;
+    }
+
+    .dropdown-menu li a { 
+        color: var(--text-color); 
+        padding: 10px 20px; 
+        border-radius: 0;
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+    }
+    
+    .dropdown-menu li a:hover { 
+        background: var(--primary-light); 
+        color: var(--primary-dark); 
+        padding-left: 25px;
+    }
+
+    /* === Nested Dropdown === */
+    .submenu {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: 0;
+        margin-left: 5px;
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        min-width: 250px;
+        padding: 8px 0;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .nested-dropdown:hover > .submenu {
+        display: block;
+        animation: fadeIn 0.2s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+        /* === 4. ส่วนเนื้อหา (Content - ใช้สไตล์เดิมที่คุณชอบ) === */
         .content-container {
             flex-grow: 1; 
-            max-width: 960px; 
+            max-width: 960px; /* ความกว้างเดิม */
             margin: 40px auto; 
             padding: 30px; 
             background: white; 
@@ -89,191 +212,97 @@
             padding-left: 10px;
         }
         
-        /* 1. หน้าที่รับผิดชอบ (Responsibilities) */
-        .responsibilities ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .responsibilities li {
-            padding: 8px 0;
-            line-height: 1.6;
-            color: #444;
-            font-size: 16px;
-        }
-        /* เพิ่มสัญลักษณ์นำหน้าลิสต์ */
-        .responsibilities li:before { 
-            content: "• "; 
-            color: #339999;
-            margin-right: 8px;
-            font-weight: bold;
-        }
+        /* List Styles */
+        .responsibilities ul { list-style: none; padding: 0; margin: 0; }
+        .responsibilities li { padding: 8px 0; line-height: 1.6; color: #444; font-size: 16px; }
+        .responsibilities li:before { content: "• "; color: #339999; margin-right: 8px; font-weight: bold; }
 
-        /* CSS สำหรับ Quick Links */
-        .quick-links ul {
-            list-style: none;
-            padding-left: 0;
-            margin-top: 20px;
-        }
-        .quick-links li {
-            margin-bottom: 10px;
-        }
+        /* Quick Links */
+        .quick-links ul { list-style: none; padding-left: 0; margin-top: 20px; }
+        .quick-links li { margin-bottom: 10px; }
         .quick-links li a {
-            display: block;
-            padding: 12px 15px;
-            background: #f0fafa;
-            border: 1px solid #c9e6e6;
-            border-radius: 6px;
-            color: #1f6161;
-            text-decoration: none;
-            transition: 0.3s;
-            font-weight: 500;
+            display: block; padding: 12px 15px; background: #f0fafa;
+            border: 1px solid #c9e6e6; border-radius: 6px; color: #1f6161;
+            text-decoration: none; transition: 0.3s; font-weight: 500;
         }
-        .quick-links li a:hover {
-            background: #d4eaea;
-            border-color: #339999;
-        }
-        .quick-links li i {
-            margin-right: 10px;
-            color: #339999;
-        }
+        .quick-links li a:hover { background: #d4eaea; border-color: #339999; }
+        .quick-links li i { margin-right: 10px; color: #339999; }
         
-        /* 2. บุคลากร (Personnel) */
-        
-        /* Card ทั่วไป */
         .person-card {
-            text-align: center;
-            padding: 15px 5px; 
-            background: #f7fcfc;
-            border: 1px solid #e0f3f3;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
+            text-align: center; padding: 15px 5px; background: #f7fcfc;
+            border: 1px solid #e0f3f3; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: transform 0.2s;
         }
-        .person-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
+        .person-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 
-        /* รูปภาพ */
         .person-image {
-            width: 120px;
-            height: 120px;
-            background: #ccc;
-            margin: 0 auto 10px auto;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #339999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 500;
+            width: 120px; height: 120px; background: #ccc;
+            margin: 0 auto 10px auto; border-radius: 50%; overflow: hidden;
+            border: 3px solid #339999; display: flex; align-items: center;
+            justify-content: center; font-size: 12px; font-weight: 500;
         }
-        .person-image span {
-            color: #444;
-            display: block;
-            text-align: center;
-            padding: 10px;
-        }
+        .person-image span { color: #444; display: block; text-align: center; padding: 10px; }
         
-        /* ปรับขนาดฟอนต์ชื่อและตำแหน่งของพนักงานทั่วไป */
-        .person-name {
-            font-weight: 600;
-            color: #1f6161;
-            margin-bottom: 2px;
-            line-height: 1.2;
-            font-size: 15px; 
-        }
-
-        .person-position {
-            font-size: 13px; 
-            color: #666;
-            line-height: 1.3;
-        }
+        .person-name { font-weight: 600; color: #1f6161; margin-bottom: 2px; line-height: 1.2; font-size: 15px; }
+        .person-position { font-size: 13px; color: #666; line-height: 1.3; }
         
-        /* สไตล์สำหรับหัวหน้าฝ่าย (บนสุด) */
+        /* Head Card */
         .head-card {
-            max-width: 300px; 
-            margin: 0 auto 30px auto; 
-            border: 1px solid #339999; 
-            background: #e0f3f3; 
+            max-width: 300px; margin: 0 auto 30px auto;
+            border: 1px solid #339999; background: #e0f3f3;
         }
-        .head-card .person-image {
-            width: 150px; 
-            height: 150px;
-            border-color: #1f6161;
-        }
-        .head-card .person-name {
-            font-size: 17px; 
-            color: #339999;
-        }
-        .head-card .person-position {
-            font-size: 14px; 
-        }
+        .head-card .person-image { width: 150px; height: 150px; border-color: #1f6161; }
+        .head-card .person-name { font-size: 17px; color: #339999; }
+        .head-card .person-position { font-size: 14px; }
 
-        /* Grid สำหรับพนักงานคนอื่นๆ */
+        /* Grid */
         .personnel-grid-members {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 คอลัมน์เท่ากัน */
-            gap: 20px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
         }
         
-        /* 3. ติดต่อเรา (Contact Info) */
+        /* Contact Section */
         .contact-section {
-            padding: 20px;
-            background: #e0f3f3;
-            border-radius: 8px;
-            margin-top: 30px;
-            text-align: center;
+            padding: 20px; background: #e0f3f3; border-radius: 8px;
+            margin-top: 30px; text-align: center;
         }
-        .contact-section p {
-            font-size: 18px;
-            margin: 8px 0;
-            font-weight: 500;
-            color: #1f6161;
-        }
-        .contact-section i {
-            color: #339999;
-            margin-right: 10px;
-        }
-        .contact-section .tel {
-            font-weight: 700;
-            font-size: 20px;
-        }
+        .contact-section p { font-size: 18px; margin: 8px 0; font-weight: 500; color: #1f6161; }
+        .contact-section i { color: #339999; margin-right: 10px; }
+        .contact-section .tel { font-weight: 700; font-size: 20px; }
 
-
-        /* Footer */
+      
         footer {
             text-align: center;
-            padding: 20px;
-            background: #339999;
-            color: white;
-            margin-top: 55px; 
+            padding: 15px 20px; 
+            background: var(--primary-color);
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-top: auto;
         }
 
         /* Responsive */
-        @media (max-width: 768px) { /* สำหรับ Tablet/จอเล็ก จะปรับเป็น 2 คอลัมน์ */
-            .personnel-grid-members {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        @media (max-width: 860px) {
+            .head-section img#logo { width: 100px; }
+            .head-text { font-size: 28px; }
+            .personnel-grid-members { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 600px) {
-            .head-section img#logo { width: 80px; }
-            .head-text { font-size: 18px; }
-            .sub-text { font-size: 14px; }
-            .personnel-grid-members {
-                grid-template-columns: 1fr; /* หน้าจอเล็กสุดเหลือ 1 คอลัมน์ */
-            }
-            .person-name { font-size: 14px; } 
-            .person-position { font-size: 12px; } 
+            .head-section { flex-direction: column; text-align: center; }
+            .head-text { font-size: 24px; }
+            nav { padding: 5px 0; }
+            nav ul { justify-content: center; gap: 5px; }
+            nav ul li a { padding: 6px 12px; font-size: 13px; }
+            
+            .content-container { padding: 20px; }
+            .personnel-grid-members { grid-template-columns: 1fr; }
+            
+            .submenu { position: static; box-shadow: none; margin-left: 20px; border-left: 2px solid #eee; min-width: auto; }
         }
     </style>
 </head>
 <body>
 
 <div class="head-section">
-    <img id="logo" src="images/logorfdo.png" alt="logo" /> 
+    <img id="logo" src="images/logo.png" alt="logo" /> 
     <div class="head-text-container">
         <div class="head-text">ส่วนอำนวยการ</div>
         <div class="sub-text">สำนักวิจัยและพัฒนาการป่าไม้</div>
@@ -282,23 +311,26 @@
 
 <nav>
     <ul>
-        <li>
-            <a href="index.html" class="home-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg>
-            </a>
-        </li>
+        <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
+        
         <li class="dropdown">
             <a href="#">เกี่ยวกับเรา ▾</a>
             <ul class="dropdown-menu">
                 <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
-                <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
-                <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
-                <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
-                <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
-                <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
-                <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
+                <li class="nested-dropdown">
+                    <a href="#">ฝ่ายภายในส่วนอำนวยการ ▸</a>
+                    <ul class="submenu">
+                        <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
+                        <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
+                        <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
+                        <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
+                        <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
+                        <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
+                    </ul>
+                </li>
             </ul>
         </li>
+
         <li class="dropdown">
             <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
             <ul class="dropdown-menu">
@@ -307,20 +339,22 @@
                 <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
             </ul>
         </li>
-                        <li class="dropdown"><a href="#" class="active-link">จัดซื้อจัดจ้าง ▾</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
-                        <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานและราคากลาง</a></li>
-                        <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
-                        <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
-                    </ul>
-                </li>
-        <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
-        <li><a href="edocs.html">ระบบหนังสือเวียนกรมป่าไม้</a></li>
-        <li><a href="https://www.forest.go.th/research/" target="_blank">สำนักวิจัยและพัฒนาการป่าไม้</a></li>
+
+        <li class="dropdown">
+            <a href="#">จัดซื้อจัดจ้าง ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
+                <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานและราคากลาง</a></li>
+                <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
+                <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
+            </ul>
+        </li>
+ <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
+        <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
+        <li><a href="https://www.forest.go.th/research/" target="_blank">เว็บไซต์ สวพ.</a></li>
         <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
-        <li><a href="contact.html">ติดต่อ</a></li>
-    </ul>
+        <li><a href="contact.html">ติดต่อ</a></li>        
+        </ul>
 </nav>
 
 <main class="content-container">
@@ -349,11 +383,12 @@
         <ul>
             <li>
                 <a href="https://drive.google.com/drive/folders/1GIW0YoFPy9ZFDdLDhNcHFnhu13gXvWFr" target="_blank">
-                    <i class="fas fa-car-side"></i> แบบฟอร์มขออนุญาตใช้รถส่วนกลาง </a>
+                    <i class="fas fa-car-side"></i> แบบฟอร์มขออนุญาตใช้รถส่วนกลาง 
+                </a>
             </li>
             <li>
                 <a href="https://drive.google.com/drive/folders/10SOwh5PjeJuKpVVH87oGCCczr8spitS8" target="_blank">
-                    <i class="fas fa-home"></i> แบบรายงานสรุปผลการปฏิบัติงาน
+                    <i class="fas fa-file-alt"></i> แบบรายงานสรุปผลการปฏิบัติงาน
                 </a>
             </li>
         </ul>
@@ -431,10 +466,8 @@
         </div>
     </div>
     
-    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
-
     <div class="contact-section">
-        <h3 class="section-header" style="margin-top: 0;"><i class="fas fa-envelope-open-text"></i> ติดต่อฝ่ายธุรการ</h3>
+        <h3 class="section-header" style="margin-top: 0;"></i> ติดต่อฝ่ายธุรการ</h3>
         <p>
             <i class="fas fa-phone-alt"></i> 
             <span class="tel">0 2561 4292 - 3 ต่อ 5474</span>
@@ -452,10 +485,8 @@
 <script>
 // === โค้ด JavaScript สำหรับป้องกันการคลิกขวา (Context Menu) ===
 document.addEventListener('contextmenu', function(e) {
-    // ป้องกันการแสดงเมนูคลิกขวาบนทั้งหน้า
     e.preventDefault();
 });
-// ===========================================
 </script>
 
 </body>
