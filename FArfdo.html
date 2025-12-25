@@ -8,179 +8,201 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="icon" type="image/png" href="images/logorfdo.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-    :root {
-        --primary-color: #339999;
-        --primary-dark: #206b6b;
-        --primary-light: #e6f7f7;
-        --text-color: #333;
-        --text-muted: #666;
-        --bg-color: #f8fcfc;
-        --white: #ffffff;
-        --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
-        --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
-        --radius: 12px;
-    }
+    <style>
+        /* === Theme Colors === */
+        :root {
+            --primary-color: #339999;
+            --primary-dark: #206b6b;
+            --primary-light: #e6f7f7;
+            --text-color: #333;
+            --text-muted: #666;
+            --bg-color: #f8fcfc;
+            --white: #ffffff;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
+            --radius: 12px;
+        }
 
-    body {
-        margin: 0;
-        background-color: var(--bg-color);
-        font-family: "Prompt", sans-serif;
-        color: var(--text-color);
-        line-height: 1.6;
-    }
+        /* === General Styles === */
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: "Prompt", sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    /* === Header Section === */
-    .head-section {
-        position: relative;
-        background: linear-gradient(rgba(196, 196, 196, 0.3), rgba(53, 53, 53, 0.5)), url('images/head.jpg') no-repeat center center;
-        background-size: cover;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 60px 5%;
-        min-height: 250px;
-        gap: 20px;
-        color: var(--white);
-    }
+        /* ป้องกันการเซฟรูปภาพ */
+        img {
+            user-select: none; -webkit-user-select: none; -moz-user-select: none;
+            pointer-events: none; -webkit-user-drag: none;
+        }
+        a, button, .dropdown:hover > a, .quick-links li a { 
+            pointer-events: auto !important; cursor: pointer; 
+        }
 
-    .head-section img#logo { 
-        width: 100px; 
-        height: auto;
-        filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
-    }
+        /* === Header Section === */
+        .head-section {
+            position: relative;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 60px 5%;
+            min-height: 250px;
+            gap: 20px;
+            color: var(--white);
+        }
+        .head-section img#logo { 
+            width: 100px; height: auto; 
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+        }
+        .head-text-container { display: flex; flex-direction: column; }
+        .head-text { 
+            font-size: 48px; font-weight: 700; line-height: 1.2; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-    .head-text-container { display: flex; flex-direction: column; }
+        /* === Navigation (Compact Style) === */
+        nav {
+            background: var(--primary-color);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
 
-    .head-text { 
-        font-size: 48px; 
-        font-weight: 700; 
-        line-height: 1.2;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 5px 0;
+            flex-wrap: wrap;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
 
-    .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
+        nav ul li { position: relative; }
 
-    /* === Navigation === */
-    nav {
-        background: linear-gradient(90deg, var(--primary-color) 100%, var(--primary-dark) 0%);
-        padding: 0 20px;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+        nav ul li a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
 
-    nav ul {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        list-style: none;
-        margin: 0;
-        padding: 8px 0;
-        flex-wrap: wrap;
-        align-items: center;
-        max-width: 1600px;
-        margin: 0 auto;
-    }
+        nav ul li a:hover, nav ul li a.active-link {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            transform: translateY(-1px);
+        }
 
-    nav ul li { position: relative; }
-
-    nav ul li a {
-        text-decoration: none;
-        color: rgba(255, 255, 255, 0.95);
-        font-size: 16px;
-        font-weight: 500;
-        padding: 10px 14px;
-        border-radius: 30px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.3s ease;
-        white-space: nowrap; 
-    }
-
-    nav ul li a:hover, nav ul li a.active-link {
-        background: rgba(255, 255, 255, 0.2);
-        color: #fff;
-        transform: translateY(-1px);
-    }
-
-    .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
-    .home-icon svg { fill: white; }
+     .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
+    .home-icon svg { fill: white; width: 22px; height: 22px; }
     .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-    /* === Dropdown Menu === */
+    /* === Dropdown Menu (Fix Gap Issue) === */
     .dropdown-menu {
         display: none;
         position: absolute;
         top: 100%;
-        left: 0; 
+        left: 0;
         background: var(--white);
         border-radius: 8px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        min-width: 260px;
+        min-width: 270px;
         padding: 8px 0;
         z-index: 1001;
         opacity: 0;
-        transition: all 0.3s;
+        transition: all 0.2s;
         border: 1px solid rgba(0,0,0,0.05);
-        margin-top: 5px;
+        margin-top: 10px; /* เว้นระยะห่าง */
     }
 
-    .dropdown:hover > .dropdown-menu {
-        display: block;
-        opacity: 1;
-        animation: fadeIn 0.2s ease-out forwards;
+    /* Invisible Bridge */
+    .dropdown-menu::before {
+        content: "";
+        position: absolute;
+        top: -10px; /* ยื่นขึ้นไปข้างบน */
+        left: 0;
+        width: 100%;
+        height: 10px;
+        background: transparent;
     }
 
-    .dropdown-menu li {
-        position: relative;
+    .dropdown:hover > .dropdown-menu { 
+        display: block; opacity: 1; animation: fadeIn 0.2s ease-out forwards; 
     }
 
+    .dropdown-menu li { position: relative; }
     .dropdown-menu li a { 
         color: var(--text-color); 
-        padding: 10px 20px; 
-        border-radius: 0;
-        display: flex;
-        justify-content: space-between;
-        font-size: 14px;
+        padding: 12px 20px; 
+        border-radius: 0; 
+        display: flex; 
+        justify-content: space-between; 
+        font-size: 16px; /* Font Size Submenu */
+        font-weight: 500;
     }
-    
     .dropdown-menu li a:hover { 
         background: var(--primary-light); 
         color: var(--primary-dark); 
-        padding-left: 25px;
+        padding-left: 25px; 
     }
 
-    /* === Nested Dropdown === */
+    /* === Nested Submenu (Fix Gap Issue) === */
     .submenu {
         display: none;
         position: absolute;
-        left: 100%;
-        top: 0;
-        margin-left: 5px;
+        left: 100%; 
+        top: -5px; 
+        margin-left: 10px; 
         background: var(--white);
         border-radius: 8px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        min-width: 250px;
+        min-width: 290px; 
         padding: 8px 0;
         border: 1px solid rgba(0,0,0,0.05);
     }
 
-    .nested-dropdown:hover > .submenu {
-        display: block;
-        animation: fadeIn 0.2s ease-out forwards;
+    .submenu::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -15px; /* ยื่นไปทางซ้าย */
+        width: 20px;
+        height: 100%;
+        background: transparent;
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+    .nested-dropdown:hover > .submenu { 
+        display: block; animation: fadeIn 0.2s ease-out forwards; 
     }
 
-        /* === Content Layout (คงรูปแบบเดิม) === */
+    @keyframes fadeIn { 
+        from { opacity: 0; transform: translateY(5px); } 
+        to { opacity: 1; transform: translateY(0); } 
+    }
+        /* === Content Layout === */
         .content-container {
             flex-grow: 1; 
             max-width: 960px; 
@@ -193,14 +215,13 @@
         }
         .content-container h2 { 
             font-size: 30px; 
-            color: var(--primary-color); /* ใช้ตัวแปรสี */
+            color: var(--primary-color); 
             border-bottom: 3px solid var(--primary-color); 
             padding-bottom: 10px; 
             margin-top: 0; 
             margin-bottom: 25px;
         }
 
-        /* Section Header Styles */
         .section-header { 
             font-size: 22px; 
             font-weight: 600; 
@@ -211,12 +232,10 @@
             padding-left: 10px;
         }
         
-        /* 1. Responsibilities */
         .responsibilities ul { list-style: none; padding-left: 0; margin: 0; }
         .responsibilities li { padding: 8px 0; line-height: 1.6; color: #444; font-size: 16px; }
         .responsibilities li:before { content: "• "; color: var(--primary-color); margin-right: 8px; font-weight: bold; }
         
-        /* 2. Quick Links */
         .quick-links ul { list-style: none; padding-left: 0; margin-top: 20px; }
         .quick-links li { margin-bottom: 10px; }
         .quick-links li a {
@@ -227,7 +246,7 @@
         .quick-links li a:hover { background: #d4eaea; border-color: var(--primary-color); }
         .quick-links li i { margin-right: 10px; color: var(--primary-color); }
         
-        /* 3. Personnel Cards */
+        /* === Personnel Cards === */
         .person-card {
             text-align: center; padding: 15px 5px; background: #f7fcfc;
             border: 1px solid #e0f3f3; border-radius: 8px;
@@ -238,13 +257,20 @@
         .person-image {
             width: 120px; height: 120px; background: #ccc;
             margin: 0 auto 10px auto; border-radius: 50%; overflow: hidden;
-            border: 3px solid var(--primary-color); display: flex; align-items: center;
-            justify-content: center; font-size: 12px; font-weight: 500;
+            border: 3px solid var(--primary-color); 
+            display: flex; align-items: center; justify-content: center; 
         }
+        
+        /* [แก้ไข] บังคับรูปในวงกลมให้เต็มกรอบเสมอ */
+        .person-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .person-name { font-weight: 600; color: #1f6161; margin-bottom: 2px; line-height: 1.2; font-size: 15px; }
         .person-position { font-size: 13px; color: #666; line-height: 1.3; }
         
-        /* Head Card */
         .head-card {
             max-width: 300px; margin: 0 auto 30px auto; 
             border: 1px solid var(--primary-color); background: #e0f3f3; 
@@ -253,7 +279,6 @@
         .head-card .person-name { font-size: 17px; color: var(--primary-color); }
         .head-card .person-position { font-size: 14px; }
 
-        /* Grid System */
         .personnel-grid-container {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
         }
@@ -263,7 +288,6 @@
         }
         .centered-row .person-card { flex-basis: calc(33.33% - 10px); max-width: 250px; }
         
-        /* 4. Contact Section */
         .contact-section {
             padding: 20px; background: #e0f3f3; border-radius: 8px;
             margin-top: 30px; text-align: center;
@@ -272,12 +296,12 @@
         .contact-section i { color: var(--primary-color); margin-right: 10px; }
         .contact-section .tel { font-weight: 700; font-size: 20px; }
 
-        /* === Footer (New Style) === */
+        /* === Footer === */
         footer {
             text-align: center;
-            padding: 15px 20px; /* ลด Padding ให้บางลง */
+            padding: 15px 20px;
             background: var(--primary-color);
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.9);
             font-size: 14px;
             margin-top: auto;
         }
@@ -295,7 +319,7 @@
             .head-text { font-size: 24px; }
             nav { padding: 5px 0; }
             nav ul { justify-content: center; gap: 5px; }
-            nav ul li a { padding: 6px 12px; font-size: 13px; }
+            nav ul li a { padding: 6px 12px; font-size: 14px; }
             
             .content-container { padding: 20px; }
             .personnel-grid-container { grid-template-columns: 1fr; }
@@ -325,7 +349,7 @@
     <ul>
         <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
         
-        <li class="dropdown">
+ <li class="dropdown">
             <a href="#">เกี่ยวกับเรา ▾</a>
             <ul class="dropdown-menu">
                 <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
@@ -353,25 +377,54 @@
         </li>
 
         <li class="dropdown">
-            <a href="#">จัดซื้อจัดจ้าง ▾</a>
+            <a href="#">คำสั่ง/ประกาศ ▾</a>
             <ul class="dropdown-menu">
-                <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
-                <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานและราคากลาง</a></li>
-                <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
-                <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
+                <li><a href="command.html">คำสั่ง</a></li>
+                <li><a href="announce.html">ประกาศ</a></li>
             </ul>
         </li>
 
-        <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
-        <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
-        <li><a href="https://www.forest.go.th/research/" target="_blank">เว็บไซต์ สวพ.</a></li>
-        <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
+        <li class="dropdown">
+            <a href="#">ข่าวสาร ▾</a>
+            <ul class="dropdown-menu">
+                
+                <li class="nested-dropdown">
+                    <a href="#">จัดซื้อจัดจ้าง ▸</a>
+                    <ul class="submenu">
+                        <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
+                        <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
+                        <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
+                        <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
+                    </ul>
+                </li>
+
+                <li class="nested-dropdown">
+                    <a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a>
+                    <ul class="submenu">
+                        <li><a href="https://edoc.forest.go.th/doccir/docindex.html" target="_blank">หนังสือเวียนกรมป่าไม้</a></li>
+                        <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <a href="#">ระเบียบ ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
+                <li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li>
+            </ul>
+        </li>
+
+        <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
+
         <li><a href="contact.html">ติดต่อ</a></li>
     </ul>
 </nav>
 
 <main class="content-container">
-    <h2><i class="fas fa-hand-holding-usd"></i> ฝ่ายการเงิน และบัญชี</h2>
+    <h2><i class="fas fa-hand-holding-usd"></i> ฝ่ายการเงินและบัญชี</h2>
     
     <div class="responsibilities">
         <h3 class="section-header"><i class="fas fa-tasks"></i> หน้าที่และความรับผิดชอบ</h3>
@@ -398,11 +451,11 @@
     <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
 
     <div class="personnel">
-        <h3 class="section-header"><i class="fas fa-users"></i> บุคลากรฝ่ายการเงิน และบัญชี</h3>
+        <h3 class="section-header"><i class="fas fa-users"></i> บุคลากรฝ่ายการเงินและบัญชี</h3>
         
         <div class="person-card head-card">
             <div class="person-image">
-                <img src="images/atchara.jpg" alt="รูปนางสาวอัจฉรา" style="width: 100%; height: 100%; object-fit: cover;"> 
+                <img src="images/atchara.jpg" alt="รูปนางสาวอัจฉรา"> 
             </div>
             <div class="person-name">นางสาวอัจฉรา หล่ายแปด</div>
             <div class="person-position">นักจัดการงานทั่วไปปฏิบัติการ <br> ทำหน้าที่หัวหน้าฝ่ายการเงิน และบัญชี </div>
@@ -412,7 +465,7 @@
             
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/wilaiwan_sp.jpg" alt="รูปนางสาววิไลวรรณ แสนภักดี" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    <img src="images/wilaiwan_sp.jpg" alt="รูปนางสาววิไลวรรณ แสนภักดี"> 
                 </div>
                 <div class="person-name">นางสาววิไลวรรณ แสนภักดี</div>
                 <div class="person-position">นักจัดการงานทั่วไป</div>
@@ -420,7 +473,7 @@
 
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/chawal.png" alt="รูปนายชวัล" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    <img src="images/chawal.png" alt="รูปนายชวัล"> 
                 </div>
                 <div class="person-name">นายชวัล แซ่ฟู</div>
                 <div class="person-position">นักวิชาการเงินและบัญชี</div>
@@ -428,7 +481,7 @@
             
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/anchalee.jpg" alt="รูปนางสาวอัญชลี" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    <img src="images/anchalee.jpg" alt="รูปนางสาวอัญชลี"> 
                 </div>
                 <div class="person-name">นางสาวอัญชลี ขวัญเนตร์</div>
                 <div class="person-position">เจ้าพนักงานธุรการ</div>
@@ -437,7 +490,7 @@
             <div class="centered-row">
                 <div class="person-card">
                     <div class="person-image">
-                        <img src="images/supawita.jpg" alt="รูปนางสุภาวิตา" style="width: 100%; height: 100%; object-fit: cover;"> 
+                        <img src="images/supawita.jpg" alt="รูปนางสุภาวิตา"> 
                     </div>
                     <div class="person-name">นางสุภาวิตา สุวรรณดี</div>
                     <div class="person-position">เจ้าหน้าที่ธุรการ</div>
@@ -445,7 +498,7 @@
                 
                 <div class="person-card">
                     <div class="person-image">
-                        <img src="images/sornsawan.jpg" alt="รูปนางสาวศรสวรรค์" style="width: 100%; height: 100%; object-fit: cover;"> 
+                        <img src="images/sornsawan.jpg" alt="รูปนางสาวศรสวรรค์"> 
                     </div>
                     <div class="person-name">นางสาวศรสวรรค์ รอดปัญญา</div>
                     <div class="person-position">เจ้าหน้าที่ธุรการ</div>
@@ -458,7 +511,7 @@
     <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
 
     <div class="contact-section">
-        <h3 class="section-header" style="margin-top: 0;"></i> ติดต่อฝ่ายการเงิน และบัญชี</h3>
+        <h3 class="section-header" style="margin-top: 0;"></i> ติดต่อฝ่ายการเงินและบัญชี</h3>
         <p>
             <i class="fas fa-phone-alt"></i> 
             <span class="tel">0 2561 4292 - 3 ต่อ 5661</span>

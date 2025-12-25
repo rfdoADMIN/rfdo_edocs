@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RFDO e-Doc - แผนการจัดซื้อจัดจ้าง</title> 
+    <title>RFDO e-Doc - คำสั่ง สวพ.</title> 
     
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="icon" type="image/png" href="images/logorfdo.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-    /* === Theme Colors === */
+ <style>
     :root {
         --primary-color: #339999;
         --primary-dark: #206b6b;
@@ -25,30 +24,18 @@
         --radius: 12px;
     }
 
-    /* === General Styles === */
     body {
         margin: 0;
         background-color: var(--bg-color);
         font-family: "Prompt", sans-serif;
         color: var(--text-color);
         line-height: 1.6;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
-
-    img {
-        user-select: none; -webkit-user-select: none; -moz-user-select: none;
-        pointer-events: none; -webkit-user-drag: none;
-    }
-    a, button, .dropdown:hover > a, .quick-links li a, .menu-item { 
-        pointer-events: auto !important; cursor: pointer; 
     }
 
     /* === Header Section === */
     .head-section {
         position: relative;
-        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
+        background: linear-gradient(rgba(196, 196, 196, 0.3), rgba(53, 53, 53, 0.5)), url('images/head.jpg') no-repeat center center;
         background-size: cover;
         display: flex;
         flex-direction: row;
@@ -59,62 +46,68 @@
         gap: 20px;
         color: var(--white);
     }
+
     .head-section img#logo { 
-        width: 100px; height: auto; 
+        width: 100px; 
+        height: auto;
         filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
     }
+
     .head-text-container { display: flex; flex-direction: column; }
+
     .head-text { 
-        font-size: 48px; font-weight: 700; line-height: 1.2; 
+        font-size: 48px; 
+        font-weight: 700; 
+        line-height: 1.2;
         text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
+
     .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-    /* === Navigation (Compact Style & Large Font) === */
-    nav {
-        background: var(--primary-color);
-        padding: 0 20px;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+    /* === Navigation === */
+       nav {
+            background: var(--primary-color);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
 
-    nav ul {
-        display: flex;
-        justify-content: center;
-        gap: 20px; 
-        list-style: none;
-        margin: 0;
-        padding: 5px 0; /* Padding น้อยเพื่อให้แถบบาง */
-        flex-wrap: wrap;
-        align-items: center;
-        max-width: 1600px;
-        margin: 0 auto;
-    }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 5px 0;
+            flex-wrap: wrap;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
 
-    nav ul li { position: relative; }
+        nav ul li { position: relative; }
 
-    nav ul li a {
-        text-decoration: none;
-        color: rgba(255, 255, 255, 0.95);
-        font-size: 16px; 
-        font-weight: 500;
-        padding: 8px 14px; /* Padding น้อยลง */
-        border-radius: 30px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.3s ease;
-        white-space: nowrap;
-    }
+        nav ul li a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
 
-    nav ul li a:hover {
+    nav ul li a:hover, nav ul li a.active-link {
         background: rgba(255, 255, 255, 0.2);
         color: #fff;
         transform: translateY(-1px);
     }
-
     .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
     .home-icon svg { fill: white; width: 22px; height: 22px; }
     .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
@@ -201,6 +194,7 @@
         from { opacity: 0; transform: translateY(5px); } 
         to { opacity: 1; transform: translateY(0); } 
     }
+
         /* === Content Layout === */
         main.content-container { 
             flex-grow: 1; 
@@ -241,10 +235,9 @@
             font-size: 15px;
         }
         
-        /* Column Widths (สำหรับ 3 คอลัมน์) */
-        .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 70%; word-wrap: break-word; }
-        .doc-table th:nth-child(2), .doc-table td:nth-child(2) { width: 20%; }
-        .doc-table th:nth-child(3), .doc-table td:nth-child(3) { width: 10%; text-align: center; }
+        /* ปรับ Column Widths สำหรับ 2 คอลัมน์ */
+        .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 90%; word-wrap: break-word; }
+        .doc-table th:nth-child(2), .doc-table td:nth-child(2) { width: 10%; text-align: center; }
         
         .doc-table th { 
             background: var(--primary-color); 
@@ -270,20 +263,7 @@
             color: white; 
         }
 
-        /* Badge NEW */
-        .new-badge { 
-            display: inline-block; 
-            background-color: #e74c3c; 
-            color: white; 
-            font-size: 10px; 
-            font-weight: 700; 
-            padding: 3px 6px; 
-            border-radius: 4px; 
-            margin-left: 8px; 
-            vertical-align: middle; 
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        /* *** ลบ Badge NEW CSS ออกแล้ว *** */
 
         /* Footer (แบบบาง) */
         footer { 
@@ -407,12 +387,11 @@
 </nav>
 
     <main class="content-container">
-        <h2>แผนการจัดซื้อจัดจ้าง ของสำนักวิจัยและพัฒนาการป่าไม้</h2>
+        <h2>คำสั่ง สำนักวิจัยและพัฒนาการป่าไม้</h2> 
         <table id="docTable" class="doc-table">
         <thead>
         <tr>
             <th class="title-col">ชื่อเรื่อง</th>
-            <th>วันที่</th>
             <th>ไฟล์</th>
         </tr>
     </thead>
@@ -426,40 +405,37 @@
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; 
 
+        // ******** Supabase Config (ใช้ค่าที่คุณให้มา) ********
         const SUPABASE_URL = 'https://rxqfmhrxoepjdsmmnqhk.supabase.co';
         const SUPABASE_KEY_VALUE = "sb_publishable_lMMLp3mTrIiSm1Om-HdQxw_oOrHub8g"; 
         
         const supabase = createClient(SUPABASE_URL, SUPABASE_KEY_VALUE); 
         const documentList = document.getElementById('documentList');
         
-        const TARGET_TABLE = 'procurement_plan';
+        const TARGET_TABLE = 'command'; 
 
         async function loadDocuments() {
-            documentList.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:#666;">กำลังโหลดข้อมูลแผนการจัดซื้อจัดจ้าง...</td></tr>';
+            documentList.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:20px; color:#666;">กำลังโหลดข้อมูลคำสั่ง สวพ....</td></tr>';
 
             const { data, error } = await supabase.from(TARGET_TABLE)
-                .select('title, date, filename')
+                .select('title, filename') 
                 .order('date', { ascending: false });
 
             if(error){
-                documentList.innerHTML = `<tr><td colspan="3" style="color:red; text-align:center;">เกิดข้อผิดพลาด: ${error.message}</td></tr>`;
+                documentList.innerHTML = `<tr><td colspan="2" style="color:red; text-align:center;">เกิดข้อผิดพลาด: ${error.message}</td></tr>`;
                 console.error("Supabase API Error:", error);
                 return;
             }
 
             if (!data || data.length === 0) {
-                documentList.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px;">ไม่พบข้อมูลแผนการจัดซื้อจัดจ้าง</td></tr>`;
+                documentList.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px;">ไม่พบข้อมูลคำสั่ง สวพ.</td></tr>`;
                 return;
             }
-
-            // Logic NEW: 10 วัน 
-            const NEW_THRESHOLD_DAYS = 10; 
-            const currentTime = new Date().getTime();
-            const newDocTimeLimit = currentTime - (NEW_THRESHOLD_DAYS * 24 * 60 * 60 * 1000);
 
             documentList.innerHTML = '';
             data.forEach(doc => {
                 let fileUrl = doc.filename; 
+                // จัดการลิงก์ Google Drive เพื่อให้ดาวน์โหลดโดยตรง
                 if (fileUrl && fileUrl.includes('drive.google.com')) {
                     const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)/); 
                     if (fileIdMatch && fileIdMatch[1]) {
@@ -467,22 +443,9 @@
                         fileUrl = `https://drive.google.com/uc?export=download&id=${fileId}`; 
                     }
                 }
-                
-                const formattedDate = doc.date ? new Date(doc.date).toLocaleDateString('th-TH', { 
-                    year: 'numeric', month: 'short', day: 'numeric' 
-                }) : '-';
-
-                let newBadge = '';
-                if (doc.date) {
-                    const docDateTimestamp = new Date(doc.date).getTime();
-                    if (docDateTimestamp >= newDocTimeLimit) {
-                        newBadge = '<span class="new-badge">NEW</span>';
-                    }
-                }
 
                 const row = `<tr>
-                    <td class="title-col">${doc.title} ${newBadge}</td> 
-                    <td>${formattedDate}</td>
+                    <td class="title-col">${doc.title}</td> 
                     <td><a href="${fileUrl}" target="_blank">ดาวน์โหลด</a></td>
                 </tr>`;
                 documentList.innerHTML += row;

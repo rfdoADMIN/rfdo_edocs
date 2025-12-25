@@ -10,181 +10,168 @@
     <link rel="icon" type="image/png" href="images/logorfdo.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-    :root {
-        --primary-color: #339999;
-        --primary-dark: #206b6b;
-        --primary-light: #e6f7f7;
-        --text-color: #333;
-        --text-muted: #666;
-        --bg-color: #f8fcfc;
-        --white: #ffffff;
-        --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
-        --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
-        --radius: 12px;
-    }
+    <style>
+        /* === Theme Colors === */
+        :root {
+            --primary-color: #339999;
+            --primary-dark: #206b6b;
+            --primary-light: #e6f7f7;
+            --text-color: #333;
+            --text-muted: #666;
+            --bg-color: #f8fcfc;
+            --white: #ffffff;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
+            --radius: 12px;
+        }
 
-    body {
-        margin: 0;
-        background-color: var(--bg-color);
-        font-family: "Prompt", sans-serif;
-        color: var(--text-color);
-        line-height: 1.6;
-    }
+        /* === General Styles === */
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: "Prompt", sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    /* === Header Section === */
-    .head-section {
-        position: relative;
-        background: linear-gradient(rgba(196, 196, 196, 0.3), rgba(53, 53, 53, 0.5)), url('images/head.jpg') no-repeat center center;
-        background-size: cover;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 60px 5%;
-        min-height: 250px;
-        gap: 20px;
-        color: var(--white);
-    }
+        /* ป้องกันการเซฟรูปภาพ */
+        img {
+            user-select: none; -webkit-user-select: none; -moz-user-select: none;
+            pointer-events: none; -webkit-user-drag: none;
+        }
+        a, button, .dropdown:hover > a, .quick-links li a { 
+            pointer-events: auto !important; cursor: pointer; 
+        }
 
-    .head-section img#logo { 
-        width: 100px; 
-        height: auto;
-        filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
-    }
+        /* === Header Section (New Style) === */
+        .head-section {
+            position: relative;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 60px 5%;
+            min-height: 250px;
+            gap: 20px;
+            color: var(--white);
+        }
+        .head-section img#logo { 
+            width: 100px; height: auto; 
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+        }
+        .head-text-container { display: flex; flex-direction: column; }
+        .head-text { 
+            font-size: 48px; font-weight: 700; line-height: 1.2; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-    .head-text-container { display: flex; flex-direction: column; }
+        /* === Navigation (New Structure & Style) === */
+        nav {
+            background: var(--primary-color);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
 
-    .head-text { 
-        font-size: 48px; 
-        font-weight: 700; 
-        line-height: 1.2;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 5px 0;
+            flex-wrap: wrap;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
 
-    .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
+        nav ul li { position: relative; }
 
-    /* === Navigation === */
-    nav {
-        background: linear-gradient(90deg, var(--primary-color) 100%, var(--primary-dark) 0%);
-        padding: 0 20px;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+        nav ul li a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
 
-    nav ul {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        list-style: none;
-        margin: 0;
-        padding: 8px 0;
-        flex-wrap: wrap;
-        align-items: center;
-        max-width: 1600px;
-        margin: 0 auto;
-    }
+        nav ul li a:hover, nav ul li a.active-link {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            transform: translateY(-1px);
+        }
 
-    nav ul li { position: relative; }
+        .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
+        .home-icon svg { fill: white; width: 24px; height: 24px; }
+        .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-    nav ul li a {
-        text-decoration: none;
-        color: rgba(255, 255, 255, 0.95);
-        font-size: 16px;
-        font-weight: 500;
-        padding: 10px 14px;
-        border-radius: 30px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.3s ease;
-        white-space: nowrap; 
-    }
+        /* Dropdown & Nested Menu (Invisible Bridge Technique) */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            min-width: 270px;
+            padding: 8px 0;
+            z-index: 1001;
+            opacity: 0;
+            transition: all 0.2s;
+            border: 1px solid rgba(0,0,0,0.05);
+            margin-top: 10px;
+        }
+        .dropdown-menu::before {
+            content: ""; position: absolute; top: -10px; left: 0;
+            width: 100%; height: 10px; background: transparent;
+        }
+        .dropdown:hover > .dropdown-menu { display: block; opacity: 1; animation: fadeIn 0.2s ease-out forwards; }
+        .dropdown-menu li { position: relative; }
+        .dropdown-menu li a { 
+            color: var(--text-color); padding: 12px 20px; 
+            border-radius: 0; display: flex; justify-content: space-between; 
+            font-size: 16px; font-weight: 500;
+        }
+        .dropdown-menu li a:hover { background: var(--primary-light); color: var(--primary-dark); padding-left: 25px; }
 
-    nav ul li a:hover, nav ul li a.active-link {
-        background: rgba(255, 255, 255, 0.2);
-        color: #fff;
-        transform: translateY(-1px);
-    }
+        .submenu {
+            display: none;
+            position: absolute;
+            left: 100%; top: -5px; margin-left: 10px;
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            min-width: 290px;
+            padding: 8px 0;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .submenu::after {
+            content: ""; position: absolute; top: 0; left: -15px; 
+            width: 20px; height: 100%; background: transparent;
+        }
+        .nested-dropdown:hover > .submenu { display: block; animation: fadeIn 0.2s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
-    .home-icon svg { fill: white; }
-    .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
-
-    /* === Dropdown Menu === */
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0; 
-        background: var(--white);
-        border-radius: 8px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        min-width: 260px;
-        padding: 8px 0;
-        z-index: 1001;
-        opacity: 0;
-        transition: all 0.3s;
-        border: 1px solid rgba(0,0,0,0.05);
-        margin-top: 5px;
-    }
-
-    .dropdown:hover > .dropdown-menu {
-        display: block;
-        opacity: 1;
-        animation: fadeIn 0.2s ease-out forwards;
-    }
-
-    .dropdown-menu li {
-        position: relative;
-    }
-
-    .dropdown-menu li a { 
-        color: var(--text-color); 
-        padding: 10px 20px; 
-        border-radius: 0;
-        display: flex;
-        justify-content: space-between;
-        font-size: 14px;
-    }
-    
-    .dropdown-menu li a:hover { 
-        background: var(--primary-light); 
-        color: var(--primary-dark); 
-        padding-left: 25px;
-    }
-
-    /* === Nested Dropdown === */
-    .submenu {
-        display: none;
-        position: absolute;
-        left: 100%;
-        top: 0;
-        margin-left: 5px;
-        background: var(--white);
-        border-radius: 8px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        min-width: 250px;
-        padding: 8px 0;
-        border: 1px solid rgba(0,0,0,0.05);
-    }
-
-    .nested-dropdown:hover > .submenu {
-        display: block;
-        animation: fadeIn 0.2s ease-out forwards;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-        /* === 4. ส่วนเนื้อหา (Content - ใช้สไตล์เดิมที่คุณชอบ) === */
+        /* === Content Layout === */
         .content-container {
             flex-grow: 1; 
-            max-width: 960px; /* ความกว้างเดิม */
+            max-width: 960px; 
             margin: 40px auto; 
             padding: 30px; 
             background: white; 
@@ -194,8 +181,8 @@
         }
         .content-container h2 { 
             font-size: 30px; 
-            color: #339999; 
-            border-bottom: 3px solid #339999; 
+            color: var(--primary-color); 
+            border-bottom: 3px solid var(--primary-color); 
             padding-bottom: 10px; 
             margin-top: 0; 
             margin-bottom: 25px;
@@ -208,16 +195,16 @@
             color: #1f6161; 
             margin-top: 30px; 
             margin-bottom: 15px;
-            border-left: 4px solid #339999;
+            border-left: 4px solid var(--primary-color);
             padding-left: 10px;
         }
         
-        /* List Styles */
-        .responsibilities ul { list-style: none; padding: 0; margin: 0; }
+        /* 1. Responsibilities */
+        .responsibilities ul { list-style: none; padding-left: 0; margin: 0; }
         .responsibilities li { padding: 8px 0; line-height: 1.6; color: #444; font-size: 16px; }
-        .responsibilities li:before { content: "• "; color: #339999; margin-right: 8px; font-weight: bold; }
-
-        /* Quick Links */
+        .responsibilities li:before { content: "• "; color: var(--primary-color); margin-right: 8px; font-weight: bold; }
+        
+        /* 2. Quick Links */
         .quick-links ul { list-style: none; padding-left: 0; margin-top: 20px; }
         .quick-links li { margin-bottom: 10px; }
         .quick-links li a {
@@ -225,9 +212,10 @@
             border: 1px solid #c9e6e6; border-radius: 6px; color: #1f6161;
             text-decoration: none; transition: 0.3s; font-weight: 500;
         }
-        .quick-links li a:hover { background: #d4eaea; border-color: #339999; }
-        .quick-links li i { margin-right: 10px; color: #339999; }
+        .quick-links li a:hover { background: #d4eaea; border-color: var(--primary-color); }
+        .quick-links li i { margin-right: 10px; color: var(--primary-color); }
         
+        /* 3. Personnel Cards */
         .person-card {
             text-align: center; padding: 15px 5px; background: #f7fcfc;
             border: 1px solid #e0f3f3; border-radius: 8px;
@@ -238,42 +226,43 @@
         .person-image {
             width: 120px; height: 120px; background: #ccc;
             margin: 0 auto 10px auto; border-radius: 50%; overflow: hidden;
-            border: 3px solid #339999; display: flex; align-items: center;
+            border: 3px solid var(--primary-color); display: flex; align-items: center;
             justify-content: center; font-size: 12px; font-weight: 500;
         }
-        .person-image span { color: #444; display: block; text-align: center; padding: 10px; }
-        
+        /* Fix Image Fit */
+        .person-image img { width: 100%; height: 100%; object-fit: cover; }
+
         .person-name { font-weight: 600; color: #1f6161; margin-bottom: 2px; line-height: 1.2; font-size: 15px; }
         .person-position { font-size: 13px; color: #666; line-height: 1.3; }
         
         /* Head Card */
         .head-card {
-            max-width: 300px; margin: 0 auto 30px auto;
-            border: 1px solid #339999; background: #e0f3f3;
+            max-width: 300px; margin: 0 auto 30px auto; 
+            border: 1px solid var(--primary-color); background: #e0f3f3; 
         }
         .head-card .person-image { width: 150px; height: 150px; border-color: #1f6161; }
-        .head-card .person-name { font-size: 17px; color: #339999; }
+        .head-card .person-name { font-size: 17px; color: var(--primary-color); }
         .head-card .person-position { font-size: 14px; }
 
-        /* Grid */
+        /* Grid System */
         .personnel-grid-members {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
         }
         
-        /* Contact Section */
+        /* 4. Contact Section */
         .contact-section {
             padding: 20px; background: #e0f3f3; border-radius: 8px;
             margin-top: 30px; text-align: center;
         }
         .contact-section p { font-size: 18px; margin: 8px 0; font-weight: 500; color: #1f6161; }
-        .contact-section i { color: #339999; margin-right: 10px; }
+        .contact-section i { color: var(--primary-color); margin-right: 10px; }
         .contact-section .tel { font-weight: 700; font-size: 20px; }
 
-      
+        /* === Footer (New Style) === */
         footer {
             text-align: center;
-            padding: 15px 20px; 
-            background: var(--primary-color);
+            padding: 15px 20px;
+            background: var(--primary-dark);
             color: rgba(255,255,255,0.8);
             font-size: 14px;
             margin-top: auto;
@@ -295,7 +284,13 @@
             .content-container { padding: 20px; }
             .personnel-grid-members { grid-template-columns: 1fr; }
             
-            .submenu { position: static; box-shadow: none; margin-left: 20px; border-left: 2px solid #eee; min-width: auto; }
+            .submenu {
+                position: static;
+                box-shadow: none;
+                margin-left: 20px;
+                border-left: 2px solid #eee;
+                min-width: auto;
+            }
         }
     </style>
 </head>
@@ -311,9 +306,9 @@
 
 <nav>
     <ul>
-        <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
+        <li><a href="index.html" class="home-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
         
-        <li class="dropdown">
+ <li class="dropdown">
             <a href="#">เกี่ยวกับเรา ▾</a>
             <ul class="dropdown-menu">
                 <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
@@ -341,20 +336,50 @@
         </li>
 
         <li class="dropdown">
-            <a href="#">จัดซื้อจัดจ้าง ▾</a>
+            <a href="#">คำสั่ง/ประกาศ ▾</a>
             <ul class="dropdown-menu">
-                <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
-                <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานและราคากลาง</a></li>
-                <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
-                <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
+                <li><a href="command.html">คำสั่ง</a></li>
+                <li><a href="announce.html">ประกาศ</a></li>
             </ul>
         </li>
- <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
-        <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
-        <li><a href="https://www.forest.go.th/research/" target="_blank">เว็บไซต์ สวพ.</a></li>
-        <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
-        <li><a href="contact.html">ติดต่อ</a></li>        
-        </ul>
+
+        <li class="dropdown">
+            <a href="#">ข่าวสาร ▾</a>
+            <ul class="dropdown-menu">
+                
+                <li class="nested-dropdown">
+                    <a href="#">จัดซื้อจัดจ้าง ▸</a>
+                    <ul class="submenu">
+                        <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
+                        <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
+                        <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
+                        <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
+                    </ul>
+                </li>
+
+                <li class="nested-dropdown">
+                    <a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a>
+                    <ul class="submenu">
+                        <li><a href="https://edoc.forest.go.th/doccir/docindex.html" target="_blank">หนังสือเวียนกรมป่าไม้</a></li>
+                        <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <a href="#">ระเบียบ ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
+                <li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li>
+            </ul>
+        </li>
+
+        <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
+
+        <li><a href="contact.html">ติดต่อ</a></li>
+    </ul>
 </nav>
 
 <main class="content-container">
@@ -400,7 +425,7 @@
         
         <div class="person-card head-card">
             <div class="person-image">
-                <img src="images/chatchrapee.jpg" alt="รูปนางสาวชัชระพี" style="width: 100%; height: 100%; object-fit: cover;"> 
+                <img src="images/chatchrapee.jpg" alt="รูปนางสาวชัชระพี"> 
                 <span style="display: none;">นางสาวชัชระพี</span>
             </div>
             <div class="person-name">นางสาวชัชระพี สอนไวย์</div>
@@ -411,7 +436,7 @@
             
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/parita.jpg" alt="รูปนางสาวปาริตา" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    <img src="images/parita.jpg" alt="รูปนางสาวปาริตา"> 
                     <span style="display: none;">**ใส่รูป** นางสาวปาริตา</span>
                 </div>
                 <div class="person-name">นางสาวปาริตา มงคล</div>
@@ -420,7 +445,7 @@
 
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/natthamon.jpg" alt="รูปนางสาวนัทธมน" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    <img src="images/natthamon.jpg" alt="รูปนางสาวนัทธมน"> 
                     <span style="display: none;">**ใส่รูป** นางสาวนัทธมน</span>
                 </div>
                 <div class="person-name">นางสาวนัทธมน นุชบางเดื่อ</div>
@@ -429,7 +454,7 @@
             
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/jidapa.jpg" alt="รูปนางสาวจิดาภา" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    <img src="images/jidapa.jpg" alt="รูปนางสาวจิดาภา"> 
                     <span style="display: none;">**ใส่รูป** นางสาวจิดาภา</span>
                 </div>
                 <div class="person-name">นางสาวจิดาภา ลีละวัฒนากูล</div>
@@ -438,7 +463,7 @@
 
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/nattanit.jpg" alt="รูปนางสาวณัฏฐนิช" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    <img src="images/nattanit.jpg" alt="รูปนางสาวณัฏฐนิช"> 
                     <span style="display: none;">**ใส่รูป** นางสาวณัฏฐนิช</span>
                 </div>
                 <div class="person-name">นางสาวณัฏฐนิช บุญสวน</div>
@@ -447,7 +472,7 @@
 
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/kwanphatawan.jpg" alt="รูปนางสาวขวัญพ์ตะวัน" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    <img src="images/kwanphatawan.jpg" alt="รูปนางสาวขวัญพ์ตะวัน"> 
                     <span style="display: none;">**ใส่รูป** นางสาวขวัญพ์ตะวัน</span>
                 </div>
                 <div class="person-name">นางสาวขวัญพ์ตะวัน วงศ์ชัยนเรศ</div>
@@ -456,7 +481,7 @@
 
             <div class="person-card">
                 <div class="person-image">
-                    <img src="images/nattapol.jpg" alt="รูปนายณัฐพล" style="width: 100%; height: 100%; object-fit: cover;"> 
+                    <img src="images/nattapol.jpg" alt="รูปนายณัฐพล"> 
                     <span style="display: none;">**ใส่รูป** นายณัฐพล</span>
                 </div>
                 <div class="person-name">นายณัฐพล บัวสุวรรณ</div>
@@ -467,7 +492,7 @@
     </div>
     
     <div class="contact-section">
-        <h3 class="section-header" style="margin-top: 0;"></i> ติดต่อฝ่ายธุรการ</h3>
+        <h3 class="section-header" style="margin-top: 0;"><i class="fas fa-envelope-open-text"></i> ติดต่อฝ่ายธุรการ</h3>
         <p>
             <i class="fas fa-phone-alt"></i> 
             <span class="tel">0 2561 4292 - 3 ต่อ 5474</span>

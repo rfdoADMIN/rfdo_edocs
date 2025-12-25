@@ -10,7 +10,8 @@
     <link rel="icon" type="image/png" href="images/logorfdo.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
- <style>
+<style>
+    /* === Theme Colors === */
     :root {
         --primary-color: #339999;
         --primary-dark: #206b6b;
@@ -24,18 +25,30 @@
         --radius: 12px;
     }
 
+    /* === General Styles === */
     body {
         margin: 0;
         background-color: var(--bg-color);
         font-family: "Prompt", sans-serif;
         color: var(--text-color);
         line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    img {
+        user-select: none; -webkit-user-select: none; -moz-user-select: none;
+        pointer-events: none; -webkit-user-drag: none;
+    }
+    a, button, .dropdown:hover > a, .quick-links li a, .menu-item { 
+        pointer-events: auto !important; cursor: pointer; 
     }
 
     /* === Header Section === */
     .head-section {
         position: relative;
-        background: linear-gradient(rgba(196, 196, 196, 0.3), rgba(53, 53, 53, 0.5)), url('images/head.jpg') no-repeat center center;
+        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
         background-size: cover;
         display: flex;
         flex-direction: row;
@@ -46,27 +59,20 @@
         gap: 20px;
         color: var(--white);
     }
-
     .head-section img#logo { 
-        width: 100px; 
-        height: auto;
+        width: 100px; height: auto; 
         filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
     }
-
     .head-text-container { display: flex; flex-direction: column; }
-
     .head-text { 
-        font-size: 48px; 
-        font-weight: 700; 
-        line-height: 1.2;
+        font-size: 48px; font-weight: 700; line-height: 1.2; 
         text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
-
     .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-    /* === Navigation === */
+    /* === Navigation (Compact Style & Large Font) === */
     nav {
-        background: linear-gradient(90deg, var(--primary-color) 100%, var(--primary-dark) 0%);
+        background: var(--primary-color);
         padding: 0 20px;
         position: sticky;
         top: 0;
@@ -77,10 +83,10 @@
     nav ul {
         display: flex;
         justify-content: center;
-        gap: 10px;
+        gap: 20px; 
         list-style: none;
         margin: 0;
-        padding: 8px 0;
+        padding: 5px 0; /* Padding น้อยเพื่อให้แถบบาง */
         flex-wrap: wrap;
         align-items: center;
         max-width: 1600px;
@@ -92,95 +98,110 @@
     nav ul li a {
         text-decoration: none;
         color: rgba(255, 255, 255, 0.95);
-        font-size: 16px;
+        font-size: 16px; 
         font-weight: 500;
-        padding: 10px 14px;
+        padding: 8px 14px; /* Padding น้อยลง */
         border-radius: 30px;
         display: flex;
         align-items: center;
         gap: 6px;
         transition: all 0.3s ease;
-        white-space: nowrap; 
+        white-space: nowrap;
     }
 
-    nav ul li a:hover, nav ul li a.active-link {
+    nav ul li a:hover {
         background: rgba(255, 255, 255, 0.2);
         color: #fff;
         transform: translateY(-1px);
     }
 
     .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
-    .home-icon svg { fill: white; }
+    .home-icon svg { fill: white; width: 22px; height: 22px; }
     .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-    /* === Dropdown Menu === */
+    /* === Dropdown Menu (Fix Gap Issue) === */
     .dropdown-menu {
         display: none;
         position: absolute;
         top: 100%;
-        left: 0; 
+        left: 0;
         background: var(--white);
         border-radius: 8px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        min-width: 260px;
+        min-width: 270px;
         padding: 8px 0;
         z-index: 1001;
         opacity: 0;
-        transition: all 0.3s;
+        transition: all 0.2s;
         border: 1px solid rgba(0,0,0,0.05);
-        margin-top: 5px;
+        margin-top: 10px; /* เว้นระยะห่าง */
     }
 
-    .dropdown:hover > .dropdown-menu {
-        display: block;
-        opacity: 1;
-        animation: fadeIn 0.2s ease-out forwards;
+    /* Invisible Bridge */
+    .dropdown-menu::before {
+        content: "";
+        position: absolute;
+        top: -10px; /* ยื่นขึ้นไปข้างบน */
+        left: 0;
+        width: 100%;
+        height: 10px;
+        background: transparent;
     }
 
-    .dropdown-menu li {
-        position: relative;
+    .dropdown:hover > .dropdown-menu { 
+        display: block; opacity: 1; animation: fadeIn 0.2s ease-out forwards; 
     }
 
+    .dropdown-menu li { position: relative; }
     .dropdown-menu li a { 
         color: var(--text-color); 
-        padding: 10px 20px; 
-        border-radius: 0;
-        display: flex;
-        justify-content: space-between;
-        font-size: 14px;
+        padding: 12px 20px; 
+        border-radius: 0; 
+        display: flex; 
+        justify-content: space-between; 
+        font-size: 16px; /* Font Size Submenu */
+        font-weight: 500;
     }
-    
     .dropdown-menu li a:hover { 
         background: var(--primary-light); 
         color: var(--primary-dark); 
-        padding-left: 25px;
+        padding-left: 25px; 
     }
 
-    /* === Nested Dropdown === */
+    /* === Nested Submenu (Fix Gap Issue) === */
     .submenu {
         display: none;
         position: absolute;
-        left: 100%;
-        top: 0;
-        margin-left: 5px;
+        left: 100%; 
+        top: -5px; 
+        margin-left: 10px; 
         background: var(--white);
         border-radius: 8px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        min-width: 250px;
+        min-width: 290px; 
         padding: 8px 0;
         border: 1px solid rgba(0,0,0,0.05);
     }
 
-    .nested-dropdown:hover > .submenu {
-        display: block;
-        animation: fadeIn 0.2s ease-out forwards;
+    .submenu::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -15px; /* ยื่นไปทางซ้าย */
+        width: 20px;
+        height: 100%;
+        background: transparent;
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
+    .nested-dropdown:hover > .submenu { 
+        display: block; animation: fadeIn 0.2s ease-out forwards; 
+    }
+
+    @keyframes fadeIn { 
+        from { opacity: 0; transform: translateY(5px); } 
         to { opacity: 1; transform: translateY(0); } 
     }
-
+    
         /* === Content Layout === */
         main.content-container { 
             flex-grow: 1; 
@@ -313,51 +334,79 @@
         <ul>
             <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
             
-            <li class="dropdown">
-                <a href="#">เกี่ยวกับเรา ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
-                    <li class="nested-dropdown">
-                        <a href="#">ฝ่ายภายในส่วนอำนวยการ ▸</a>
-                        <ul class="submenu">
-                            <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
-                            <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
-                            <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
-                            <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
-                            <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
-                            <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
+  <li class="dropdown">
+            <a href="#">เกี่ยวกับเรา ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
+                <li class="nested-dropdown">
+                    <a href="#">ฝ่ายภายในส่วนอำนวยการ ▸</a>
+                    <ul class="submenu">
+                        <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
+                        <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
+                        <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
+                        <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
+                        <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
+                        <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
 
-            <li class="dropdown">
-                <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบัญอิเล็กทรอนิกส์</a></li>
-                    <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
-                    <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
-                </ul>
-            </li>
+        <li class="dropdown">
+            <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบัญอิเล็กทรอนิกส์</a></li>
+                <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
+                <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
+            </ul>
+        </li>
 
-            <li class="dropdown">
-                <a href="#" class="active-link">จัดซื้อจัดจ้าง ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
-                    <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานและราคากลาง</a></li>
-                    <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
-                    <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
-                </ul>
-            </li>
+        <li class="dropdown">
+            <a href="#">คำสั่ง/ประกาศ ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="command.html">คำสั่ง</a></li>
+                <li><a href="announce.html">ประกาศ</a></li>
+            </ul>
+        </li>
 
-        <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
-        <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
-        <li><a href="https://www.forest.go.th/research/" target="_blank">เว็บไซต์ สวพ.</a></li>
-        <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
-        <li><a href="contact.html">ติดต่อ</a></li>        
-        </ul>
-    </nav>
+        <li class="dropdown">
+            <a href="#">ข่าวสาร ▾</a>
+            <ul class="dropdown-menu">
+                
+                <li class="nested-dropdown">
+                    <a href="#">จัดซื้อจัดจ้าง ▸</a>
+                    <ul class="submenu">
+                        <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
+                        <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
+                        <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
+                        <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
+                    </ul>
+                </li>
 
+                <li class="nested-dropdown">
+                    <a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a>
+                    <ul class="submenu">
+                        <li><a href="https://edoc.forest.go.th/doccir/docindex.html" target="_blank">หนังสือเวียนกรมป่าไม้</a></li>
+                        <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <a href="#">ระเบียบ ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
+                <li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li>
+            </ul>
+        </li>
+
+        <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
+
+        <li><a href="contact.html">ติดต่อ</a></li>
+    </ul>
+</nav>
     <main class="content-container">
         <h2>ประกาศร่างขอบเขตของงานและราคากลาง ของสำนักวิจัยและพัฒนาการป่าไม้</h2>
         <table id="docTable" class="doc-table">

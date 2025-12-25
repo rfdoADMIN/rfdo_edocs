@@ -10,175 +10,196 @@
     <link rel="icon" type="image/png" href="images/logorfdo.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
- <style>
-    :root {
-        --primary-color: #339999;
-        --primary-dark: #206b6b;
-        --primary-light: #e6f7f7;
-        --text-color: #333;
-        --text-muted: #666;
-        --bg-color: #f8fcfc;
-        --white: #ffffff;
-        --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
-        --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
-        --radius: 12px;
-    }
+    <style>
+        /* === Theme Colors === */
+        :root {
+            --primary-color: #339999;
+            --primary-dark: #206b6b;
+            --primary-light: #e6f7f7;
+            --text-color: #333;
+            --text-muted: #666;
+            --bg-color: #f8fcfc;
+            --white: #ffffff;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
+            --radius: 12px;
+        }
 
-    body {
-        margin: 0;
-        background-color: var(--bg-color);
-        font-family: "Prompt", sans-serif;
-        color: var(--text-color);
-        line-height: 1.6;
-    }
+        /* === General Styles === */
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: "Prompt", sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    /* === Header Section === */
-    .head-section {
-        position: relative;
-        background: linear-gradient(rgba(196, 196, 196, 0.3), rgba(53, 53, 53, 0.5)), url('images/head.jpg') no-repeat center center;
-        background-size: cover;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 60px 5%;
-        min-height: 250px;
-        gap: 20px;
-        color: var(--white);
-    }
+        img {
+            user-select: none; -webkit-user-select: none; -moz-user-select: none;
+            pointer-events: none; -webkit-user-drag: none;
+        }
+        a, button, .dropdown:hover > a, .quick-links li a, .menu-item { 
+            pointer-events: auto !important; cursor: pointer; 
+        }
 
-    .head-section img#logo { 
-        width: 100px; 
-        height: auto;
-        filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
-    }
+        /* === Header Section === */
+        .head-section {
+            position: relative;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 60px 5%;
+            min-height: 250px;
+            gap: 20px;
+            color: var(--white);
+        }
+        .head-section img#logo { 
+            width: 100px; height: auto; 
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+        }
+        .head-text-container { display: flex; flex-direction: column; }
+        .head-text { 
+            font-size: 48px; font-weight: 700; line-height: 1.2; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-    .head-text-container { display: flex; flex-direction: column; }
+        /* === Navigation (Compact Style) === */
+        nav {
+            background: var(--primary-color);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
 
-    .head-text { 
-        font-size: 48px; 
-        font-weight: 700; 
-        line-height: 1.2;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 20px; 
+            list-style: none;
+            margin: 0;
+            padding: 5px 0;
+            flex-wrap: wrap;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
 
-    .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
+        nav ul li { position: relative; }
 
-    /* === Navigation === */
-    nav {
-        background: linear-gradient(90deg, var(--primary-color) 100%, var(--primary-dark) 0%);
-        padding: 0 20px;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+        nav ul li a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
 
-    nav ul {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        list-style: none;
-        margin: 0;
-        padding: 8px 0;
-        flex-wrap: wrap;
-        align-items: center;
-        max-width: 1600px;
-        margin: 0 auto;
-    }
+        nav ul li a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            transform: translateY(-1px);
+        }
 
-    nav ul li { position: relative; }
-
-    nav ul li a {
-        text-decoration: none;
-        color: rgba(255, 255, 255, 0.95);
-        font-size: 16px;
-        font-weight: 500;
-        padding: 10px 14px;
-        border-radius: 30px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.3s ease;
-        white-space: nowrap; 
-    }
-
-    nav ul li a:hover, nav ul li a.active-link {
-        background: rgba(255, 255, 255, 0.2);
-        color: #fff;
-        transform: translateY(-1px);
-    }
-
-    .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
-    .home-icon svg { fill: white; }
+     .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
+    .home-icon svg { fill: white; width: 22px; height: 22px; }
     .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-    /* === Dropdown Menu === */
+    /* === Dropdown Menu (Fix Gap Issue) === */
     .dropdown-menu {
         display: none;
         position: absolute;
         top: 100%;
-        left: 0; 
+        left: 0;
         background: var(--white);
         border-radius: 8px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        min-width: 260px;
+        min-width: 270px;
         padding: 8px 0;
         z-index: 1001;
         opacity: 0;
-        transition: all 0.3s;
+        transition: all 0.2s;
         border: 1px solid rgba(0,0,0,0.05);
-        margin-top: 5px;
+        margin-top: 10px; /* เว้นระยะห่าง */
     }
 
-    .dropdown:hover > .dropdown-menu {
-        display: block;
-        opacity: 1;
-        animation: fadeIn 0.2s ease-out forwards;
+    /* Invisible Bridge */
+    .dropdown-menu::before {
+        content: "";
+        position: absolute;
+        top: -10px; /* ยื่นขึ้นไปข้างบน */
+        left: 0;
+        width: 100%;
+        height: 10px;
+        background: transparent;
     }
 
-    .dropdown-menu li {
-        position: relative;
+    .dropdown:hover > .dropdown-menu { 
+        display: block; opacity: 1; animation: fadeIn 0.2s ease-out forwards; 
     }
 
+    .dropdown-menu li { position: relative; }
     .dropdown-menu li a { 
         color: var(--text-color); 
-        padding: 10px 20px; 
-        border-radius: 0;
-        display: flex;
-        justify-content: space-between;
-        font-size: 14px;
+        padding: 12px 20px; 
+        border-radius: 0; 
+        display: flex; 
+        justify-content: space-between; 
+        font-size: 16px; /* Font Size Submenu */
+        font-weight: 500;
     }
-    
     .dropdown-menu li a:hover { 
         background: var(--primary-light); 
         color: var(--primary-dark); 
-        padding-left: 25px;
+        padding-left: 25px; 
     }
 
-    /* === Nested Dropdown === */
+    /* === Nested Submenu (Fix Gap Issue) === */
     .submenu {
         display: none;
         position: absolute;
-        left: 100%;
-        top: 0;
-        margin-left: 5px;
+        left: 100%; 
+        top: -5px; 
+        margin-left: 10px; 
         background: var(--white);
         border-radius: 8px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        min-width: 250px;
+        min-width: 290px; 
         padding: 8px 0;
         border: 1px solid rgba(0,0,0,0.05);
     }
 
-    .nested-dropdown:hover > .submenu {
-        display: block;
-        animation: fadeIn 0.2s ease-out forwards;
+    .submenu::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -15px; /* ยื่นไปทางซ้าย */
+        width: 20px;
+        height: 100%;
+        background: transparent;
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+    .nested-dropdown:hover > .submenu { 
+        display: block; animation: fadeIn 0.2s ease-out forwards; 
+    }
+
+    @keyframes fadeIn { 
+        from { opacity: 0; transform: translateY(5px); } 
+        to { opacity: 1; transform: translateY(0); } 
     }
 
         /* === Content Layout === */
@@ -203,170 +224,65 @@
         }
         .content-container h2:first-of-type { margin-top: 0; }
 
-        /* === Structure Cards (Directors) === */
-        .director-group {
-            margin-bottom: 40px;
-            text-align: center;
-        }
-        .director-row {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
+        /* === Structure Cards === */
+        .director-group { margin-bottom: 40px; text-align: center; }
+        .director-row { display: flex; justify-content: center; margin-bottom: 30px; }
         .director-card {
-            width: 320px;
-            padding: 30px;
-            border-radius: 15px;
-            background: var(--white); 
-            border: 1px solid #e0e0e0;
+            width: 320px; padding: 30px; border-radius: 15px;
+            background: var(--white); border: 1px solid #e0e0e0;
             border-top: 5px solid var(--primary-color);
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            text-align: center;
-            transition: transform 0.3s ease;
+            text-align: center; transition: transform 0.3s ease;
         }
-        .director-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-        }
-        
-        /* Top Director Special Style */
-        .top-director-card-style {
-            background: #eef9f9; /* สีพื้นหลังอ่อนๆ */
-            border-color: var(--primary-color);
-        }
-
+        .director-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
+        .top-director-card-style { background: #eef9f9; border-color: var(--primary-color); }
         .director-card .staff-img {
-            width: 130px; height: 130px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 15px;
-            border: 4px solid var(--primary-color);
-            padding: 3px;
-            background: white;
+            width: 130px; height: 130px; object-fit: cover; border-radius: 50%;
+            margin-bottom: 15px; border: 4px solid var(--primary-color);
+            padding: 3px; background: white;
         }
+        .director-card .staff-name { font-size: 20px; font-weight: 700; color: var(--primary-dark); margin-bottom: 5px; }
+        .director-card .staff-position { font-weight: 500; font-size: 15px; color: var(--text-muted); }
 
-        .director-card .staff-name {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 5px;
-        }
-        
-        .director-card .staff-position {
-            font-weight: 500;
-            font-size: 15px;
-            color: var(--text-muted);
-        }
-
-        /* === Staff Grid (Heads of Departments) === */
+        /* === Staff Grid === */
         .staff-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px; margin-top: 20px;
         }
-
         .staff-card {
-            background: #fff;
-            border: 1px solid #eee;
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-top: 3px solid transparent;
+            background: #fff; border: 1px solid #eee; border-radius: 12px;
+            padding: 25px; text-align: center; box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease; display: flex; flex-direction: column;
+            align-items: center; border-top: 3px solid transparent;
         }
-
-        .staff-card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-5px);
-            border-top-color: var(--primary-color);
-        }
-
+        .staff-card:hover { box-shadow: var(--shadow-md); transform: translateY(-5px); border-top-color: var(--primary-color); }
         .staff-img {
-            width: 110px; height: 110px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 15px;
-            border: 3px solid var(--primary-light);
+            width: 110px; height: 110px; object-fit: cover; border-radius: 50%;
+            margin-bottom: 15px; border: 3px solid var(--primary-light);
         }
-
-        .staff-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary-dark);
-            margin-bottom: 5px;
-        }
-
-        .staff-position {
-            font-size: 14px;
-            color: #555;
-            margin-bottom: 15px;
-            min-height: 42px; /* จัดระเบียบความสูงให้เท่ากัน */
-        }
-
+        .staff-name { font-size: 18px; font-weight: 600; color: var(--primary-dark); margin-bottom: 5px; }
+        .staff-position { font-size: 14px; color: #555; margin-bottom: 15px; min-height: 42px; }
         .staff-link {
-            display: inline-block;
-            background: var(--primary-color);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background 0.3s;
+            display: inline-block; background: var(--primary-color); color: white;
+            padding: 8px 20px; border-radius: 20px; text-decoration: none;
+            font-size: 14px; font-weight: 500; transition: background 0.3s;
         }
-
-        .staff-link:hover {
-            background: var(--primary-dark);
-            box-shadow: 0 4px 10px rgba(32, 107, 107, 0.3);
-        }
+        .staff-link:hover { background: var(--primary-dark); box-shadow: 0 4px 10px rgba(32, 107, 107, 0.3); }
         
         /* === Menu Icons List === */
-        .menu-icons-list {
-            display: flex;
-            gap: 20px; 
-            flex-wrap: wrap;
-            justify-content: center; 
-            padding: 20px 0; 
-        }
-
+        .menu-icons-list { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; padding: 20px 0; }
         .menu-icons-list .menu-item {
-            width: 282px;
-            height: 79px; 
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            display: block;
-            text-decoration: none;
-            background: white;
+            width: 282px; height: 79px; border-radius: 12px; overflow: hidden;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: block;
+            text-decoration: none; background: white;
         }
+        .menu-icons-list .menu-item:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(51, 153, 153, 0.2); }
+        .menu-icons-list .menu-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .menu-icons-list .menu-item:hover {
-            transform: translateY(-5px); 
-            box-shadow: 0 10px 20px rgba(51, 153, 153, 0.2); 
-        }
-
-        .menu-icons-list .menu-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        /* === Footer (New Style) === */
+        /* === Footer === */
         footer {
-            text-align: center;
-            padding: 15px 20px; /* ลด Padding ให้บางลง */
-            background: var(--primary-color);
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-            margin-top: auto;
+            text-align: center; padding: 15px 20px; background: var(--primary-color); color: rgba(255,255,255,0.9); font-size: 14px; margin-top: auto;
         }
 
         /* Responsive */
@@ -381,18 +297,11 @@
             nav { padding: 5px 0; }
             nav ul { justify-content: center; gap: 5px; }
             nav ul li a { padding: 6px 12px; font-size: 13px; }
-            
             .content-container { padding: 20px; }
             .director-card { width: 100%; max-width: 320px; }
             .menu-icons-list .menu-item { width: 100%; height: auto; }
-            
-            .submenu {
-                position: static;
-                box-shadow: none;
-                margin-left: 20px;
-                border-left: 2px solid #eee;
-                min-width: auto;
-            }
+            .submenu { position: static; box-shadow: none; margin-left: 20px; border-left: 2px solid #eee; min-width: auto; top: 0; }
+            .submenu::after { content: none; } 
         }
     </style>
 </head>
@@ -410,10 +319,10 @@
     <ul>
         <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
         
-        <li class="dropdown">
+ <li class="dropdown">
             <a href="#">เกี่ยวกับเรา ▾</a>
             <ul class="dropdown-menu">
-                <li><a href="Structure.html" style="background: #e0f3f3; color:#1f6161; font-weight: 600;">โครงสร้างส่วนอำนวยการ</a></li> 
+                <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
                 <li class="nested-dropdown">
                     <a href="#">ฝ่ายภายในส่วนอำนวยการ ▸</a>
                     <ul class="submenu">
@@ -438,21 +347,50 @@
         </li>
 
         <li class="dropdown">
-            <a href="#">จัดซื้อจัดจ้าง ▾</a>
+            <a href="#">คำสั่ง/ประกาศ ▾</a>
             <ul class="dropdown-menu">
-                <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
-                <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานและราคากลาง</a></li>
-                <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
-                <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
+                <li><a href="command.html">คำสั่ง</a></li>
+                <li><a href="announce.html">ประกาศ</a></li>
             </ul>
         </li>
 
-         <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
-        <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
-        <li><a href="https://www.forest.go.th/research/" target="_blank">เว็บไซต์ สวพ.</a></li>
-        <li><a href="https://www.forest.go.th/home/" target="_blank">กรมป่าไม้</a></li>
-        <li><a href="contact.html">ติดต่อ</a></li>        
-        </ul>
+        <li class="dropdown">
+            <a href="#">ข่าวสาร ▾</a>
+            <ul class="dropdown-menu">
+                
+                <li class="nested-dropdown">
+                    <a href="#">จัดซื้อจัดจ้าง ▸</a>
+                    <ul class="submenu">
+                        <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
+                        <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
+                        <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
+                        <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
+                    </ul>
+                </li>
+
+                <li class="nested-dropdown">
+                    <a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a>
+                    <ul class="submenu">
+                        <li><a href="https://edoc.forest.go.th/doccir/docindex.html" target="_blank">หนังสือเวียนกรมป่าไม้</a></li>
+                        <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <a href="#">ระเบียบ ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
+                <li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li>
+            </ul>
+        </li>
+
+        <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
+
+        <li><a href="contact.html">ติดต่อ</a></li>
+    </ul>
 </nav>
 
 <div class="content-container">
@@ -460,7 +398,6 @@
     <h2><i class="fas fa-sitemap"></i> โครงสร้างผู้บริหารส่วนอำนวยการ</h2>
 
     <div class="director-group">
-        
         <div class="director-row">
             <div class="director-card top-director-card-style">
                 <img class="staff-img" src="images/director_kamthon.png" alt="นายกำธร สุวรรณเวช">
@@ -476,7 +413,6 @@
                 <div class="staff-position">ผู้อำนวยการส่วนอำนวยการ</div>
             </div>
         </div>
-        
     </div>
 
     <hr style="border: 0; border-top: 1px solid #ccc; margin: 40px 0;">
@@ -484,9 +420,7 @@
     <h2><i class="fas fa-users-cog"></i> หัวหน้าฝ่าย</h2>
     
     <div class="department-list">
-        
         <div class="staff-grid">
-            
             <div class="staff-card">
                 <img class="staff-img" src="images/chatchrapee.jpg" alt="นางสาวชัชระพี สอนไวย์">
                 <div class="staff-name">นางสาวชัชระพี สอนไวย์</div>
@@ -495,7 +429,7 @@
             </div>
 
             <div class="staff-card">
-                <img class="staff-img" src="images/none.jpg" alt="นางสาวณัฐพร แตงหมี">
+                <img class="staff-img" src="images/nattapon.jpg" alt="นางสาวณัฐพร แตงหมี">
                 <div class="staff-name">นางสาวณัฐพร แตงหมี</div>
                 <div class="staff-position">เจ้าพนักงานธุรการอาวุโส<br>หัวหน้าฝ่ายการเจ้าหน้าที่</div>
                 <a href="HRrfdo.html" class="staff-link"><i class="fas fa-user-tie"></i> ดูข้อมูลฝ่าย</a>
@@ -509,7 +443,7 @@
             </div>
 
             <div class="staff-card">
-                <img class="staff-img" src="images/none.jpg" alt="นายมนต์ชัย เพิ่มผลนิรันดร์">
+                <img class="staff-img" src="images/monchai.jpg" alt="นายมนต์ชัย เพิ่มผลนิรันดร์">
                 <div class="staff-name">นายมนต์ชัย เพิ่มผลนิรันดร์</div>
                 <div class="staff-position">นายช่างเครื่องกลชำนาญงาน<br>หัวหน้าฝ่ายการพัสดุ</div>
                 <a href="PDrfdo.html" class="staff-link"><i class="fas fa-box"></i> ดูข้อมูลฝ่าย</a>
@@ -528,7 +462,6 @@
                 <div class="staff-position">นักวิชาการป่าไม้ชำนาญการพิเศษ<br>หัวหน้าฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</div>
                 <a href="Researchrfdo.html" class="staff-link"><i class="fas fa-flask"></i> ดูข้อมูลฝ่าย</a>
             </div>
-            
         </div>
     </div>
 
@@ -537,31 +470,24 @@
     <h2><i class="fas fa-layer-group"></i> ฝ่ายภายในส่วนอำนวยการ</h2>
 
     <div class="menu-icons-list">
-        
         <a href="Adminrfdo.html" class="menu-item" title="ฝ่ายธุรการ">
             <img src="images/D1.png" alt="ฝ่ายธุรการ">
         </a>
-        
         <a href="HRrfdo.html" class="menu-item" title="ฝ่ายการเจ้าหน้าที่">
             <img src="images/D2.png" alt="ฝ่ายการเจ้าหน้าที่">
         </a>
-        
         <a href="FArfdo.html" class="menu-item" title="ฝ่ายการเงิน และบัญชี">
             <img src="images/D3.png" alt="ฝ่ายการเงิน และบัญชี">
         </a>
-        
         <a href="PDrfdo.html" class="menu-item" title="ฝ่ายการพัสดุ">
             <img src="images/D4.png" alt="ฝ่ายการพัสดุ">
         </a>
-        
         <a href="Planrfdo.html" class="menu-item" title="ฝ่ายแผนและติดตามประเมินผล">
             <img src="images/D5.png" alt="ฝ่ายแผนและติดตามประเมินผล">
         </a>
-        
         <a href="Researchrfdo.html" class="menu-item" title="ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้">
             <img src="images/D6.png" alt="ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้">
         </a>
-
     </div>
 
 </div>
