@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระเบียบเกี่ยวกับการพัสดุ - ส่วนอำนวยการ</title>
+    <title>ระเบียบการจัดทำหนังสือราชการ - ส่วนอำนวยการ</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -321,7 +321,6 @@
                         <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
                         <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
                         <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
-                        <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
                     </ul>
                 </li>
 
@@ -351,7 +350,7 @@
 </nav>
 
 <main class="content-container">
-    <h2>ระเบียบเกี่ยวกับการพัสดุ ของสำนักวิจัยและพัฒนาการป่าไม้</h2>
+    <h2>ระเบียบการจัดทำหนังสือราชการ ของสำนักวิจัยและพัฒนาการป่าไม้</h2>
     
     <table id="docTable" class="doc-table">
         <thead>
@@ -377,7 +376,7 @@
     const documentList = document.getElementById('documentList');
     
     // กำหนดชื่อตารางเป้าหมาย
-    const TARGET_TABLE = 'procurement_regulations';
+    const TARGET_TABLE = 'official_co';
 
     async function loadDocuments() {
         documentList.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:20px; color:#666;">กำลังโหลดข้อมูล...</td></tr>';
@@ -387,13 +386,13 @@
             .order('created_at', { ascending: false });
 
         if(error){
-            documentList.innerHTML = `<tr><td colspan="2" style="color:red; text-align:center;">เกิดข้อผิดพลาดในการดึงข้อมูล: ${error.message}</td></tr>`;
+            documentList.innerHTML = `<tr><td colspan="2" style="color:red; text-align:center;">เกิดข้อผิดพลาดในการดึงข้อมูล: ${error.message} (กรุณาตรวจสอบชื่อตาราง ${TARGET_TABLE} ใน Supabase)</td></tr>`;
             console.error("Supabase API Error:", error);
             return;
         }
 
         if (!data || data.length === 0) {
-            documentList.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px;">ไม่พบข้อมูล</td></tr>`;
+            documentList.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px;">ไม่พบข้อมูลระเบียบการจัดทำหนังสือราชการ</td></tr>`;
             return;
         }
 
