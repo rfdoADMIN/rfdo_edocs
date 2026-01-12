@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -38,7 +39,7 @@
             user-select: none; -webkit-user-select: none; -moz-user-select: none;
             pointer-events: none; -webkit-user-drag: none;
         }
-        a, button, .dropdown:hover > a, .quick-links li a, .menu-item { 
+        a, button, .dropdown:hover > a, .quick-links li a, .menu-item, .pdf-link, .view-all-link { 
             pointer-events: auto !important; cursor: pointer; 
         }
 
@@ -67,7 +68,7 @@
         }
         .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-        /* === Navigation (Compact Style & Large Font) === */
+        /* === Navigation === */
         nav {
             background: var(--primary-color);
             padding: 0 20px;
@@ -83,7 +84,7 @@
             gap: 20px; 
             list-style: none;
             margin: 0;
-            padding: 5px 0; /* Padding น้อยเพื่อให้แถบบาง */
+            padding: 5px 0;
             flex-wrap: wrap;
             align-items: center;
             max-width: 1600px;
@@ -97,7 +98,7 @@
             color: rgba(255, 255, 255, 0.95);
             font-size: 16px; 
             font-weight: 500;
-            padding: 8px 14px; /* Padding น้อยลง */
+            padding: 8px 14px;
             border-radius: 30px;
             display: flex;
             align-items: center;
@@ -116,88 +117,28 @@
         .home-icon svg { fill: white; width: 22px; height: 22px; }
         .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-        /* === Dropdown Menu (Fix Gap Issue) === */
+        /* Dropdown & Submenu */
         .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: var(--white);
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            min-width: 270px;
-            padding: 8px 0;
-            z-index: 1001;
-            opacity: 0;
-            transition: all 0.2s;
-            border: 1px solid rgba(0,0,0,0.05);
-            margin-top: 10px; /* เว้นระยะห่าง */
+            display: none; position: absolute; top: 100%; left: 0;
+            background: var(--white); border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); min-width: 270px;
+            padding: 8px 0; z-index: 1001; opacity: 0; transition: all 0.2s;
+            border: 1px solid rgba(0,0,0,0.05); margin-top: 10px;
         }
-
-        /* Invisible Bridge */
-        .dropdown-menu::before {
-            content: "";
-            position: absolute;
-            top: -10px; /* ยื่นขึ้นไปข้างบน */
-            left: 0;
-            width: 100%;
-            height: 10px;
-            background: transparent;
-        }
-
-        .dropdown:hover > .dropdown-menu { 
-            display: block; opacity: 1; animation: fadeIn 0.2s ease-out forwards; 
-        }
-
+        .dropdown-menu::before { content: ""; position: absolute; top: -10px; left: 0; width: 100%; height: 10px; background: transparent; }
+        .dropdown:hover > .dropdown-menu { display: block; opacity: 1; animation: fadeIn 0.2s ease-out forwards; }
         .dropdown-menu li { position: relative; }
-        .dropdown-menu li a { 
-            color: var(--text-color); 
-            padding: 12px 20px; 
-            border-radius: 0; 
-            display: flex; 
-            justify-content: space-between; 
-            font-size: 16px; /* Font Size Submenu */
-            font-weight: 500;
-        }
-        .dropdown-menu li a:hover { 
-            background: var(--primary-light); 
-            color: var(--primary-dark); 
-            padding-left: 25px; 
-        }
+        .dropdown-menu li a { color: var(--text-color); padding: 12px 20px; border-radius: 0; display: flex; justify-content: space-between; font-size: 16px; font-weight: 500; }
+        .dropdown-menu li a:hover { background: var(--primary-light); color: var(--primary-dark); padding-left: 25px; }
 
-        /* === Nested Submenu (Fix Gap Issue) === */
         .submenu {
-            display: none;
-            position: absolute;
-            left: 100%; 
-            top: -5px; 
-            margin-left: 10px; 
-            background: var(--white);
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            min-width: 290px; 
-            padding: 8px 0;
-            border: 1px solid rgba(0,0,0,0.05);
+            display: none; position: absolute; left: 100%; top: -5px; margin-left: 10px;
+            background: var(--white); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            min-width: 290px; padding: 8px 0; border: 1px solid rgba(0,0,0,0.05);
         }
-
-        .submenu::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -15px; /* ยื่นไปทางซ้าย */
-            width: 20px;
-            height: 100%;
-            background: transparent;
-        }
-
-        .nested-dropdown:hover > .submenu { 
-            display: block; animation: fadeIn 0.2s ease-out forwards; 
-        }
-
-        @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(5px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+        .submenu::after { content: ""; position: absolute; top: 0; left: -15px; width: 20px; height: 100%; background: transparent; }
+        .nested-dropdown:hover > .submenu { display: block; animation: fadeIn 0.2s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         /* === Layout === */
         .container {
@@ -221,187 +162,142 @@
         }
         
         .section-title::before {
-            content: '';
-            display: block;
-            width: 6px;
-            height: 26px;
-            background: var(--primary-color);
-            border-radius: 4px;
+            content: ''; display: block; width: 6px; height: 26px;
+            background: var(--primary-color); border-radius: 4px;
         }
 
         /* === Carousel === */
         .slideshow-container {
-            position: relative;
-            max-width: 100%;
-            height: 590px;
-            overflow: hidden;
-            margin: auto;
-            background: #eee;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
+            position: relative; max-width: 100%; height: 590px; overflow: hidden;
+            margin: auto; background: #eee; border-radius: var(--radius); box-shadow: var(--shadow-md);
         }
-
         .slide-track { display: flex; gap: 0; height: 100%; }
         .slide-item { flex: 0 0 33.333%; height: 100%; padding: 0; box-sizing: border-box; border-right: 1px solid rgba(255,255,255,0.2); }
         .slide-item img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: transform 0.4s; }
         .slide-item img:hover { transform: scale(1.03); }
-
         .prev, .next {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            color: white; background: rgba(0,0,0,0.5); border-radius: 50%;
-            cursor: pointer; z-index: 50; transition: 0.3s; font-weight: bold;
+            position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center; color: white; background: rgba(0,0,0,0.5);
+            border-radius: 50%; cursor: pointer; z-index: 50; transition: 0.3s; font-weight: bold;
         }
         .prev:hover, .next:hover { background: var(--primary-color); }
-        .prev { left: 15px; }
-        .next { right: 15px; }
-
+        .prev { left: 15px; } .next { right: 15px; }
         .dots { text-align: center; margin-top: 15px; margin-bottom: 40px; }
         .dot { height: 10px; width: 10px; margin: 0 4px; background-color: #ccc; border-radius: 50%; display: inline-block; transition: 0.3s; cursor: pointer; }
         .dot.active { background-color: var(--primary-color); width: 25px; border-radius: 10px; }
 
         /* === Video Section === */
         .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            margin-bottom: 50px;
-            border: 4px solid var(--white);
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+            border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 50px; border: 4px solid var(--white);
         }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
         /* === Menu Icons === */
         .menu-icons {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin: 30px 0 20px 0;
-            justify-content: center; 
+            display: flex; gap: 16px; flex-wrap: wrap; margin: 30px 0 50px 0; justify-content: center; 
         }
-
         .menu-icons .menu-item {
-            width: 282px;
-            height: 79px;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-            display: block;
-            background: white; 
+            width: 282px; height: 79px; border-radius: 12px; overflow: hidden; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 6px 18px rgba(0,0,0,0.12); display: block; background: white; 
+        }
+        .menu-icons .menu-item:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.18); }
+        .menu-icons .menu-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* === Procurement Section (ADDED for Index) === */
+        .procurement-wrapper {
+            background: var(--white);
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 30px;
         }
 
-        .menu-icons .menu-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+        .procurement-tabs {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+            border-bottom: 2px solid #eee; padding-bottom: 15px;
         }
 
-        .menu-icons .menu-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
+        .tab-btn {
+            background: transparent; border: 1px solid var(--primary-color); color: var(--primary-color);
+            padding: 8px 16px; border-radius: 20px; font-family: "Prompt", sans-serif; font-size: 14px;
+            font-weight: 500; cursor: pointer; transition: all 0.3s;
+        }
+        .tab-btn:hover { background: var(--primary-light); }
+        .tab-btn.active { background: var(--primary-color); color: white; box-shadow: 0 2px 6px rgba(51, 153, 153, 0.3); }
+
+        .doc-table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+        .doc-table th, .doc-table td { padding: 12px 10px; border-bottom: 1px solid #eee; text-align: left; vertical-align: middle; font-size: 14px; }
+        .doc-table th { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; border: none; border-radius: 4px; }
+        .doc-table td:first-child { width: 65%; } 
+        .doc-table td:nth-child(2) { width: 20%; color: #666; font-size: 13px; }
+        .doc-table td:last-child { width: 15%; text-align: right; }
+
+        .pdf-link { 
+            color: var(--primary-color); text-decoration: none; font-weight: 600; border: 1px solid var(--primary-color); 
+            padding: 4px 10px; border-radius: 15px; transition: 0.2s; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;
+        }
+        .pdf-link:hover { background: var(--primary-color); color: white; }
+
+        .view-all-container { text-align: right; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
+        .view-all-link { display: inline-flex; align-items: center; gap: 5px; color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 13px; transition: 0.3s; }
+        .view-all-link:hover { color: var(--primary-color); transform: translateX(3px); }
+
+        .new-badge { 
+            display: inline-block; background-color: #e74c3c; color: white; font-size: 9px; font-weight: 700; 
+            padding: 2px 5px; border-radius: 3px; margin-left: 5px; vertical-align: middle; animation: pulse 2s infinite;
         }
 
         /* === Sidebar === */
-        .sidebar {
-            position: sticky;
-            top: 90px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
+        .sidebar { position: sticky; top: 90px; display: flex; flex-direction: column; gap: 20px; }
         .sidebar-card {
-            background: var(--white);
-            padding: 20px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            border-top: 5px solid var(--primary-color);
+            background: var(--white); padding: 20px; border-radius: var(--radius);
+            box-shadow: var(--shadow-md); border-top: 5px solid var(--primary-color);
         }
-
         .director-info { text-align: center; }
         .director-info img {
-            width: 150px; height: 200px; object-fit: cover;
-            border-radius: 10px; margin-bottom: 15px;
+            width: 150px; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
         }
         .director-info h3 { color: var(--primary-dark); font-size: 18px; margin: 10px 0 5px; }
         .director-info p { color: var(--text-muted); font-size: 14px; margin: 0; }
 
         .news-header {
-            color: var(--primary-dark);
-            font-size: 18px;
-            margin: 0 0 15px 0;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 8px;
-            display: flex; align-items: center; gap: 8px;
+            color: var(--primary-dark); font-size: 18px; margin: 0 0 15px 0; border-bottom: 1px solid #eee;
+            padding-bottom: 8px; display: flex; align-items: center; gap: 8px;
         }
         .news-header svg { fill: var(--primary-dark); }
-
         .news-list { list-style: none; padding: 0; margin: 0; }
         .news-list li {
-            padding: 10px 0;
-            border-bottom: 1px dashed #ddd;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 10px;
-            font-size: 14px;
+            padding: 10px 0; border-bottom: 1px dashed #ddd; display: flex;
+            justify-content: space-between; align-items: flex-start; gap: 10px; font-size: 14px;
         }
         .news-list li:last-child { border-bottom: none; }
-
-        .news-link {
-            text-decoration: none; color: #444; transition: 0.2s; line-height: 1.4; flex: 1;
-        }
+        .news-link { text-decoration: none; color: #444; transition: 0.2s; line-height: 1.4; flex: 1; }
         .news-link:hover { color: var(--primary-color); }
-
         .badge-new {
             background: #e74c3c; color: white; font-size: 10px; padding: 2px 6px;
             border-radius: 4px; font-weight: bold; white-space: nowrap; animation: pulse 2s infinite;
         }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
-        /* Additional Sidebar Links */
-        .sidebar-links {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        /* Sidebar Links */
+        .sidebar-links { display: flex; flex-direction: column; gap: 10px; }
         .sidebar-link-item {
-            display: block;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.3s ease;
+            display: block; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.3s ease;
         }
-        .sidebar-link-item:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-        .sidebar-link-item img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+        .sidebar-link-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .sidebar-link-item img { width: 100%; height: auto; display: block; }
 
         /* === Footer === */
-        footer {
-            text-align: center; padding: 15px 20px;
-            background: var(--primary-color); 
-            color: rgba(255,255,255,0.9);
-            font-size: 14px; 
-            margin-top: 60px;
+        footer { 
+            text-align: center; padding: 15px 20px; background: var(--primary-color); 
+            color: rgba(255,255,255,0.9); font-size: 14px; margin-top: 60px; 
         }
 
         .modal {
             display: none; position: fixed; z-index: 2000; padding-top: 50px;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.9); backdrop-filter: blur(5px);
+            left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); backdrop-filter: blur(5px);
         }
         .modal-content { margin: auto; display: block; max-width: 90%; max-height: 85vh; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
         .close { position: absolute; top: 20px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; transition: 0.3s; }
@@ -424,16 +320,14 @@
             nav ul li a { padding: 6px 12px; font-size: 14px; }
             .menu-icons { justify-content: center; }
             .sidebar { grid-template-columns: 1fr; } 
-            
-            .submenu {
-                position: static;
-                box-shadow: none;
-                margin-left: 20px;
-                border-left: 2px solid #eee;
-                min-width: auto;
-                top: 0;
-            }
+            .submenu { position: static; box-shadow: none; margin-left: 20px; border-left: 2px solid #eee; min-width: auto; top: 0; }
             .submenu::after { content: none; }
+            
+            /* Responsive Table */
+            .doc-table td:nth-child(2) { display: none; } /* ซ่อนวันที่ในมือถือ */
+            .doc-table td:first-child { width: 70%; }
+            .doc-table td:last-child { width: 30%; }
+            .tab-btn { flex: 1 1 45%; font-size: 12px; text-align: center; }
         }
     </style>
 </head>
@@ -451,7 +345,7 @@
     <ul>
         <li><a href="#" class="home-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
         
-       <li class="dropdown">
+        <li class="dropdown">
             <a href="#">เกี่ยวกับเรา ▾</a>
             <ul class="dropdown-menu">
                 <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
@@ -489,9 +383,8 @@
         <li class="dropdown">
             <a href="#">ข่าวสาร ▾</a>
             <ul class="dropdown-menu">
-                
                 <li class="nested-dropdown">
-                    <a href="#">จัดซื้อจัดจ้าง ▸</a>
+                    <a href="procurement.html">จัดซื้อจัดจ้าง ▸</a>
                     <ul class="submenu">
                         <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
                         <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
@@ -499,7 +392,6 @@
                         <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
                     </ul>
                 </li>
-
                 <li class="nested-dropdown">
                     <a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a>
                     <ul class="submenu">
@@ -507,7 +399,6 @@
                         <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
                     </ul>
                 </li>
-
             </ul>
         </li>
 
@@ -520,14 +411,12 @@
         </li>
 
         <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
-
         <li><a href="contact.html">ติดต่อ</a></li>
     </ul>
 </nav>
 
 <div class="container">
-    <div>
-        <div class="section-title">ข่าวประชาสัมพันธ์</div>
+    <div> <div class="section-title">ข่าวประชาสัมพันธ์</div>
         <div class="slideshow-container">
             <div class="slide-track">
                 <div class="slide-item"><img src="images/work14.png" class="zoomable"></div>
@@ -574,7 +463,24 @@
                 <img src="images/menu4.png" alt="ระบบหนังสือเวียนอิเล็กทรอนิกส์">
             </a>
         </div>
-    </div>
+
+        <div class="section-title">ข่าวสารการจัดซื้อจัดจ้าง</div>
+        <div class="procurement-wrapper">
+            <div class="procurement-tabs">
+                <button class="tab-btn active" id="btn-plan" onclick="window.loadTable('plan')">แผนการจัดซื้อฯ</button>
+                <button class="tab-btn" id="btn-draft" onclick="window.loadTable('draft')">ร่างขอบเขตงาน (TOR)</button>
+                <button class="tab-btn" id="btn-announce" onclick="window.loadTable('announce')">ประกาศจัดซื้อฯ</button>
+                <button class="tab-btn" id="btn-winner" onclick="window.loadTable('winner')">ประกาศผู้ชนะ</button>
+            </div>
+
+            <div id="loading-procurement" style="text-align: center; color: var(--text-muted); display: none;">
+                <i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...
+            </div>
+            
+            <div id="procurement-table-container">
+                </div>
+        </div>
+        </div>
 
     <aside class="sidebar">
         <div class="sidebar-card director-info">
@@ -742,8 +648,9 @@ window.onclick = (event) => {
     const SUPABASE_KEY_VALUE = "sb_publishable_lMMLp3mTrIiSm1Om-HdQxw_oOrHub8g"; 
     
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY_VALUE); 
-    const newsList = document.getElementById('newsList');
 
+    // --- ส่วนดึงข่าวประชาสัมพันธ์ (Sidebar) ---
+    const newsList = document.getElementById('newsList');
     async function loadNews() {
         newsList.innerHTML = '<li style="text-align:center; color:#aaa;">กำลังโหลดข้อมูล...</li>';
         const { data, error } = await supabase
@@ -775,6 +682,110 @@ window.onclick = (event) => {
         });
     }
     loadNews();
+
+    // --- ส่วนดึงข่าวจัดซื้อจัดจ้าง (Main Content) ---
+    const categories = {
+        'plan': { tableName: 'procurement_plan', link: 'procurement_plan.html' },
+        'draft': { tableName: 'procurement_draft', link: 'procurement_draft.html' },
+        'announce': { tableName: 'procurement_announce', link: 'procurement_announce.html' },
+        'winner': { tableName: 'procurement_winner', link: 'procurement_winner.html' }
+    };
+
+    function formatThaiDate(dateString) {
+        if (!dateString) return "-";
+        const date = new Date(dateString);
+        const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+        const day = date.getDate();
+        const month = months[date.getMonth()];
+        const year = date.getFullYear() + 543; 
+        return `${day} ${month} ${year.toString().slice(-2)}`; 
+    }
+
+    function isNew(dateString) {
+        if (!dateString) return false;
+        const itemDate = new Date(dateString);
+        const diffTime = Math.abs(new Date() - itemDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        return diffDays <= 7;
+    }
+
+    // ทำให้ฟังก์ชันเป็น Global เพื่อเรียกใช้ผ่าน onclick ใน HTML ได้
+    window.loadTable = async function(categoryKey) {
+        // จัดการปุ่ม Active
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = document.getElementById(`btn-${categoryKey}`);
+        if(activeBtn) activeBtn.classList.add('active');
+
+        const container = document.getElementById('procurement-table-container');
+        const loading = document.getElementById('loading-procurement');
+        const config = categories[categoryKey];
+
+        container.innerHTML = '';
+        loading.style.display = 'block';
+
+        try {
+            // ดึง 5 รายการล่าสุด
+            const { data, error } = await supabase
+                .from(config.tableName)
+                .select('*')
+                .order('date', { ascending: false })
+                .limit(5);
+
+            loading.style.display = 'none';
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">ยังไม่มีข้อมูลในหมวดหมู่นี้</div>';
+                return;
+            }
+
+            let html = `
+                <table class="doc-table">
+                    <tbody>
+            `;
+
+            data.forEach(item => {
+                const title = item.description || item.title || 'ไม่มีชื่อเรื่อง';
+                const dateRaw = item.date || item.created_at;
+                const fileLink = item.filename || '#';
+                const badge = isNew(dateRaw) ? '<span class="new-badge">NEW</span>' : '';
+                
+                html += `
+                    <tr>
+                        <td>${title} ${badge}</td>
+                        <td>${formatThaiDate(dateRaw)}</td>
+                        <td>
+                            <a href="${fileLink}" target="_blank" class="pdf-link">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+
+            // ปุ่มอ่านทั้งหมด
+            html += `
+                <div class="view-all-container">
+                    <a href="${config.link}" class="view-all-link">
+                        อ่านทั้งหมด <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            `;
+
+            container.innerHTML = html;
+
+        } catch (err) {
+            console.error('Error fetching procurement:', err);
+            loading.style.display = 'none';
+            container.innerHTML = `<div style="color:red; text-align:center;">เกิดข้อผิดพลาด: ${err.message}</div>`;
+        }
+    }
+
+    // โหลดข้อมูลเริ่มต้น (แผนการจัดซื้อฯ)
+    loadTable('plan');
 </script>
 
 </body>
