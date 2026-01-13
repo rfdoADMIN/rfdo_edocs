@@ -37,10 +37,12 @@
         }
 
         img {
-            user-select: none; -webkit-user-select: none; -moz-user-select: none;
+            user-select: none; -webkit-user-select: none;
             pointer-events: none; -webkit-user-drag: none;
         }
-        a, button, .dropdown:hover > a, .quick-links li a, .menu-item { 
+        
+        /* เพิ่มความสำคัญให้ element ที่ต้องคลิกได้ */
+        a, button, .dropdown:hover > a, .quick-links li a, .menu-item, .pdf-link { 
             pointer-events: auto !important; cursor: pointer; 
         }
 
@@ -235,6 +237,8 @@
             text-align: left; 
             vertical-align: top; 
             font-size: 15px;
+            position: relative; /* เพิ่มเพื่อให้ z-index ทำงาน */
+            z-index: 1;
         }
         
         .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 65%; word-wrap: break-word; }
@@ -249,12 +253,12 @@
         }
         .doc-table tr:hover td { background-color: #fafafa; }
 
-        /* === PDF Button Style (UPDATED COLOR) === */
+        /* === PDF Button Style Updated === */
         .pdf-link { 
-            color: var(--primary-color); /* เปลี่ยนเป็นสีเขียว */
+            color: var(--primary-color);
             text-decoration: none; 
             font-weight: 600; 
-            border: 1px solid var(--primary-color); /* ขอบสีเขียว */
+            border: 1px solid var(--primary-color);
             padding: 6px 12px;
             border-radius: 20px;
             transition: 0.2s;
@@ -262,14 +266,35 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            /* แก้ไขให้กดได้แน่นอน */
+            cursor: pointer !important;
+            position: relative;
+            z-index: 10;
         }
-        .pdf-link i { font-size: 14px; }
+        .pdf-link i { font-size: 14px; pointer-events: none; } /* ป้องกันไอคอนบังการคลิก */
+        
         .pdf-link:hover { 
-            background: var(--primary-color); /* พื้นหลังตอน Hover เป็นสีเขียว */
+            background: var(--primary-color);
             color: white; 
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* === View All Button Style (NEW) === */
+        /* ปุ่มสำหรับกรณีไม่มีไฟล์ */
+        .pdf-link.no-file {
+            background-color: #f5f5f5;
+            border-color: #ddd;
+            color: #999;
+            cursor: default !important;
+        }
+        .pdf-link.no-file:hover {
+            background-color: #f5f5f5;
+            color: #999;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* === View All Button Style === */
         .view-all-container {
             text-align: right;
             margin-top: 20px;
@@ -290,10 +315,7 @@
             color: var(--primary-color);
             transform: translateX(5px);
         }
-        .view-all-link i {
-            font-size: 12px;
-        }
-
+        .view-all-link i { font-size: 12px; }
 
         /* Badge NEW */
         .new-badge { 
@@ -402,7 +424,7 @@
                 <a href="#">ข่าวสาร ▾</a>
                 <ul class="dropdown-menu">
                     <li class="nested-dropdown">
-                        <a href="procurement.html">จัดซื้อจัดจ้าง ▸</a>
+                        <a href="#">จัดซื้อจัดจ้าง ▸</a>
                         <ul class="submenu">
                             <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
                             <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
@@ -464,27 +486,26 @@
         const supabaseKey = 'sb_publishable_lMMLp3mTrIiSm1Om-HdQxw_oOrHub8g';
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        // --- เพิ่ม Property 'link' สำหรับเชื่อมโยงไปยังหน้าทั้งหมด ---
         const categories = {
             'plan': { 
                 tableName: 'procurement_plan', 
                 label: 'แผนการจัดซื้อจัดจ้าง',
-                link: 'procurement_plan.html'  // ลิงก์ไปหน้ารวม
+                link: 'procurement_plan.html'
             },
             'draft': { 
                 tableName: 'procurement_draft', 
                 label: 'ประกาศร่างขอบเขตของงานและราคากลาง',
-                link: 'procurement_draft.html' // ลิงก์ไปหน้ารวม
+                link: 'procurement_draft.html'
             },
             'announce': { 
                 tableName: 'procurement_announce', 
                 label: 'ประกาศจัดซื้อจัดจ้าง',
-                link: 'procurement_announce.html' // ลิงก์ไปหน้ารวม
+                link: 'procurement_announce.html'
             },
             'winner': { 
                 tableName: 'procurement_winner', 
                 label: 'ประกาศผู้ชนะการเสนอราคา',
-                link: 'procurement_winner.html' // ลิงก์ไปหน้ารวม
+                link: 'procurement_winner.html'
             }
         };
 
@@ -507,12 +528,13 @@
         }
 
         window.loadTable = async function(categoryKey) {
+            // Update Tab UI
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById(`btn-${categoryKey}`);
             if(activeBtn) activeBtn.classList.add('active');
 
             const config = categories[categoryKey];
-            document.getElementById('table-header').innerText = config.label;
+            document.getElementById('table-header').innerText = config.label + " (ล่าสุด)";
             
             const container = document.getElementById('table-container');
             const loading = document.getElementById('loading-indicator');
@@ -521,12 +543,12 @@
             loading.style.display = 'block';
 
             try {
-                // ดึงข้อมูล 5 รายการล่าสุดมาแสดงหน้าแรก
+                // Fetch data, limited to 5 items
                 const { data, error } = await supabase
                     .from(config.tableName)
                     .select('*')
                     .order('date', { ascending: false })
-                    .limit(5); // จำกัดแค่ 5 รายการ
+                    .limit(5);
 
                 loading.style.display = 'none';
 
@@ -552,17 +574,37 @@
                 data.forEach(item => {
                     const title = item.description || item.title || 'ไม่มีชื่อเรื่อง';
                     const dateRaw = item.date || item.created_at;
-                    const fileLink = item.file_url || '#';
+                    
+                    // ตรวจสอบและดึงข้อมูลลิ้งก์อย่างรัดกุม (เผื่อชื่อฟิลด์ผิดหรือไม่มีข้อมูล)
+                    const rawFileLink = item.file_url || item.url || item.link || '';
+                    // ตรวจสอบว่ามีข้อมูลลิ้งก์หรือไม่ และลิ้งก์ไม่ใช่ #
+                    const hasFile = rawFileLink && rawFileLink.trim() !== '' && rawFileLink !== '#';
+
                     const badge = isNew(dateRaw) ? '<span class="new-badge">NEW</span>' : '';
+                    
+                    // กำหนดแอตทริบิวต์สำหรับปุ่ม
+                    let btnHtml = '';
+                    if (hasFile) {
+                        btnHtml = `
+                            <a href="${rawFileLink}" target="_blank" class="pdf-link">
+                                <i class="fas fa-file-pdf"></i> ดาวน์โหลด
+                            </a>
+                        `;
+                    } else {
+                        // กรณีไม่มีไฟล์ ให้ปุ่มกดแล้วแจ้งเตือน หรือเปลี่ยนสีเป็นสีเทา
+                        btnHtml = `
+                            <a href="javascript:void(0)" onclick="alert('ไม่พบเอกสารแนบในระบบ');" class="pdf-link no-file">
+                                <i class="fas fa-file-times"></i> ไม่มีไฟล์
+                            </a>
+                        `;
+                    }
                     
                     html += `
                         <tr>
                             <td>${title} ${badge}</td>
                             <td>${formatThaiDate(dateRaw)}</td>
                             <td>
-                                <a href="${fileLink}" target="_blank" class="pdf-link">
-                                    <i class="fas fa-file-pdf"></i> PDF
-                                </a>
+                                ${btnHtml}
                             </td>
                         </tr>
                     `;
@@ -570,7 +612,6 @@
 
                 html += `</tbody></table>`;
 
-                // --- เพิ่มปุ่ม "อ่านทั้งหมด" ด้านล่างตาราง ---
                 html += `
                     <div class="view-all-container">
                         <a href="${config.link}" class="view-all-link">
@@ -588,6 +629,7 @@
             }
         }
 
+        // Initialize
         const urlParams = new URLSearchParams(window.location.search);
         const tabParam = urlParams.get('tab');
         

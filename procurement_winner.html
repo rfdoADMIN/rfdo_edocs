@@ -276,7 +276,7 @@
                 <a href="#">ข่าวสาร ▾</a>
                 <ul class="dropdown-menu">
                     <li class="nested-dropdown">
-                        <a href="procurement.html">จัดซื้อจัดจ้าง ▸</a>
+                        <a href="#">จัดซื้อจัดจ้าง ▸</a>
                         <ul class="submenu">
                             <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
                             <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
@@ -334,7 +334,6 @@
                 return;
             }
 
-            // จัดกลุ่ม ปี -> เดือน
             const grouped = {};
             data.forEach(doc => {
                 const d = new Date(doc.date);
@@ -371,12 +370,15 @@
                         let url = doc.filename;
                         if(url.includes('drive.google.com')){
                             const id = url.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1];
-                            if(id) url = `https://drive.google.com/uc?export=download&id=${id}`;
+                            if(id) {
+                                url = `https://drive.google.com/file/d/${id}/view`;
+                            }
                         }
+
+
                         const dateTh = new Date(doc.date).toLocaleDateString('th-TH', {day:'numeric', month:'short', year:'numeric'});
                         const badge = new Date(doc.date).getTime() >= NEW_LIMIT ? '<span class="new-badge">NEW</span>' : '';
                         
-                        // แก้ไขบรรทัดแสดงผลปุ่มด้านล่างนี้
                         html += `<tr><td>${doc.title} ${badge}</td><td>${dateTh}</td><td><a href="${url}" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a></td></tr>`;
                     });
                     html += `</tbody></table>`;
