@@ -506,6 +506,9 @@
             <a href="https://www.forest.go.th/research/" target="_blank" class="sidebar-link-item">
                 <img src="images/rfdo.png" alt="สำนักวิจัยและพัฒนาการป่าไม้">
             </a>
+            <a href="https://www.gprocurement.go.th/wps/portal/egp/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zifQ3djQydnQ18_cOMzQwczQN8nf0DPQwMnA31wwkpiAJKG-AAjgZA_VGElHjpR6Xn5CdBXOOYl2Rska4fVZSallqUWqRXWgQUzigpKSi2UjVQNSgvL9dLysxL10vOz1U1wKYhI7-4RD8CWZ1-QW6EgW5UUmW5o6IiAJEU_jY!/dz/d5/L0lDUmlTUSEhL3dHa0FKRnNBLzROV3FpQSEhL3Ro/" target="_blank" class="sidebar-link-item">
+                <img src="images/egp.png" alt="สำนักวิจัยและพัฒนาการป่าไม้">
+            </a>
         </div>
 
     </aside>
@@ -709,9 +712,7 @@ window.onclick = (event) => {
         return diffDays <= 7;
     }
 
-    // ทำให้ฟังก์ชันเป็น Global เพื่อเรียกใช้ผ่าน onclick ใน HTML ได้
     window.loadTable = async function(categoryKey) {
-        // จัดการปุ่ม Active
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         const activeBtn = document.getElementById(`btn-${categoryKey}`);
         if(activeBtn) activeBtn.classList.add('active');
@@ -724,7 +725,6 @@ window.onclick = (event) => {
         loading.style.display = 'block';
 
         try {
-            // ดึง 5 รายการล่าสุด
             const { data, error } = await supabase
                 .from(config.tableName)
                 .select('*')
@@ -766,7 +766,6 @@ window.onclick = (event) => {
 
             html += `</tbody></table>`;
 
-            // ปุ่มอ่านทั้งหมด
             html += `
                 <div class="view-all-container">
                     <a href="${config.link}" class="view-all-link">
@@ -784,7 +783,6 @@ window.onclick = (event) => {
         }
     }
 
-    // โหลดข้อมูลเริ่มต้น (แผนการจัดซื้อฯ)
     loadTable('plan');
 </script>
 

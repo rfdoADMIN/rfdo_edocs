@@ -17,204 +17,79 @@
             --primary-dark: #206b6b;
             --primary-light: #e6f7f7;
             --text-color: #333;
-            --text-muted: #666;
             --bg-color: #f8fcfc;
             --white: #ffffff;
-            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
             --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
             --radius: 12px;
         }
 
-        /* === General Styles === */
         body {
-            margin: 0;
-            background-color: var(--bg-color);
-            font-family: "Prompt", sans-serif;
-            color: var(--text-color);
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            margin: 0; background-color: var(--bg-color);
+            font-family: "Prompt", sans-serif; color: var(--text-color);
+            line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh;
         }
 
-        /* ป้องกันการเซฟรูปภาพ */
-        img {
-            user-select: none; -webkit-user-select: none; -moz-user-select: none;
-            pointer-events: none; -webkit-user-drag: none;
-        }
-        a, button, .dropdown:hover > a, .quick-links li a { 
-            pointer-events: auto !important; cursor: pointer; 
-        }
+        img { user-select: none; pointer-events: none; }
+        a, button { pointer-events: auto !important; cursor: pointer; }
 
-        /* === Header Section (New Style) === */
+        /* === Header Section === */
         .head-section {
             position: relative;
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
-            background-size: cover;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 60px 5%;
-            min-height: 250px;
-            gap: 20px;
-            color: var(--white);
+            background-size: cover; display: flex; flex-direction: row; align-items: center;
+            padding: 60px 5%; min-height: 250px; gap: 20px; color: var(--white);
         }
-        .head-section img#logo { 
-            width: 100px; height: auto; 
-            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
-        }
-        .head-text-container { display: flex; flex-direction: column; }
-        .head-text { 
-            font-size: 48px; font-weight: 700; line-height: 1.2; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-        .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
+        .head-section img#logo { width: 100px; height: auto; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); }
+        .head-text { font-size: 48px; font-weight: 700; line-height: 1.2; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .sub-text { font-size: 20px; opacity: 0.9; }
 
-        /* === Navigation (New Structure & Style) === */
-        nav {
-            background: var(--primary-color);
-            padding: 0 20px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        nav ul {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            list-style: none;
-            margin: 0;
-            padding: 5px 0;
-            flex-wrap: wrap;
-            align-items: center;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
+        /* === Navigation === */
+        nav { background: var(--primary-color); padding: 0 20px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        nav ul { display: flex; justify-content: center; gap: 20px; list-style: none; margin: 0; padding: 5px 0; flex-wrap: wrap; max-width: 1600px; margin: 0 auto; align-items: center; }
         nav ul li { position: relative; }
-
-        nav ul li a {
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.95);
-            font-size: 16px;
-            font-weight: 500;
-            padding: 8px 14px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        nav ul li a:hover, nav ul li a.active-link {
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            transform: translateY(-1px);
-        }
-
+        nav ul li a { text-decoration: none; color: white; font-size: 16px; padding: 8px 14px; border-radius: 30px; display: flex; align-items: center; gap: 6px; transition: 0.3s; }
+        nav ul li a:hover { background: rgba(255, 255, 255, 0.2); }
         .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
-        .home-icon svg { fill: white; width: 24px; height: 24px; }
-        .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-        /* Dropdown & Nested Menu (Invisible Bridge Technique) */
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: var(--white);
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            min-width: 270px;
-            padding: 8px 0;
-            z-index: 1001;
-            opacity: 0;
-            transition: all 0.2s;
-            border: 1px solid rgba(0,0,0,0.05);
-            margin-top: 10px;
-        }
-        .dropdown-menu::before {
-            content: ""; position: absolute; top: -10px; left: 0;
-            width: 100%; height: 10px; background: transparent;
-        }
+        /* Dropdown */
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); min-width: 270px; padding: 8px 0; z-index: 1001; margin-top: 10px; }
         .dropdown:hover > .dropdown-menu { display: block; opacity: 1; animation: fadeIn 0.2s ease-out forwards; }
-        .dropdown-menu li { position: relative; }
-        .dropdown-menu li a { 
-            color: var(--text-color); padding: 12px 20px; 
-            border-radius: 0; display: flex; justify-content: space-between; 
-            font-size: 16px; font-weight: 500;
-        }
-        .dropdown-menu li a:hover { background: var(--primary-light); color: var(--primary-dark); padding-left: 25px; }
+        .dropdown-menu li a { color: var(--text-color); border-radius: 0; justify-content: space-between; padding: 12px 20px; }
+        .dropdown-menu li a:hover { background: var(--primary-light); color: var(--primary-dark); }
+        
+        .submenu { display: none; position: absolute; left: 100%; top: -5px; margin-left: 10px; background: white; border-radius: 8px; min-width: 290px; padding: 8px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .nested-dropdown:hover > .submenu { display: block; }
 
-        .submenu {
-            display: none;
-            position: absolute;
-            left: 100%; top: -5px; margin-left: 10px;
-            background: var(--white);
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            min-width: 290px;
-            padding: 8px 0;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        .submenu::after {
-            content: ""; position: absolute; top: 0; left: -15px; 
-            width: 20px; height: 100%; background: transparent;
-        }
-        .nested-dropdown:hover > .submenu { display: block; animation: fadeIn 0.2s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         /* === Accordion & Content === */
-        main.content-container { 
-            flex-grow: 1; width: 100%; max-width: 1000px; margin: 40px auto;
-            padding: 40px; background: var(--white); border-radius: var(--radius);
-            box-shadow: var(--shadow-md); min-height: 500px; box-sizing: border-box;
-        }
-        .content-container h2 { 
-            font-size: 28px; color: var(--primary-dark); border-bottom: 3px solid var(--primary-light);
-            padding-bottom: 15px; margin: 0 0 25px 0;
-        }
+        main.content-container { flex-grow: 1; width: 100%; max-width: 1000px; margin: 40px auto; padding: 40px; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); box-sizing: border-box; }
+        .content-container h2 { font-size: 26px; color: var(--primary-dark); border-bottom: 3px solid var(--primary-light); padding-bottom: 15px; margin-bottom: 25px; }
 
-        .year-container { margin-bottom: 15px; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; }
-        .year-header {
-            background: #f1f8f8; padding: 15px 25px; cursor: pointer; display: flex;
-            justify-content: space-between; align-items: center; font-size: 19px;
-            font-weight: 600; color: var(--primary-dark); transition: 0.3s;
+        .year-container { margin-bottom: 12px; border: 1px solid #eee; border-radius: 8px; overflow: hidden; }
+        .year-header { 
+            background: #f9fdfd; padding: 18px 25px; cursor: pointer; display: flex; 
+            justify-content: space-between; align-items: center; font-weight: 700; 
+            color: var(--primary-dark); font-size: 22px; 
         }
         .year-header:hover { background: var(--primary-light); }
         .year-header.active i { transform: rotate(180deg); }
-        .year-content { display: none; background: white; padding: 0 20px 20px 20px; }
+        .year-content { display: none; padding: 0 20px 20px 20px; }
 
-        .month-title {
-            font-size: 16px; font-weight: 600; color: var(--primary-color);
-            margin: 20px 0 10px 0; padding-left: 10px; border-left: 4px solid var(--primary-color);
-        }
+        .month-title { font-size: 16px; font-weight: 600; color: var(--primary-color); margin: 25px 0 10px 0; padding-left: 10px; border-left: 4px solid var(--primary-color); }
 
-        /* --- Table Styles --- */
-        .doc-table { width:100%; border-collapse: collapse; margin-bottom: 10px; }
-        .doc-table th, .doc-table td { padding: 12px; border-bottom: 1px solid #eee; font-size: 15px; }
-        .doc-table th { background: #fafafa; color: #777; font-weight: 500; font-size: 14px; text-align: left; }
+        /* Table Styles (ปรับความกว้างใหม่) */
+        .doc-table { width:100%; border-collapse: collapse; }
+        .doc-table th { background: #fafafa; color: #888; font-size: 13px; padding: 10px; text-align: left; border-bottom: 2px solid #eee; }
+        .doc-table td { padding: 15px 10px; border-bottom: 1px solid #eee; font-size: 15px; vertical-align: middle; }
         
-        /* Center Date and File columns */
-        .doc-table th:nth-child(2), .doc-table td:nth-child(2),
-        .doc-table th:nth-child(3), .doc-table td:nth-child(3) { text-align: center; }
+        /* จัดวางตำแหน่งคอลัมน์ไฟล์ให้เหมาะสม */
+        .doc-table th:last-child, .doc-table td:last-child { text-align: center; }
 
-        .doc-table a { 
-            color: var(--primary-color); text-decoration: none; font-weight: 600;
-            border: 1px solid var(--primary-color); padding: 4px 12px;
-            border-radius: 20px; transition: 0.2s; font-size: 13px;
-            display: inline-flex; align-items: center; gap: 6px;
-        }
+        .doc-table a { color: var(--primary-color); text-decoration: none; font-weight: 600; border: 1px solid var(--primary-color); padding: 4px 12px; border-radius: 20px; transition: 0.2s; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
         .doc-table a:hover { background: var(--primary-color); color: white; }
 
-        .new-badge { 
-            background: #e74c3c; color: white; font-size: 10px; font-weight: bold;
-            padding: 2px 6px; border-radius: 4px; margin-left: 8px; animation: pulse 2s infinite;
-        }
+        .new-badge { background: #e74c3c; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; animation: pulse 2s infinite; vertical-align: middle; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
         footer { text-align: center; padding: 15px 20px; background: var(--primary-color); color: white; font-size: 14px; margin-top: auto; }
@@ -223,7 +98,7 @@
             .head-text { font-size: 24px; }
             nav ul li a { font-size: 13px; padding: 6px 10px; }
             main.content-container { padding: 20px; width: 95%; }
-            .doc-table th, .doc-table td { padding: 8px; font-size: 13px; }
+            .year-header { font-size: 18px; padding: 15px 20px; }
         }
     </style>
 </head>
@@ -239,67 +114,12 @@
 
     <nav>
         <ul>
-            <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
-            <li class="dropdown">
-                <a href="#">เกี่ยวกับเรา ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
-                    <li class="nested-dropdown">
-                        <a href="#">ฝ่ายภายในส่วนอำนวยการ ▸</a>
-                        <ul class="submenu">
-                            <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
-                            <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
-                            <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
-                            <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
-                            <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
-                            <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบรรณอิเล็กทรอนิกส์</a></li>
-                    <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
-                    <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">คำสั่ง/ประกาศ ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="command.html">คำสั่ง</a></li>
-                    <li><a href="announce.html">ประกาศ</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">ข่าวสาร ▾</a>
-                <ul class="dropdown-menu">
-                    <li class="nested-dropdown">
-                        <a href="procurement.html">จัดซื้อจัดจ้าง ▸</a>
-                        <ul class="submenu">
-                            <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
-                            <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
-                            <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
-                            <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
-                        </ul>
-                    </li>
-                    <li class="nested-dropdown">
-                        <a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a>
-                        <ul class="submenu">
-                            <li><a href="https://edoc.forest.go.th/doccir/docindex.html" target="_blank">หนังสือเวียนกรมป่าไม้</a></li>
-                            <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">ระเบียบ ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
-                    <li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li>
-                </ul>
-            </li>
+            <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
+            <li class="dropdown"><a href="#">เกี่ยวกับเรา ▾</a><ul class="dropdown-menu"><li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li><li class="nested-dropdown"><a href="#">ฝ่ายภายในส่วนอำนวยการ ▸</a><ul class="submenu"><li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li><li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li><li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li><li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li><li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li><li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li></ul></li></ul></li>
+            <li class="dropdown"><a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a><ul class="dropdown-menu"><li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบรรณอิเล็กทรอนิกส์</a></li><li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li><li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li></ul></li>
+            <li class="dropdown"><a href="#">คำสั่ง/ประกาศ ▾</a><ul class="dropdown-menu"><li><a href="command.html">คำสั่ง</a></li><li><a href="announce.html">ประกาศ</a></li></ul></li>
+            <li class="dropdown"><a href="#">ข่าวสาร ▾</a><ul class="dropdown-menu"><li class="nested-dropdown"><a href="#">จัดซื้อจัดจ้าง ▸</a><ul class="submenu"><li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li><li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li><li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li><li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li></ul></li><li class="nested-dropdown"><a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a><ul class="submenu"><li><a href="https://edoc.forest.go.th/doccir/docindex.html" target="_blank">หนังสือเวียนกรมป่าไม้</a></li><li><a href="edocs.html">หนังสือเวียน สวพ.</a></li></ul></li></ul></li>
+            <li class="dropdown"><a href="#">ระเบียบ ▾</a><ul class="dropdown-menu"><li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li><li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li></ul></li>
             <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
             <li><a href="contact.html">ติดต่อ</a></li>
         </ul>
@@ -328,7 +148,7 @@
             const { data, error } = await supabase.from('procurement_draft').select('*').order('date', { ascending: false });
 
             if(error || !data || data.length === 0) {
-                root.innerHTML = "<p style='text-align:center; padding:40px;'>ไม่พบข้อมูลประกาศร่างขอบเขตของงานฯ</p>";
+                root.innerHTML = "<p style='text-align:center; padding:40px;'>ไม่พบข้อมูล</p>";
                 return;
             }
 
@@ -342,7 +162,7 @@
                 grouped[year][month].push(doc);
             });
 
-            const NEW_LIMIT = Date.now() - (10 * 24 * 60 * 60 * 1000);
+            const NEW_LIMIT = Date.now() - (7 * 24 * 60 * 60 * 1000);
             let html = '';
             const years = Object.keys(grouped).sort((a,b) => b-a);
 
@@ -362,30 +182,23 @@
                 const months = Object.keys(grouped[year]).sort((a,b) => b-a);
                 months.forEach(m => {
                     html += `<div class="month-title">เดือน${monthNames[m]}</div>`;
-                    html += `<table class="doc-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width:70%">ชื่อเรื่อง</th>
-                                        <th style="width:18%">วันที่ประกาศ</th>
-                                        <th style="width:12%">ไฟล์</th>
-                                    </tr>
-                                </thead>
-                                <tbody>`;
+                    
+                    // แก้ไข: นำคอลัมน์วันที่ออก เหลือแค่ ชื่อประกาศ และ ไฟล์
+                    html += `<table class="doc-table"><thead><tr><th style="width:85%">ชื่อประกาศ</th><th style="width:15%">ไฟล์</th></tr></thead><tbody>`;
                     
                     grouped[year][m].forEach(doc => {
                         let url = doc.filename;
                         if(url && url.includes('drive.google.com')){
                             const id = url.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1];
-                            if(id) url = `https://drive.google.com/uc?export=download&id=${id}`;
+                            if(id) url = `https://drive.google.com/file/d/${id}/view`;
                         }
-                        const dateTh = new Date(doc.date).toLocaleDateString('th-TH', {day:'numeric', month:'short', year:'numeric'});
+
                         const badge = new Date(doc.date).getTime() >= NEW_LIMIT ? '<span class="new-badge">NEW</span>' : '';
                         
                         html += `<tr>
-                                    <td>${doc.title} ${badge}</td>
-                                    <td>${dateTh}</td>
-                                    <td><a href="${url}" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a></td>
-                                 </tr>`;
+                            <td>${doc.title} ${badge}</td>
+                            <td><a href="${url}" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a></td>
+                        </tr>`;
                     });
                     html += `</tbody></table>`;
                 });
