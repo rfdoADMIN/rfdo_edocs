@@ -474,7 +474,7 @@
                     const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)/); 
                     if (fileIdMatch && fileIdMatch[1]) {
                         const fileId = fileIdMatch[1];
-                        fileUrl = `https://drive.google.com/uc?export=download&id=${fileId}`; 
+                        fileUrl = `https://drive.google.com/file/d/${id}/view`; 
                     }
                 }
                 
