@@ -376,7 +376,7 @@
                         let url = doc.filename;
                         if(url && url.includes('drive.google.com')){
                             const id = url.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1];
-                            if(id) url = `https://drive.google.com/uc?export=download&id=${id}`;
+                            if(id) url = `https://drive.google.com/file/d/${id}/view`;
                         }
                         const dateTh = new Date(doc.date).toLocaleDateString('th-TH', {day:'numeric', month:'short', year:'numeric'});
                         const badge = new Date(doc.date).getTime() >= NEW_LIMIT ? '<span class="new-badge">NEW</span>' : '';
