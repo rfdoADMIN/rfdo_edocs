@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="icon" type="image/png" href="images/logorfdo.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+    
  <style>
     :root {
         --primary-color: #339999;
@@ -415,12 +415,12 @@
         const TARGET_TABLE = 'announce';
 
         async function loadDocuments() {
-            documentList.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:20px; color:#666;">กำลังโหลดข้อมูลประกาศจัดซื้อจัดจ้าง...</td></tr>';
+            documentList.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:20px; color:#666;">กำลังโหลดข้อมูลประกาศ...</td></tr>';
 
-            // ไม่จำเป็นต้องดึง date แล้ว แต่ยังคงดึงได้ถ้าต้องการใช้ในอนาคต
+
             const { data, error } = await supabase.from(TARGET_TABLE)
-                .select('title, filename') // ดึงเฉพาะ title และ filename
-                .order('date', { ascending: false }); // เรียงตามวันที่ล่าสุด
+                .select('title, filename')
+                .order('date', { ascending: false });
 
             if(error){
                 documentList.innerHTML = `<tr><td colspan="2" style="color:red; text-align:center;">เกิดข้อผิดพลาด: ${error.message} (ตรวจสอบ RLS Policy และชื่อตาราง/คอลัมน์)</td></tr>`;
@@ -429,19 +429,19 @@
             }
 
             if (!data || data.length === 0) {
-                documentList.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px;">ไม่พบข้อมูลประกาศจัดซื้อจัดจ้าง</td></tr>`;
+                documentList.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px;">ไม่พบข้อมูลประกาศ</td></tr>`;
                 return;
             }
+
 
             documentList.innerHTML = '';
             data.forEach(doc => {
                 let fileUrl = doc.filename; 
-                // จัดการลิงก์ Google Drive เพื่อให้ดาวน์โหลดโดยตรง
                 if (fileUrl && fileUrl.includes('drive.google.com')) {
                     const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)/); 
                     if (fileIdMatch && fileIdMatch[1]) {
                         const fileId = fileIdMatch[1];
-                        fileUrl = `https://drive.google.com/file/d/${id}/view`; 
+                        fileUrl = `https://drive.google.com/file/d/${fileId}/view`; 
                     }
                 }
 
