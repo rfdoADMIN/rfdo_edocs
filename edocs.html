@@ -6,6 +6,7 @@
     <title>RFDO e-Doc - เอกสารดาวน์โหลด</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="icon" type="image/png" href="images/logorfdo.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -22,6 +23,7 @@
         --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
         --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
         --radius: 12px;
+        --danger-color: #ff4757; /* สีแดงสำหรับ NEW */
     }
 
     /* === General Styles === */
@@ -69,7 +71,7 @@
     }
     .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-    /* === Navigation (Compact Style & Large Font) === */
+    /* === Navigation === */
     nav {
         background: var(--primary-color);
         padding: 0 20px;
@@ -85,7 +87,7 @@
         gap: 20px; 
         list-style: none;
         margin: 0;
-        padding: 5px 0; /* Padding น้อยเพื่อให้แถบบาง */
+        padding: 5px 0; 
         flex-wrap: wrap;
         align-items: center;
         max-width: 1600px;
@@ -99,7 +101,7 @@
         color: rgba(255, 255, 255, 0.95);
         font-size: 16px; 
         font-weight: 500;
-        padding: 8px 14px; /* Padding น้อยลง */
+        padding: 8px 14px; 
         border-radius: 30px;
         display: flex;
         align-items: center;
@@ -118,7 +120,7 @@
     .home-icon svg { fill: white; width: 22px; height: 22px; }
     .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-    /* === Dropdown Menu (Fix Gap Issue) === */
+    /* === Dropdown Menu === */
     .dropdown-menu {
         display: none;
         position: absolute;
@@ -133,14 +135,13 @@
         opacity: 0;
         transition: all 0.2s;
         border: 1px solid rgba(0,0,0,0.05);
-        margin-top: 10px; /* เว้นระยะห่าง */
+        margin-top: 10px;
     }
 
-    /* Invisible Bridge */
     .dropdown-menu::before {
         content: "";
         position: absolute;
-        top: -10px; /* ยื่นขึ้นไปข้างบน */
+        top: -10px;
         left: 0;
         width: 100%;
         height: 10px;
@@ -158,7 +159,7 @@
         border-radius: 0; 
         display: flex; 
         justify-content: space-between; 
-        font-size: 16px; /* Font Size Submenu */
+        font-size: 16px; 
         font-weight: 500;
     }
     .dropdown-menu li a:hover { 
@@ -167,7 +168,7 @@
         padding-left: 25px; 
     }
 
-    /* === Nested Submenu (Fix Gap Issue) === */
+    /* === Nested Submenu === */
     .submenu {
         display: none;
         position: absolute;
@@ -186,7 +187,7 @@
         content: "";
         position: absolute;
         top: 0;
-        left: -15px; /* ยื่นไปทางซ้าย */
+        left: -15px; 
         width: 20px;
         height: 100%;
         background: transparent;
@@ -212,7 +213,7 @@
             border-radius: var(--radius); 
             box-shadow: var(--shadow-md); 
             min-height: 500px;
-            box-sizing: border-box; /* ป้องกัน padding ดันความกว้าง */
+            box-sizing: border-box; 
         }
         .content-container h2 { 
             font-size: 24px; 
@@ -242,51 +243,63 @@
         }
 
         /* Column Widths */
-        .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 40%; word-wrap: break-word; }
-        .doc-table th:nth-child(2), .doc-table td:nth-child(2) { width: 20%; }
-        .doc-table th:nth-child(3), .doc-table td:nth-child(3) { width: 15%; }
-        .doc-table th:nth-child(4), .doc-table td:nth-child(4) { width: 15%; }
-        .doc-table th:nth-child(5), .doc-table td:nth-child(5) { width: 10%; text-align: center; }
+        .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 40%; word-wrap: break-word; } /* ชื่อเรื่อง */
+        .doc-table th:nth-child(2), .doc-table td:nth-child(2) { width: 20%; text-align: center;  } /* เลขที่ */
+        .doc-table th:nth-child(3), .doc-table td:nth-child(3) { width: 15%; text-align: center;  } /* ชั้นความลับ */
+        .doc-table th:nth-child(4), .doc-table td:nth-child(4) { width: 15%; text-align: center; } /* วันที่ */
+        .doc-table th:nth-child(5), .doc-table td:nth-child(5) { width: 10%; text-align: center; } /* ไฟล์ */
 
         .doc-table th { 
             background: var(--primary-color); 
             color: #fff; 
             font-weight: 500; 
             border: none;
+            text-align: center;
         }
+        .doc-table th:first-child { text-align: left; }
         
         .doc-table tr:hover td { background-color: #fafafa; }
 
+        /* PDF Button Style */
         .doc-table a { 
             color: var(--primary-color); 
             text-decoration: none; 
             font-weight: 600; 
             border: 1px solid var(--primary-color);
-            padding: 4px 10px;
+            padding: 6px 14px;
             border-radius: 20px;
             transition: 0.2s;
             font-size: 13px;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
         .doc-table a:hover { 
             background: var(--primary-color); 
             color: white; 
         }
 
-        /* Badge NEW */
+        /* === NEW Badge Style === */
         .new-badge {
-            display: inline-block;
-            background-color: #e74c3c; 
+            background-color: var(--danger-color);
             color: white;
             font-size: 10px;
             font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 8px; 
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
             vertical-align: middle;
+            text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
             animation: pulse 2s infinite;
+            display: inline-block;
         }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 5px rgba(255, 71, 87, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+        }
 
         /* Footer (แบบบาง) */
         footer { 
@@ -302,13 +315,16 @@
         @media (max-width: 860px) { 
             .head-section img#logo { width: 100px; } 
             .head-text { font-size: 28px; } 
-            .main.content-container { padding: 20px; margin: 20px auto; width: 95%; }
+            main.content-container { padding: 20px; margin: 20px auto; width: 95%; }
             
             /* Table Responsive */
             .doc-table th:nth-child(2), .doc-table td:nth-child(2), /* เลขที่ */
             .doc-table th:nth-child(3), .doc-table td:nth-child(3) { /* ชั้นความลับ */
                 display: none; 
             } 
+            .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 50%; }
+            .doc-table th:nth-child(4), .doc-table td:nth-child(4) { width: 25%; }
+            .doc-table th:nth-child(5), .doc-table td:nth-child(5) { width: 25%; }
         }
         @media (max-width: 600px) { 
             .head-section { flex-direction: column; text-align: center; }
@@ -461,10 +477,10 @@
                 return;
             }
 
-            // Logic การเช็คเอกสารใหม่ 14 วัน
-            const NEW_THRESHOLD_DAYS = 14;
-            const currentTime = new Date().getTime();
-            const newDocTimeLimit = currentTime - (NEW_THRESHOLD_DAYS * 24 * 60 * 60 * 1000);
+            // ตั้งค่า Logic เป็น 7 วันตามคำขอ
+            const today = new Date();
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(today.getDate() - 7);
 
             documentList.innerHTML = '';
             data.forEach(doc => {
@@ -474,30 +490,40 @@
                     const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)/); 
                     if (fileIdMatch && fileIdMatch[1]) {
                         const fileId = fileIdMatch[1];
-                        fileUrl = `https://drive.google.com/file/d/${id}/view`; 
+                        // แก้ไข: ใช้ตัวแปร fileId ที่ถูกต้อง (จากเดิม id)
+                        fileUrl = `https://drive.google.com/file/d/${fileId}/view`; 
                     }
                 }
                 
                 // แปลงวันที่
-                const formattedDate = doc.date ? new Date(doc.date).toLocaleDateString('th-TH', { 
-                    year: 'numeric', month: 'short', day: 'numeric' 
-                }) : '-';
+                let formattedDate = '-';
+                let isNew = false;
 
-                // ตรวจสอบป้าย NEW
-                let newBadge = '';
                 if (doc.date) {
-                    const docDateTimestamp = new Date(doc.date).getTime();
-                    if (docDateTimestamp >= newDocTimeLimit) {
-                        newBadge = '<span class="new-badge">NEW</span>';
+                    const docDate = new Date(doc.date);
+                    formattedDate = docDate.toLocaleDateString('th-TH', { 
+                        year: 'numeric', month: 'short', day: 'numeric' 
+                    });
+                    
+                    // ตรวจสอบว่าเป็นเอกสารใหม่หรือไม่ (ภายใน 7 วัน)
+                    if (docDate >= sevenDaysAgo) {
+                        isNew = true;
                     }
                 }
+
+                // สร้าง HTML Badge NEW
+                const newBadge = isNew ? '<span class="new-badge">NEW</span>' : '';
 
                 const row = `<tr>
                     <td class="title-col">${doc.title} ${newBadge}</td> 
                     <td>${doc.doc_number || '-'}</td>
                     <td>${doc.level || 'ปกติ'}</td>
-                    <td>${formattedDate}</td>
-                    <td><a href="${fileUrl}" target="_blank">ดาวน์โหลด</a></td>
+                    <td style="text-align:center;">${formattedDate}</td>
+                    <td>
+                        <a href="${fileUrl}" target="_blank">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                    </td>
                 </tr>`;
                 documentList.innerHTML += row;
             });
