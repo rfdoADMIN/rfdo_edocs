@@ -406,15 +406,13 @@
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; 
 
-        // ******** Supabase Config (ใช้ค่าที่คุณให้มา) ********
         const SUPABASE_URL = 'https://rxqfmhrxoepjdsmmnqhk.supabase.co';
         const SUPABASE_KEY_VALUE = "sb_publishable_lMMLp3mTrIiSm1Om-HdQxw_oOrHub8g"; 
         
         const supabase = createClient(SUPABASE_URL, SUPABASE_KEY_VALUE); 
         const documentList = document.getElementById('documentList');
         
-        // ******** กำหนดชื่อตาราง ********
-        const TARGET_TABLE = 'procurement_announce';
+        const TARGET_TABLE = 'announce';
 
         async function loadDocuments() {
             documentList.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:20px; color:#666;">กำลังโหลดข้อมูลประกาศจัดซื้อจัดจ้าง...</td></tr>';
@@ -435,8 +433,6 @@
                 return;
             }
 
-            // *** ลบ Logic NEW ออกทั้งหมดแล้ว ***
-
             documentList.innerHTML = '';
             data.forEach(doc => {
                 let fileUrl = doc.filename; 
@@ -449,7 +445,6 @@
                     }
                 }
 
-                // *** ไม่มี newBadge แล้ว ***
                 const row = `<tr>
                     <td class="title-col">${doc.title}</td> 
                     <td><a href="${fileUrl}" target="_blank">ดาวน์โหลด</a></td>
