@@ -22,6 +22,7 @@
         --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
         --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
         --radius: 12px;
+        --danger-color: #ff4757; 
     }
 
     body {
@@ -113,7 +114,7 @@
     .home-icon svg { fill: white; width: 22px; height: 22px; }
     .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-    /* === Dropdown Menu (Fix Gap Issue) === */
+    /* === Dropdown Menu === */
     .dropdown-menu {
         display: none;
         position: absolute;
@@ -128,14 +129,13 @@
         opacity: 0;
         transition: all 0.2s;
         border: 1px solid rgba(0,0,0,0.05);
-        margin-top: 10px; /* เว้นระยะห่าง */
+        margin-top: 10px;
     }
 
-    /* Invisible Bridge */
     .dropdown-menu::before {
         content: "";
         position: absolute;
-        top: -10px; /* ยื่นขึ้นไปข้างบน */
+        top: -10px;
         left: 0;
         width: 100%;
         height: 10px;
@@ -153,7 +153,7 @@
         border-radius: 0; 
         display: flex; 
         justify-content: space-between; 
-        font-size: 16px; /* Font Size Submenu */
+        font-size: 16px;
         font-weight: 500;
     }
     .dropdown-menu li a:hover { 
@@ -162,7 +162,7 @@
         padding-left: 25px; 
     }
 
-    /* === Nested Submenu (Fix Gap Issue) === */
+    /* === Nested Submenu === */
     .submenu {
         display: none;
         position: absolute;
@@ -181,7 +181,7 @@
         content: "";
         position: absolute;
         top: 0;
-        left: -15px; /* ยื่นไปทางซ้าย */
+        left: -15px;
         width: 20px;
         height: 100%;
         background: transparent;
@@ -196,108 +196,139 @@
         to { opacity: 1; transform: translateY(0); } 
     }
 
-        /* === Content Layout === */
-        main.content-container { 
-            flex-grow: 1; 
-            width: 100%;
-            max-width: 1000px; 
-            margin: 40px auto; 
-            padding: 40px; 
-            background: var(--white); 
-            border-radius: var(--radius); 
-            box-shadow: var(--shadow-md); 
-            min-height: 500px; 
-            box-sizing: border-box;
-        }
-        .content-container h2 { 
-            font-size: 28px; 
-            color: var(--primary-dark); 
-            border-bottom: 3px solid var(--primary-light); 
-            padding-bottom: 15px; 
-            margin-top: 0; 
-            margin-bottom: 25px;
-        }
+    /* === Content Layout === */
+    main.content-container { 
+        flex-grow: 1; 
+        width: 100%;
+        max-width: 1000px; 
+        margin: 40px auto; 
+        padding: 40px; 
+        background: var(--white); 
+        border-radius: var(--radius); 
+        box-shadow: var(--shadow-md); 
+        min-height: 500px; 
+        box-sizing: border-box;
+    }
+    .content-container h2 { 
+        font-size: 28px; 
+        color: var(--primary-dark); 
+        border-bottom: 3px solid var(--primary-light); 
+        padding-bottom: 15px; 
+        margin-top: 0; 
+        margin-bottom: 25px;
+    }
 
-        /* === Table Styles === */
-        .doc-table { 
-            width:100%; 
-            border-collapse: separate; 
-            border-spacing: 0;
-            margin-top:10px; 
-            table-layout: fixed; 
-            border-radius: 8px 8px 0 0;
-            overflow: hidden;
-        }
-        .doc-table th, .doc-table td { 
-            padding: 15px; 
-            border-bottom: 1px solid #eee; 
-            text-align: left; 
-            vertical-align: top; 
-            font-size: 15px;
-        }
+    /* === Table Styles (Updated for 3 Columns) === */
+    .doc-table { 
+        width:100%; 
+        border-collapse: separate; 
+        border-spacing: 0;
+        margin-top:10px; 
+        table-layout: fixed; 
+        border-radius: 8px 8px 0 0;
+        overflow: hidden;
+    }
+    .doc-table th, .doc-table td { 
+        padding: 15px; 
+        border-bottom: 1px solid #eee; 
+        text-align: left; 
+        vertical-align: middle; 
+        font-size: 15px;
+    }
+    
+    /* ปรับความกว้างคอลัมน์ใหม่ */
+    .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 65%; word-wrap: break-word; } /* ชื่อเรื่อง */
+    .doc-table th:nth-child(2), .doc-table td:nth-child(2) { width: 20%; text-align: center; }    /* วันที่ */
+    .doc-table th:nth-child(3), .doc-table td:nth-child(3) { width: 15%; text-align: center; }    /* ไฟล์ */
+    
+    .doc-table th { 
+        background: var(--primary-color); 
+        color: #fff; 
+        font-weight: 500; 
+        border: none;
+        text-align: center; /* จัดหัวตารางให้อยู่กึ่งกลาง */
+    }
+    .doc-table th:first-child { text-align: left; } /* ยกเว้นหัวข้อชื่อเรื่องชิดซ้าย */
+
+    .doc-table tr:hover td { background-color: #fafafa; }
+
+    /* PDF Button Style */
+    .doc-table a { 
+        color: var(--primary-color); 
+        text-decoration: none; 
+        font-weight: 600; 
+        border: 1px solid var(--primary-color);
+        padding: 6px 14px;
+        border-radius: 20px;
+        transition: 0.2s;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px; /* ระยะห่างระหว่างไอคอนกับตัวหนังสือ */
+    }
+    .doc-table a:hover { 
+        background: var(--primary-color); 
+        color: white; 
+    }
+
+    /* === NEW Badge Style === */
+    .new-badge {
+        background-color: var(--danger-color);
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 12px;
+        margin-left: 8px;
+        vertical-align: middle;
+        text-transform: uppercase;
+        box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
+        animation: pulse 2s infinite;
+        display: inline-block;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 5px rgba(255, 71, 87, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+    }
+
+    /* Footer */
+    footer { 
+        text-align: center; 
+        padding: 15px 20px; 
+        background: var(--primary-color); 
+        color: rgba(255,255,255,0.8); 
+        font-size: 14px; 
+        margin-top: auto; 
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) { 
+        .head-section img#logo { width: 100px; } 
+        .head-text { font-size: 28px; } 
+        main.content-container { padding: 20px; margin: 20px auto; width: 95%; }
         
-        /* ปรับ Column Widths สำหรับ 2 คอลัมน์ */
-        .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 90%; word-wrap: break-word; }
-        .doc-table th:nth-child(2), .doc-table td:nth-child(2) { width: 10%; text-align: center; }
+        .doc-table th:nth-child(2), .doc-table td:nth-child(2) { display: none; } /* ซ่อนวันที่บนมือถือถ้าจอเล็กมาก */
+        .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 70%; }
+        .doc-table th:nth-child(3), .doc-table td:nth-child(3) { width: 30%; }
+    }
+    @media (max-width: 600px) { 
+        .head-section { flex-direction: column; text-align: center; } 
+        .head-text { font-size: 24px; } 
+        nav { padding: 5px 0; }
+        nav ul { justify-content: center; gap: 5px; }
+        nav ul li a { padding: 6px 12px; font-size: 13px; }
         
-        .doc-table th { 
-            background: var(--primary-color); 
-            color: #fff; 
-            font-weight: 500; 
-            border: none;
+        .submenu {
+            position: static;
+            box-shadow: none;
+            margin-left: 20px;
+            border-left: 2px solid #eee;
+            min-width: auto;
         }
-        .doc-table tr:hover td { background-color: #fafafa; }
-
-        .doc-table a { 
-            color: var(--primary-color); 
-            text-decoration: none; 
-            font-weight: 600; 
-            border: 1px solid var(--primary-color);
-            padding: 4px 10px;
-            border-radius: 20px;
-            transition: 0.2s;
-            font-size: 13px;
-            display: inline-block;
-        }
-        .doc-table a:hover { 
-            background: var(--primary-color); 
-            color: white; 
-        }
-        
-        /* *** ลบ Badge NEW CSS ออกแล้ว *** */
-
-        /* Footer (แบบบาง) */
-        footer { 
-            text-align: center; 
-            padding: 15px 20px; 
-            background: var(--primary-color); 
-            color: rgba(255,255,255,0.8); 
-            font-size: 14px; 
-            margin-top: auto; 
-        }
-
-        /* Responsive */
-        @media (max-width: 860px) { 
-            .head-section img#logo { width: 100px; } 
-            .head-text { font-size: 28px; } 
-            main.content-container { padding: 20px; margin: 20px auto; width: 95%; }
-        }
-        @media (max-width: 600px) { 
-            .head-section { flex-direction: column; text-align: center; } 
-            .head-text { font-size: 24px; } 
-            nav { padding: 5px 0; }
-            nav ul { justify-content: center; gap: 5px; }
-            nav ul li a { padding: 6px 12px; font-size: 13px; }
-            
-            .submenu {
-                position: static;
-                box-shadow: none;
-                margin-left: 20px;
-                border-left: 2px solid #eee;
-                min-width: auto;
-            }
-        }
-    </style>
+    }
+ </style>
 </head>
 <body>
 
@@ -393,7 +424,7 @@
         <thead>
         <tr>
             <th class="title-col">ชื่อเรื่อง</th>
-            <th>ไฟล์</th>
+            <th>วันที่</th> <th>ไฟล์</th>
         </tr>
     </thead>
     <tbody id="documentList">
@@ -415,26 +446,30 @@
         const TARGET_TABLE = 'announce';
 
         async function loadDocuments() {
-            documentList.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:20px; color:#666;">กำลังโหลดข้อมูลประกาศ...</td></tr>';
-
+            documentList.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:#666;">กำลังโหลดข้อมูลประกาศ...</td></tr>';
 
             const { data, error } = await supabase.from(TARGET_TABLE)
-                .select('title, filename')
+                .select('title, filename, date') 
                 .order('date', { ascending: false });
 
             if(error){
-                documentList.innerHTML = `<tr><td colspan="2" style="color:red; text-align:center;">เกิดข้อผิดพลาด: ${error.message} (ตรวจสอบ RLS Policy และชื่อตาราง/คอลัมน์)</td></tr>`;
+                documentList.innerHTML = `<tr><td colspan="3" style="color:red; text-align:center;">เกิดข้อผิดพลาด: ${error.message} (ตรวจสอบ RLS Policy และชื่อตาราง/คอลัมน์)</td></tr>`;
                 console.error("Supabase API Error:", error);
                 return;
             }
 
             if (!data || data.length === 0) {
-                documentList.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px;">ไม่พบข้อมูลประกาศ</td></tr>`;
+                documentList.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px;">ไม่พบข้อมูลประกาศ</td></tr>`;
                 return;
             }
 
-
             documentList.innerHTML = '';
+            
+
+            const today = new Date();
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(today.getDate() - 7);
+
             data.forEach(doc => {
                 let fileUrl = doc.filename; 
                 if (fileUrl && fileUrl.includes('drive.google.com')) {
@@ -445,9 +480,35 @@
                     }
                 }
 
+
+                let dateDisplay = "-";
+                let isNew = false;
+                
+                if (doc.date) {
+                    const docDate = new Date(doc.date);
+
+                    dateDisplay = docDate.toLocaleDateString('th-TH', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+
+
+                    if (docDate >= sevenDaysAgo) {
+                        isNew = true;
+                    }
+                }
+
+                const badgeHtml = isNew ? '<span class="new-badge">NEW</span>' : '';
+
                 const row = `<tr>
-                    <td class="title-col">${doc.title}</td> 
-                    <td><a href="${fileUrl}" target="_blank">ดาวน์โหลด</a></td>
+                    <td class="title-col">${doc.title} ${badgeHtml}</td> 
+                    <td>${dateDisplay}</td>
+                    <td>
+                        <a href="${fileUrl}" target="_blank">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                    </td>
                 </tr>`; 
                 documentList.innerHTML += row;
             });
