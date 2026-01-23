@@ -21,8 +21,19 @@
             --radius: 12px;
             --danger-gradient: linear-gradient(45deg, #ff4757, #ff6b81);
         }
+
+        /* === Base Styling & Protection === */
         body { margin: 0; background-color: var(--bg-color); font-family: "Prompt", sans-serif; color: var(--text-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
-        img { user-select: none; -webkit-user-select: none; -moz-user-select: none; pointer-events: none; -webkit-user-drag: none; }
+        
+        /* ป้องกันการเลือกข้อความและลากรูปภาพ */
+        img { 
+            user-select: none; 
+            -webkit-user-select: none; 
+            -moz-user-select: none; 
+            -webkit-user-drag: none; 
+            pointer-events: auto; 
+        }
+
         a, button, .dropdown:hover > a, .quick-links li a, .menu-item, .pdf-link, .view-all-link { pointer-events: auto !important; cursor: pointer; }
 
         /* === Header Section === */
@@ -56,7 +67,7 @@
         .section-title { font-size: 26px; font-weight: 700; color: var(--primary-dark); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         .section-title::before { content: ''; display: block; width: 6px; height: 26px; background: var(--primary-color); border-radius: 4px; }
         
-        /* แบนเนอร์ No Gift Policy */
+        /* Banner No Gift Policy */
         .main-banner { width: 100%; margin-bottom: 40px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); }
         .main-banner img { width: 100%; height: auto; display: block; }
 
@@ -64,7 +75,7 @@
         .slideshow-container { position: relative; max-width: 100%; height: 590px; overflow: hidden; margin: auto; background: #000; border-radius: var(--radius); box-shadow: var(--shadow-md); }
         .slide-track { display: flex; height: 100%; transition: transform 0.5s ease-out; }
         .slide-item { min-width: 33.333%; height: 100%; box-sizing: border-box; position: relative; }
-        .slide-item img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; border-right: 2px solid #000; }
+        .slide-item img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; border-right: 2px solid #000; }
         .prev, .next { position: absolute; top: 50%; transform: translateY(-50%); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; color: white; background: rgba(0,0,0,0.4); border-radius: 50%; cursor: pointer; z-index: 100; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.2); }
         .prev:hover, .next:hover { background: var(--primary-color); scale: 1.1; }
         .prev { left: 15px; } .next { right: 15px; }
@@ -72,13 +83,16 @@
         .dot { height: 8px; width: 8px; margin: 0 5px; background-color: #ccc; border-radius: 50%; display: inline-block; transition: 0.3s; cursor: pointer; }
         .dot.active { background-color: var(--primary-color); width: 24px; border-radius: 10px; }
 
+        /* Video Wrapper */
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 50px; border: 4px solid var(--white); }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
         
+        /* Quick Links */
         .menu-icons { display: flex; gap: 16px; flex-wrap: wrap; margin: 30px 0 50px 0; justify-content: center; }
         .menu-icons .menu-item { width: 282px; height: 79px; border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 6px 18px rgba(0,0,0,0.12); display: block; background: white; }
         .menu-icons .menu-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
         
+        /* Tables & Wrappers */
         .procurement-wrapper { background: var(--white); padding: 25px; border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 50px; }
         .procurement-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
         .tab-btn { background: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); padding: 8px 16px; border-radius: 20px; font-family: "Prompt", sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.3s; }
@@ -93,6 +107,7 @@
         .view-all-link { display: inline-flex; align-items: center; gap: 5px; color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px; transition: 0.3s; }
         .view-all-link:hover { color: var(--primary-color); transform: translateX(3px); }
         
+        /* New Badge */
         .new-badge { display: inline-block; background: var(--danger-gradient); color: white; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 5px; margin-right: 10px; vertical-align: middle; box-shadow: 0 2px 5px rgba(255, 71, 87, 0.3); text-transform: uppercase; letter-spacing: 0.5px; animation: pulse 2s infinite; }
         
         /* Sidebar */
@@ -115,10 +130,14 @@
         .sidebar-link-item img { width: 100%; height: auto; display: block; }
         footer { text-align: center; padding: 15px 20px; background: var(--primary-color); color: rgba(255,255,255,0.9); font-size: 14px; margin-top: 60px; }
         
+        /* === Modal & Protection Overlay === */
         .modal { display: none; position: fixed; z-index: 2000; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); backdrop-filter: blur(5px); }
-        .modal-content { margin: auto; display: block; max-width: 90%; max-height: 85vh; border-radius: 8px; }
-        .close { position: absolute; top: 20px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; }
+        .modal-content-wrapper { position: relative; margin: auto; display: block; max-width: 90%; max-height: 85vh; width: fit-content; }
+        .modal-content { display: block; max-width: 100%; max-height: 85vh; border-radius: 8px; }
+        .protection-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background: rgba(0,0,0,0); cursor: default; }
+        .close { position: absolute; top: -40px; right: 0; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; z-index: 20; }
         
+        /* Responsive */
         @media (max-width: 992px) { .container { grid-template-columns: 1fr; } .sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; } .slide-item { min-width: 50%; } }
         @media (max-width: 600px) { .head-text { font-size: 28px; } .sidebar { grid-template-columns: 1fr; } .slide-item { min-width: 100%; } .doc-table td:last-child { display: none; } }
     </style>
@@ -292,12 +311,29 @@
 <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
 
 <div id="modal" class="modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="modal-img">
+    <div class="modal-content-wrapper">
+        <span class="close">&times;</span>
+        <div class="protection-overlay"></div> <img class="modal-content" id="modal-img">
+    </div>
 </div>
 
 <script>
-    /* JavaScript สำหรับ Slideshow */
+    /* === ป้องกันการ Save รูปภาพ === */
+    // ห้ามคลิกขวาที่รูปและ Overlay
+    document.addEventListener('contextmenu', function(e) {
+        if (e.target.tagName === 'IMG' || e.target.classList.contains('protection-overlay')) {
+            e.preventDefault();
+        }
+    }, false);
+
+    // ห้ามลากรูปภาพ
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+        }
+    }, false);
+
+    /* === Slideshow Logic === */
     const track = document.querySelector('.slide-track');
     const items = Array.from(document.querySelectorAll('.slide-item'));
     const btnNext = document.querySelector('.next');
@@ -308,6 +344,7 @@
     let currentIndex = visibleCount;
     let isTransitioning = false;
 
+    // Clone items for Infinite loop
     const clonesBefore = items.slice(-visibleCount).map(item => item.cloneNode(true));
     const clonesAfter = items.slice(0, visibleCount).map(item => item.cloneNode(true));
     clonesBefore.reverse().forEach(clone => track.insertBefore(clone, track.firstChild));
@@ -371,16 +408,30 @@
     document.querySelector('.slideshow-container').addEventListener('mouseenter', () => clearInterval(timer));
     document.querySelector('.slideshow-container').addEventListener('mouseleave', () => timer = setInterval(() => moveSlide(1), 5000));
 
+    /* === Modal Zoom Logic === */
     const modal = document.getElementById("modal");
     const modalImg = document.getElementById("modal-img");
-    document.querySelectorAll('.zoomable').forEach(img => {
-        img.onclick = () => { modal.style.display = "block"; modalImg.src = img.src; };
+    
+    // ผูกเหตุการณ์คลิกรูปในทุกส่วน (รวมถึงส่วนที่ clone มาใน Slideshow ด้วย)
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('zoomable')) {
+            modal.style.display = "block";
+            modalImg.src = e.target.src;
+        }
     });
+
     document.querySelector(".close").onclick = () => modal.style.display = "none";
+    
+    // ปิด Modal เมื่อคลิกที่พื้นหลังหรือ Overlay
+    window.onclick = (event) => {
+        if (event.target == modal || event.target.classList.contains('protection-overlay')) {
+            modal.style.display = "none";
+        }
+    };
 </script>
 
 <script type="module">
-    /* JavaScript สำหรับ Supabase Data Loading */
+    /* === Supabase Data Logic === */
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; 
     const SUPABASE_URL = 'https://rxqfmhrxoepjdsmmnqhk.supabase.co';
     const SUPABASE_KEY_VALUE = "sb_publishable_lMMLp3mTrIiSm1Om-HdQxw_oOrHub8g"; 
