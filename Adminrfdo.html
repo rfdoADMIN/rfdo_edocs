@@ -11,7 +11,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        /* === Theme Colors === */
         :root {
             --primary-color: #339999;
             --primary-dark: #206b6b;
@@ -25,7 +24,6 @@
             --radius: 12px;
         }
 
-        /* === General Styles === */
         body {
             margin: 0;
             background-color: var(--bg-color);
@@ -37,7 +35,6 @@
             min-height: 100vh;
         }
 
-        /* ป้องกันการเซฟรูปภาพ */
         img {
             user-select: none; -webkit-user-select: none; -moz-user-select: none;
             pointer-events: none; -webkit-user-drag: none;
@@ -46,7 +43,6 @@
             pointer-events: auto !important; cursor: pointer; 
         }
 
-        /* === Header Section (New Style) === */
         .head-section {
             position: relative;
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
@@ -71,7 +67,6 @@
         }
         .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-        /* === Navigation (New Structure & Style) === */
         nav {
             background: var(--primary-color);
             padding: 0 20px;
@@ -120,7 +115,6 @@
         .home-icon svg { fill: white; width: 24px; height: 24px; }
         .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-        /* Dropdown & Nested Menu (Invisible Bridge Technique) */
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -168,7 +162,6 @@
         .nested-dropdown:hover > .submenu { display: block; animation: fadeIn 0.2s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* === Content Layout === */
         .content-container {
             flex-grow: 1; 
             max-width: 960px; 
@@ -188,7 +181,6 @@
             margin-bottom: 25px;
         }
 
-        /* Section Header Styles */
         .section-header { 
             font-size: 22px; 
             font-weight: 600; 
@@ -199,12 +191,10 @@
             padding-left: 10px;
         }
         
-        /* 1. Responsibilities */
         .responsibilities ul { list-style: none; padding-left: 0; margin: 0; }
         .responsibilities li { padding: 8px 0; line-height: 1.6; color: #444; font-size: 16px; }
         .responsibilities li:before { content: "• "; color: var(--primary-color); margin-right: 8px; font-weight: bold; }
         
-        /* 2. Quick Links */
         .quick-links ul { list-style: none; padding-left: 0; margin-top: 20px; }
         .quick-links li { margin-bottom: 10px; }
         .quick-links li a {
@@ -215,7 +205,6 @@
         .quick-links li a:hover { background: #d4eaea; border-color: var(--primary-color); }
         .quick-links li i { margin-right: 10px; color: var(--primary-color); }
         
-        /* 3. Personnel Cards */
         .person-card {
             text-align: center; padding: 15px 5px; background: #f7fcfc;
             border: 1px solid #e0f3f3; border-radius: 8px;
@@ -229,13 +218,11 @@
             border: 3px solid var(--primary-color); display: flex; align-items: center;
             justify-content: center; font-size: 12px; font-weight: 500;
         }
-        /* Fix Image Fit */
         .person-image img { width: 100%; height: 100%; object-fit: cover; }
 
         .person-name { font-weight: 600; color: #1f6161; margin-bottom: 2px; line-height: 1.2; font-size: 15px; }
         .person-position { font-size: 13px; color: #666; line-height: 1.3; }
         
-        /* Head Card */
         .head-card {
             max-width: 300px; margin: 0 auto 30px auto; 
             border: 1px solid var(--primary-color); background: #e0f3f3; 
@@ -244,12 +231,10 @@
         .head-card .person-name { font-size: 17px; color: var(--primary-color); }
         .head-card .person-position { font-size: 14px; }
 
-        /* Grid System */
         .personnel-grid-members {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
         }
         
-        /* 4. Contact Section */
         .contact-section {
             padding: 20px; background: #e0f3f3; border-radius: 8px;
             margin-top: 30px; text-align: center;
@@ -258,7 +243,6 @@
         .contact-section i { color: var(--primary-color); margin-right: 10px; }
         .contact-section .tel { font-weight: 700; font-size: 20px; }
 
-        /* === Footer (New Style) === */
         footer {
             text-align: center;
             padding: 15px 20px;
@@ -268,7 +252,6 @@
             margin-top: auto;
         }
 
-        /* Responsive */
         @media (max-width: 860px) {
             .head-section img#logo { width: 100px; }
             .head-text { font-size: 28px; }
@@ -308,7 +291,7 @@
     <ul>
         <li><a href="index.html" class="home-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
         
- <li class="dropdown">
+        <li class="dropdown">
             <a href="#">เกี่ยวกับเรา ▾</a>
             <ul class="dropdown-menu">
                 <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
@@ -346,7 +329,6 @@
         <li class="dropdown">
             <a href="#">ข่าวสาร ▾</a>
             <ul class="dropdown-menu">
-                
                 <li class="nested-dropdown">
                     <a href="#">จัดซื้อจัดจ้าง ▸</a>
                     <ul class="submenu">
@@ -356,7 +338,6 @@
                         <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
                     </ul>
                 </li>
-
                 <li class="nested-dropdown">
                     <a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a>
                     <ul class="submenu">
@@ -364,7 +345,6 @@
                         <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
                     </ul>
                 </li>
-
             </ul>
         </li>
 
@@ -377,7 +357,6 @@
         </li>
 
         <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
-
         <li><a href="contact.html">ติดต่อ</a></li>
     </ul>
 </nav>
@@ -433,7 +412,6 @@
         </div>
         
         <div class="personnel-grid-members">
-            
             <div class="person-card">
                 <div class="person-image">
                     <img src="images/parita.jpg" alt="รูปนางสาวปาริตา"> 
@@ -504,12 +482,11 @@
                 <div class="person-name">นายณัฐพล บัวสุวรรณ</div>
                 <div class="person-position">เจ้าหน้าที่ธุรการ</div>
             </div>
-
         </div>
     </div>
     
     <div class="contact-section">
-        <h3 class="section-header" style="margin-top: 0;"></i> ติดต่อฝ่ายธุรการ</h3>
+        <h3 class="section-header" style="margin-top: 0;">ติดต่อฝ่ายธุรการ</h3>
         <p>
             <i class="fas fa-phone-alt"></i> 
             <span class="tel">0 2561 4292 - 3 ต่อ 5474</span>
@@ -525,7 +502,6 @@
 <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
 
 <script>
-// === โค้ด JavaScript สำหรับป้องกันการคลิกขวา (Context Menu) ===
 document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
 });
