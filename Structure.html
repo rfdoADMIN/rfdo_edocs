@@ -11,7 +11,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        /* === Theme Colors === */
         :root {
             --primary-color: #339999;
             --primary-dark: #206b6b;
@@ -25,7 +24,6 @@
             --radius: 12px;
         }
 
-        /* === General Styles === */
         body {
             margin: 0;
             background-color: var(--bg-color);
@@ -45,7 +43,6 @@
             pointer-events: auto !important; cursor: pointer; 
         }
 
-        /* === Header Section === */
         .head-section {
             position: relative;
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
@@ -70,7 +67,6 @@
         }
         .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-        /* === Navigation (Compact Style) === */
         nav {
             background: var(--primary-color);
             padding: 0 20px;
@@ -115,94 +111,90 @@
             transform: translateY(-1px);
         }
 
-     .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
-    .home-icon svg { fill: white; width: 22px; height: 22px; }
-    .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
+        .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
+        .home-icon svg { fill: white; width: 22px; height: 22px; }
+        .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-    /* === Dropdown Menu (Fix Gap Issue) === */
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: var(--white);
-        border-radius: 8px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        min-width: 270px;
-        padding: 8px 0;
-        z-index: 1001;
-        opacity: 0;
-        transition: all 0.2s;
-        border: 1px solid rgba(0,0,0,0.05);
-        margin-top: 10px; /* เว้นระยะห่าง */
-    }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            min-width: 270px;
+            padding: 8px 0;
+            z-index: 1001;
+            opacity: 0;
+            transition: all 0.2s;
+            border: 1px solid rgba(0,0,0,0.05);
+            margin-top: 10px;
+        }
 
-    /* Invisible Bridge */
-    .dropdown-menu::before {
-        content: "";
-        position: absolute;
-        top: -10px; /* ยื่นขึ้นไปข้างบน */
-        left: 0;
-        width: 100%;
-        height: 10px;
-        background: transparent;
-    }
+        .dropdown-menu::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: transparent;
+        }
 
-    .dropdown:hover > .dropdown-menu { 
-        display: block; opacity: 1; animation: fadeIn 0.2s ease-out forwards; 
-    }
+        .dropdown:hover > .dropdown-menu { 
+            display: block; opacity: 1; animation: fadeIn 0.2s ease-out forwards; 
+        }
 
-    .dropdown-menu li { position: relative; }
-    .dropdown-menu li a { 
-        color: var(--text-color); 
-        padding: 12px 20px; 
-        border-radius: 0; 
-        display: flex; 
-        justify-content: space-between; 
-        font-size: 16px; /* Font Size Submenu */
-        font-weight: 500;
-    }
-    .dropdown-menu li a:hover { 
-        background: var(--primary-light); 
-        color: var(--primary-dark); 
-        padding-left: 25px; 
-    }
+        .dropdown-menu li { position: relative; }
+        .dropdown-menu li a { 
+            color: var(--text-color); 
+            padding: 12px 20px; 
+            border-radius: 0; 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .dropdown-menu li a:hover { 
+            background: var(--primary-light); 
+            color: var(--primary-dark); 
+            padding-left: 25px; 
+        }
 
-    /* === Nested Submenu (Fix Gap Issue) === */
-    .submenu {
-        display: none;
-        position: absolute;
-        left: 100%; 
-        top: -5px; 
-        margin-left: 10px; 
-        background: var(--white);
-        border-radius: 8px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        min-width: 290px; 
-        padding: 8px 0;
-        border: 1px solid rgba(0,0,0,0.05);
-    }
+        .submenu {
+            display: none;
+            position: absolute;
+            left: 100%; 
+            top: -5px; 
+            margin-left: 10px; 
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            min-width: 290px; 
+            padding: 8px 0;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
 
-    .submenu::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -15px; /* ยื่นไปทางซ้าย */
-        width: 20px;
-        height: 100%;
-        background: transparent;
-    }
+        .submenu::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -15px;
+            width: 20px;
+            height: 100%;
+            background: transparent;
+        }
 
-    .nested-dropdown:hover > .submenu { 
-        display: block; animation: fadeIn 0.2s ease-out forwards; 
-    }
+        .nested-dropdown:hover > .submenu { 
+            display: block; animation: fadeIn 0.2s ease-out forwards; 
+        }
 
-    @keyframes fadeIn { 
-        from { opacity: 0; transform: translateY(5px); } 
-        to { opacity: 1; transform: translateY(0); } 
-    }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(5px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
 
-        /* === Content Layout === */
         .content-container {
             flex-grow: 1; 
             max-width: 1000px; 
@@ -224,7 +216,6 @@
         }
         .content-container h2:first-of-type { margin-top: 0; }
 
-        /* === Structure Cards === */
         .director-group { margin-bottom: 40px; text-align: center; }
         .director-row { display: flex; justify-content: center; margin-bottom: 30px; }
         .director-card {
@@ -244,7 +235,6 @@
         .director-card .staff-name { font-size: 20px; font-weight: 700; color: var(--primary-dark); margin-bottom: 5px; }
         .director-card .staff-position { font-weight: 500; font-size: 15px; color: var(--text-muted); }
 
-        /* === Staff Grid === */
         .staff-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px; margin-top: 20px;
@@ -269,7 +259,6 @@
         }
         .staff-link:hover { background: var(--primary-dark); box-shadow: 0 4px 10px rgba(32, 107, 107, 0.3); }
         
-        /* === Menu Icons List === */
         .menu-icons-list { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; padding: 20px 0; }
         .menu-icons-list .menu-item {
             width: 282px; height: 79px; border-radius: 12px; overflow: hidden;
@@ -280,12 +269,10 @@
         .menu-icons-list .menu-item:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(51, 153, 153, 0.2); }
         .menu-icons-list .menu-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        /* === Footer === */
         footer {
             text-align: center; padding: 15px 20px; background: var(--primary-color); color: rgba(255,255,255,0.9); font-size: 14px; margin-top: auto;
         }
 
-        /* Responsive */
         @media (max-width: 860px) {
             .head-section img#logo { width: 100px; }
             .head-text { font-size: 28px; }
@@ -318,8 +305,7 @@
 <nav>
     <ul>
         <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
-        
- <li class="dropdown">
+        <li class="dropdown">
             <a href="#">เกี่ยวกับเรา ▾</a>
             <ul class="dropdown-menu">
                 <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
@@ -336,7 +322,6 @@
                 </li>
             </ul>
         </li>
-
         <li class="dropdown">
             <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
             <ul class="dropdown-menu">
@@ -345,7 +330,6 @@
                 <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
             </ul>
         </li>
-
         <li class="dropdown">
             <a href="#">คำสั่ง/ประกาศ ▾</a>
             <ul class="dropdown-menu">
@@ -353,11 +337,9 @@
                 <li><a href="announce.html">ประกาศ</a></li>
             </ul>
         </li>
-
         <li class="dropdown">
             <a href="#">ข่าวสาร ▾</a>
             <ul class="dropdown-menu">
-                
                 <li class="nested-dropdown">
                     <a href="#">จัดซื้อจัดจ้าง ▸</a>
                     <ul class="submenu">
@@ -367,7 +349,6 @@
                         <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
                     </ul>
                 </li>
-
                 <li class="nested-dropdown">
                     <a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a>
                     <ul class="submenu">
@@ -375,10 +356,8 @@
                         <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
                     </ul>
                 </li>
-
             </ul>
         </li>
-
         <li class="dropdown">
             <a href="#">ระเบียบ ▾</a>
             <ul class="dropdown-menu">
@@ -386,17 +365,13 @@
                 <li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li>
             </ul>
         </li>
-
         <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
-
         <li><a href="contact.html">ติดต่อ</a></li>
     </ul>
 </nav>
 
 <div class="content-container">
-    
     <h2><i class="fas fa-sitemap"></i> โครงสร้างผู้บริหารส่วนอำนวยการ</h2>
-
     <div class="director-group">
         <div class="director-row">
             <div class="director-card top-director-card-style">
@@ -405,7 +380,6 @@
                 <div class="staff-position">ผู้อำนวยการสำนักวิจัยและพัฒนาการป่าไม้</div>
             </div>
         </div>
-
         <div class="director-row">
             <div class="director-card">
                 <img class="staff-img" src="images/director_gamrai.png" alt="นางกำไร ประมาณ">
@@ -418,7 +392,6 @@
     <hr style="border: 0; border-top: 1px solid #ccc; margin: 40px 0;">
     
     <h2><i class="fas fa-users-cog"></i> หัวหน้าฝ่าย</h2>
-    
     <div class="department-list">
         <div class="staff-grid">
             <div class="staff-card">
@@ -427,35 +400,30 @@
                 <div class="staff-position">นักจัดการงานทั่วไปปฏิบัติการ<br>หัวหน้าฝ่ายธุรการ</div>
                 <a href="Adminrfdo.html" class="staff-link"><i class="fas fa-clipboard-list"></i> ดูข้อมูลฝ่าย</a>
             </div>
-
             <div class="staff-card">
                 <img class="staff-img" src="images/nattapon.jpg" alt="นางสาวณัฐพร แตงหมี">
                 <div class="staff-name">นางสาวณัฐพร แตงหมี</div>
                 <div class="staff-position">เจ้าพนักงานธุรการอาวุโส<br>หัวหน้าฝ่ายการเจ้าหน้าที่</div>
                 <a href="HRrfdo.html" class="staff-link"><i class="fas fa-user-tie"></i> ดูข้อมูลฝ่าย</a>
             </div>
-            
             <div class="staff-card">
                 <img class="staff-img" src="images/atchara.jpg" alt="นางสาวอัจฉรา หล่ายแปด">
                 <div class="staff-name">นางสาวอัจฉรา หล่ายแปด</div>
                 <div class="staff-position">นักจัดการงานทั่วไปปฏิบัติการ<br>หัวหน้าฝ่ายการเงิน และบัญชี</div>
                 <a href="FArfdo.html" class="staff-link"><i class="fas fa-money-check-alt"></i> ดูข้อมูลฝ่าย</a>
             </div>
-
             <div class="staff-card">
                 <img class="staff-img" src="images/monchai.jpg" alt="นายมนต์ชัย เพิ่มผลนิรันดร์">
                 <div class="staff-name">นายมนต์ชัย เพิ่มผลนิรันดร์</div>
                 <div class="staff-position">นายช่างเครื่องกลชำนาญงาน<br>หัวหน้าฝ่ายการพัสดุ</div>
                 <a href="PDrfdo.html" class="staff-link"><i class="fas fa-box"></i> ดูข้อมูลฝ่าย</a>
             </div>
-
             <div class="staff-card">
                 <img class="staff-img" src="images/none.jpg" alt="นายธนากร กีรติภควัต">
                 <div class="staff-name">นายธนากร กีรติภควัต</div>
                 <div class="staff-position">นักวิชาการป่าไม้ชำนาญการพิเศษ<br>หัวหน้าฝ่ายแผนและติดตามประเมินผล</div>
                 <a href="Planrfdo.html" class="staff-link"><i class="fas fa-chart-line"></i> ดูข้อมูลฝ่าย</a>
             </div>
-
             <div class="staff-card">
                 <img class="staff-img" src="images/suthasinee.png" alt="นางสาวสุธาสินี โพธิสุนทร">
                 <div class="staff-name">นางสาวสุธาสินี โพธิสุนทร</div>
@@ -468,7 +436,6 @@
     <hr style="border: 0; border-top: 1px solid #ccc; margin: 40px 0;">
 
     <h2><i class="fas fa-layer-group"></i> ฝ่ายภายในส่วนอำนวยการ</h2>
-
     <div class="menu-icons-list">
         <a href="Adminrfdo.html" class="menu-item" title="ฝ่ายธุรการ">
             <img src="images/D1.png" alt="ฝ่ายธุรการ">
@@ -489,7 +456,6 @@
             <img src="images/D6.png" alt="ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้">
         </a>
     </div>
-
 </div>
 
 <footer>
