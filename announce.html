@@ -29,7 +29,7 @@
             line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh;
         }
 
-        /* === Header === */
+
         .head-section {
             background: linear-gradient(rgba(196, 196, 196, 0.3), rgba(53, 53, 53, 0.5)), url('images/head.jpg') no-repeat center center;
             background-size: cover; display: flex; align-items: center; padding: 60px 5%; min-height: 250px; gap: 20px; color: var(--white);
@@ -37,19 +37,18 @@
         .head-section img#logo { width: 100px; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); }
         .head-text { font-size: 48px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 
-        /* === Navigation (Fixed: Smooth & Easy to Click) === */
+      
         nav { background: var(--primary-color); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         nav ul { display: flex; justify-content: center; gap: 5px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; max-width: 1600px; margin: 0 auto; }
         
         nav ul li { position: relative; }
         nav ul li a { 
             text-decoration: none; color: white; font-size: 16px; font-weight: 500; 
-            padding: 15px 18px; /* เพิ่มพื้นที่คลิกให้กว้างขึ้น */
+            padding: 15px 18px; 
             display: flex; align-items: center; gap: 6px; transition: background 0.2s;
         }
         nav ul li a:hover { background: rgba(255, 255, 255, 0.15); }
 
-        /* Dropdown & Submenu */
         .dropdown-menu, .submenu { 
             display: none; position: absolute; background: var(--white); 
             border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
@@ -59,7 +58,7 @@
         .dropdown-menu { top: 100%; left: 0; }
         .submenu { left: 100%; top: 0; margin-left: 2px; }
 
-        /* สะพานเชื่อมป้องกันเมาส์หลุด (Invisible Bridge) */
+
         .dropdown:after { content: ""; position: absolute; bottom: -15px; left: 0; width: 100%; height: 15px; }
         .nested-dropdown:after { content: ""; position: absolute; top: 0; right: -15px; width: 15px; height: 100%; }
 
@@ -75,14 +74,12 @@
             to { opacity: 1; transform: translateY(0); } 
         }
 
-        /* === Content === */
         main.content-container { 
             flex-grow: 1; width: 90%; max-width: 1000px; margin: 40px auto; padding: 40px; 
             background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md);
         }
         h2 { font-size: 28px; color: var(--primary-dark); border-bottom: 3px solid var(--primary-light); padding-bottom: 15px; margin-bottom: 25px; }
 
-        /* === Accordion === */
         .year-group { margin-bottom: 15px; border: 1px solid #eee; border-radius: 10px; overflow: hidden; }
         .year-header {
             background-color: #f8f9f9; padding: 15px 25px; cursor: pointer;
@@ -104,7 +101,7 @@
         .month-content { display: none; padding: 10px; }
         .month-content.show { display: block; }
 
-        /* === Table === */
+
         .doc-table { width: 100%; border-collapse: collapse; }
         .doc-table td { padding: 15px 10px; border-bottom: 1px solid #f1f1f1; font-size: 15px; }
         .title-col { width: 70%; }
@@ -206,8 +203,8 @@
                     <li><a href="official_co.html">ระเบียบงานสารบรรณ</a></li>
                 </ul>
             </li>
-            <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
-            <li><a href="contact.html">ติดต่อ</a></li>
+        <li><a href="form.html">แบบฟอร์ม</a></li>
+        <li><a href="contact.html">ติดต่อ</a></li>
         </ul>
     </nav>
 
@@ -316,4 +313,5 @@
         loadDocuments();
     </script>
 </body>
+
 </html>
