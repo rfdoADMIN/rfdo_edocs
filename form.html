@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFDO e-Doc - แบบฟอร์มเอกสาร</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" type="image/png" href="images/logorfdo.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --primary-color: #339999;
+            --primary-dark: #206b6b;
+            --primary-light: #e6f7f7;
+            --text-color: #333;
+            --bg-color: #f8fcfc;
+            --white: #ffffff;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
+            --radius: 12px;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: "Prompt", sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .head-section {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            padding: 60px 5%;
+            min-height: 250px;
+            gap: 20px;
+            color: var(--white);
+        }
+        .head-section img#logo { width: 100px; height: auto; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); }
+        .head-text { font-size: 48px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .sub-text { font-size: 20px; opacity: 0.9; }
+
+        nav {
+            background: var(--primary-color);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        nav ul { display: flex; justify-content: center; gap: 20px; list-style: none; margin: 0; padding: 5px 0; flex-wrap: wrap; align-items: center; max-width: 1600px; margin: 0 auto; }
+        nav ul li { position: relative; }
+        nav ul li a { text-decoration: none; color: white; font-size: 15px; padding: 8px 14px; border-radius: 30px; display: flex; align-items: center; gap: 6px; transition: 0.3s; }
+        nav ul li a:hover { background: rgba(255, 255, 255, 0.2); }
+
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: var(--white); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); min-width: 270px; padding: 8px 0; z-index: 1001; margin-top: 10px; }
+        .dropdown:hover > .dropdown-menu { display: block; animation: fadeIn 0.2s ease-out forwards; }
+        .dropdown-menu li a { color: var(--text-color); padding: 12px 20px; border-radius: 0; justify-content: space-between; }
+        .dropdown-menu li a:hover { background: var(--primary-light); color: var(--primary-dark); padding-left: 25px; }
+
+        .submenu { display: none; position: absolute; left: 100%; top: -5px; margin-left: 10px; background: var(--white); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); min-width: 290px; padding: 8px 0; border: 1px solid rgba(0,0,0,0.05); }
+        .nested-dropdown:hover > .submenu { display: block; animation: fadeIn 0.2s ease-out forwards; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        main.content-container {
+            flex-grow: 1; 
+            width: 90%;
+            max-width: 1200px; 
+            margin: 40px auto; 
+            padding: 40px; 
+            background: var(--white); 
+            border-radius: var(--radius); 
+            box-shadow: var(--shadow-md); 
+        }
+
+        .content-container h2 { 
+            font-size: 24px; 
+            color: var(--primary-dark); 
+            border-bottom: 3px solid var(--primary-light); 
+            padding-bottom: 15px; 
+            margin-bottom: 35px;
+            margin-top: 0;
+        }
+
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .form-card { background: var(--white); border: 1px solid #eef2f2; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; box-shadow: var(--shadow-sm); }
+        .form-card:hover { transform: translateY(-5px); border-color: var(--primary-color); box-shadow: var(--shadow-md); }
+        
+        .form-title { font-size: 16px; font-weight: 500; display: flex; gap: 12px; margin-bottom: 15px; }
+        .form-title i { color: var(--primary-color); font-size: 20px; }
+
+        .btn-small-dl { align-self: flex-end; color: var(--primary-color); text-decoration: none; font-size: 13px; border: 1px solid #ddd; padding: 4px 12px; border-radius: 6px; transition: 0.2s; background: #fff; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-small-dl:hover { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+
+        .other-forms-wrapper { margin-top: 40px; padding-top: 25px; border-top: 2px dashed var(--primary-light); text-align: center; }
+        .btn-other-forms { display: inline-flex; align-items: center; gap: 8px; color: var(--primary-dark); text-decoration: none; font-weight: 500; padding: 10px 25px; background: var(--primary-light); border-radius: 50px; transition: 0.3s; }
+        .btn-other-forms:hover { background: var(--primary-color); color: white; }
+
+        footer { text-align: center; padding: 15px; background: var(--primary-color); color: white; font-size: 14px; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+    <div class="head-section">
+        <img id="logo" src="images/logo.png" alt="logo" />
+        <div class="head-text-container">
+            <div class="head-text">ส่วนอำนวยการ</div>
+            <div class="sub-text">สำนักวิจัยและพัฒนาการป่าไม้</div>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i></a></li>
+            <li class="dropdown">
+                <a href="#">เกี่ยวกับเรา ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
+                    <li class="nested-dropdown">
+                        <a href="#">ฝ่ายภายในส่วนอำนวยการ ▸</a>
+                        <ul class="submenu">
+                            <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
+                            <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
+                            <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
+                            <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
+                            <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
+                            <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบรรณอิเล็กทรอนิกส์</a></li>
+                    <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
+                    <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">คำสั่ง/ประกาศ ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="command.html">คำสั่ง</a></li>
+                    <li><a href="announce.html">ประกาศ</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">ข่าวสาร ▾</a>
+                <ul class="dropdown-menu">
+                    <li class="nested-dropdown">
+                        <a href="#">จัดซื้อจัดจ้าง ▸</a>
+                        <ul class="submenu">
+                            <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
+                            <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
+                            <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
+                            <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
+                        </ul>
+                    </li>
+                    <li class="nested-dropdown">
+                        <a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a>
+                        <ul class="submenu">
+                            <li><a href="https://edoc.forest.go.th/doccir/docindex.html" target="_blank">หนังสือเวียนกรมป่าไม้</a></li>
+                            <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">ระเบียบ ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
+                    <li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li>
+                </ul>
+            </li>
+            <li><a href="form.html" style="background: rgba(255,255,255,0.2);">แบบฟอร์ม</a></li>
+            <li><a href="contact.html">ติดต่อ</a></li>
+        </ul>
+    </nav>
+
+    <main class="content-container">
+        <h2>ดาวน์โหลดแบบฟอร์ม</h2>
+        
+        <div id="formGrid" class="form-grid">
+            </div>
+
+        <div class="other-forms-wrapper">
+            <a href="https://www.forest.go.th/person/form1/" target="_blank" class="btn-other-forms">
+                <i class="fas fa-external-link-alt"></i> แบบฟอร์มอื่น ๆ (กรมป่าไม้)
+            </a>
+        </div>
+    </main>
+
+    <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; 
+
+        const SUPABASE_URL = 'https://rxqfmhrxoepjdsmmnqhk.supabase.co';
+        const SUPABASE_KEY_VALUE = "sb_publishable_lMMLp3mTrIiSm1Om-HdQxw_oOrHub8g"; 
+        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY_VALUE); 
+
+        async function loadForms() {
+            const grid = document.getElementById('formGrid');
+            const { data, error } = await supabase
+                .from('form')
+                .select('title, filename')
+                .order('title', { ascending: true });
+
+            if(error) return;
+
+            grid.innerHTML = '';
+            data.forEach(doc => {
+                grid.innerHTML += `
+                    <div class="form-card">
+                        <div class="form-title">
+                            <i class="far fa-file-alt"></i>
+                            <span>${doc.title}</span>
+                        </div>
+                        <a href="${doc.filename}" target="_blank" class="btn-small-dl">
+                            <i class="fas fa-download"></i> ดาวน์โหลด
+                        </a>
+                    </div>`;
+            });
+        }
+        window.onload = loadForms;
+    </script>
+</body>
+</html>
