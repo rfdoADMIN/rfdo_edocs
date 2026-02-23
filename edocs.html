@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-    /* === Theme Colors === */
+
     :root {
         --primary-color: #339999;
         --primary-dark: #206b6b;
@@ -26,7 +26,6 @@
         --danger-color: #ff4757; /* สีแดงสำหรับ NEW */
     }
 
-    /* === General Styles === */
     body {
         margin: 0;
         background-color: var(--bg-color);
@@ -46,7 +45,7 @@
         pointer-events: auto !important; cursor: pointer; 
     }
 
-    /* === Header Section === */
+
     .head-section {
         position: relative;
         background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
@@ -71,7 +70,7 @@
     }
     .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-    /* === Navigation === */
+
     nav {
         background: var(--primary-color);
         padding: 0 20px;
@@ -120,7 +119,7 @@
     .home-icon svg { fill: white; width: 22px; height: 22px; }
     .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-    /* === Dropdown Menu === */
+
     .dropdown-menu {
         display: none;
         position: absolute;
@@ -168,7 +167,7 @@
         padding-left: 25px; 
     }
 
-    /* === Nested Submenu === */
+
     .submenu {
         display: none;
         position: absolute;
@@ -202,7 +201,6 @@
         to { opacity: 1; transform: translateY(0); } 
     }
 
-        /* === Content Area === */
         main.content-container {
             flex-grow: 1; 
             width: 100%;
@@ -224,7 +222,7 @@
             margin-bottom: 25px;
         }
         
-        /* === Table Styles === */
+
         .doc-table { 
             width:100%; 
             border-collapse: separate; 
@@ -242,7 +240,6 @@
             font-size: 15px;
         }
 
-        /* Column Widths */
         .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 40%; word-wrap: break-word; } /* ชื่อเรื่อง */
         .doc-table th:nth-child(2), .doc-table td:nth-child(2) { width: 20%; text-align: center;  } /* เลขที่ */
         .doc-table th:nth-child(3), .doc-table td:nth-child(3) { width: 15%; text-align: center;  } /* ชั้นความลับ */
@@ -260,7 +257,6 @@
         
         .doc-table tr:hover td { background-color: #fafafa; }
 
-        /* PDF Button Style */
         .doc-table a { 
             color: var(--primary-color); 
             text-decoration: none; 
@@ -279,7 +275,7 @@
             color: white; 
         }
 
-        /* === NEW Badge Style === */
+
         .new-badge {
             background-color: var(--danger-color);
             color: white;
@@ -301,7 +297,7 @@
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
         }
 
-        /* Footer (แบบบาง) */
+
         footer { 
             text-align: center; 
             padding: 15px 20px; 
@@ -311,13 +307,12 @@
             margin-top: auto; 
         }
 
-        /* Responsive */
+
         @media (max-width: 860px) { 
             .head-section img#logo { width: 100px; } 
             .head-text { font-size: 28px; } 
             main.content-container { padding: 20px; margin: 20px auto; width: 95%; }
-            
-            /* Table Responsive */
+
             .doc-table th:nth-child(2), .doc-table td:nth-child(2), /* เลขที่ */
             .doc-table th:nth-child(3), .doc-table td:nth-child(3) { /* ชั้นความลับ */
                 display: none; 
@@ -425,8 +420,7 @@
             </ul>
         </li>
 
-        <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
-
+        <li><a href="form.html">แบบฟอร์ม</a></li>
         <li><a href="contact.html">ติดต่อ</a></li>
     </ul>
 </nav>
@@ -477,14 +471,14 @@
                 return;
             }
 
-            // ตั้งค่า Logic เป็น 7 วันตามคำขอ
+          
             const today = new Date();
             const sevenDaysAgo = new Date();
             sevenDaysAgo.setDate(today.getDate() - 7);
 
             documentList.innerHTML = '';
             data.forEach(doc => {
-                // สร้าง Direct Download Link จาก Google Drive
+              
                 let fileUrl = doc.filename; 
                 if (fileUrl && fileUrl.includes('drive.google.com')) {
                     const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)/); 
@@ -495,7 +489,7 @@
                     }
                 }
                 
-                // แปลงวันที่
+
                 let formattedDate = '-';
                 let isNew = false;
 
@@ -505,13 +499,13 @@
                         year: 'numeric', month: 'short', day: 'numeric' 
                     });
                     
-                    // ตรวจสอบว่าเป็นเอกสารใหม่หรือไม่ (ภายใน 7 วัน)
+                   
                     if (docDate >= sevenDaysAgo) {
                         isNew = true;
                     }
                 }
 
-                // สร้าง HTML Badge NEW
+             
                 const newBadge = isNew ? '<span class="new-badge">NEW</span>' : '';
 
                 const row = `<tr>
@@ -533,3 +527,4 @@
     </script>
 </body>
 </html>
+
