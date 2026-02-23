@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
  <style>
-        /* === Theme Colors === */
+       
         :root {
             --primary-color: #339999;
             --primary-dark: #206b6b;
@@ -25,7 +25,7 @@
             --radius: 12px;
         }
 
-        /* === General Styles === */
+       
         body {
             margin: 0;
             background-color: var(--bg-color);
@@ -37,7 +37,7 @@
             min-height: 100vh;
         }
 
-        /* ป้องกันการเซฟรูปภาพ */
+     
         img {
             user-select: none; -webkit-user-select: none; -moz-user-select: none;
             pointer-events: none; -webkit-user-drag: none;
@@ -46,7 +46,7 @@
             pointer-events: auto !important; cursor: pointer; 
         }
 
-        /* === Header Section (New Style) === */
+     
         .head-section {
             position: relative;
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
@@ -71,7 +71,7 @@
         }
         .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-        /* === Navigation (Compact Style & New Structure) === */
+      
         nav {
             background: var(--primary-color);
             padding: 0 20px;
@@ -120,7 +120,7 @@
     .home-icon svg { fill: white; width: 22px; height: 22px; }
     .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-    /* === Dropdown Menu (Fix Gap Issue) === */
+   
     .dropdown-menu {
         display: none;
         position: absolute;
@@ -138,7 +138,7 @@
         margin-top: 10px; /* เว้นระยะห่าง */
     }
 
-    /* Invisible Bridge */
+  
     .dropdown-menu::before {
         content: "";
         position: absolute;
@@ -169,7 +169,7 @@
         padding-left: 25px; 
     }
 
-    /* === Nested Submenu (Fix Gap Issue) === */
+  
     .submenu {
         display: none;
         position: absolute;
@@ -188,7 +188,7 @@
         content: "";
         position: absolute;
         top: 0;
-        left: -15px; /* ยื่นไปทางซ้าย */
+        left: -15px; 
         width: 20px;
         height: 100%;
         background: transparent;
@@ -204,7 +204,6 @@
     }
 
 
-        /* === Content Layout === */
         .content-container {
             flex-grow: 1; 
             max-width: 960px; 
@@ -223,9 +222,7 @@
             margin-top: 0; 
         }
 
-        /* === Contact Page Specific Styles === */
-        
-        /* Main Info Cards */
+
         .contact-info { margin-top: 20px; text-align: left; }
         .contact-card { display: flex; align-items: flex-start; margin-bottom: 20px; font-size: 16px; color: #333; }
         .contact-card i { 
@@ -239,7 +236,7 @@
         .contact-text { display: flex; flex-direction: column; justify-content: center; min-height: 40px; }
         .contact-label { font-weight: 600; color: var(--primary-dark); margin-bottom: 2px; }
 
-        /* Department Contact List */
+
         .department-list { margin-top: 35px; }
         .department-list h3 { 
             font-size: 24px; 
@@ -295,17 +292,17 @@
             border-radius: 0; 
         }
 
-        /* === Footer (New Style) === */
+
         footer {
             text-align: center;
-            padding: 15px 20px; /* ลด Padding ให้บางลง */
+            padding: 15px 20px;
             background: var(--primary-color);
             color: rgba(255,255,255,0.8);
             font-size: 14px;
             margin-top: auto;
         }
 
-        /* Responsive */
+     
         @media (max-width: 860px) {
             .head-section img#logo { width: 100px; }
             .head-text { font-size: 28px; }
@@ -327,7 +324,7 @@
                 min-width: auto;
             }
 
-            /* Dept Item Responsive */
+
             .dept-item { 
                 grid-template-columns: 1fr;
                 gap: 5px;
@@ -422,9 +419,7 @@
                 <li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li>
             </ul>
         </li>
-
-        <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
-
+        <li><a href="form.html">แบบฟอร์ม</a></li>
         <li><a href="contact.html">ติดต่อ</a></li>
     </ul>
 </nav>
@@ -515,4 +510,5 @@
 <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
 
 </body>
+
 </html>
