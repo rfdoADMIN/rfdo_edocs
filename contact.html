@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
  <style>
-       
+        /* === Theme Colors === */
         :root {
             --primary-color: #339999;
             --primary-dark: #206b6b;
@@ -25,7 +25,7 @@
             --radius: 12px;
         }
 
-       
+        /* === General Styles === */
         body {
             margin: 0;
             background-color: var(--bg-color);
@@ -37,7 +37,7 @@
             min-height: 100vh;
         }
 
-     
+        /* ป้องกันการเซฟรูปภาพ */
         img {
             user-select: none; -webkit-user-select: none; -moz-user-select: none;
             pointer-events: none; -webkit-user-drag: none;
@@ -46,7 +46,7 @@
             pointer-events: auto !important; cursor: pointer; 
         }
 
-     
+        /* === Header Section (New Style) === */
         .head-section {
             position: relative;
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
@@ -71,7 +71,6 @@
         }
         .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-      
         nav {
             background: var(--primary-color);
             padding: 0 20px;
@@ -120,7 +119,6 @@
     .home-icon svg { fill: white; width: 22px; height: 22px; }
     .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-   
     .dropdown-menu {
         display: none;
         position: absolute;
@@ -135,14 +133,14 @@
         opacity: 0;
         transition: all 0.2s;
         border: 1px solid rgba(0,0,0,0.05);
-        margin-top: 10px; /* เว้นระยะห่าง */
+        margin-top: 10px; 
     }
 
-  
+
     .dropdown-menu::before {
         content: "";
         position: absolute;
-        top: -10px; /* ยื่นขึ้นไปข้างบน */
+        top: -10px; 
         left: 0;
         width: 100%;
         height: 10px;
@@ -160,7 +158,7 @@
         border-radius: 0; 
         display: flex; 
         justify-content: space-between; 
-        font-size: 16px; /* Font Size Submenu */
+        font-size: 16px; 
         font-weight: 500;
     }
     .dropdown-menu li a:hover { 
@@ -169,7 +167,7 @@
         padding-left: 25px; 
     }
 
-  
+
     .submenu {
         display: none;
         position: absolute;
@@ -202,7 +200,6 @@
         from { opacity: 0; transform: translateY(5px); } 
         to { opacity: 1; transform: translateY(0); } 
     }
-
 
         .content-container {
             flex-grow: 1; 
@@ -292,17 +289,15 @@
             border-radius: 0; 
         }
 
-
         footer {
             text-align: center;
-            padding: 15px 20px;
+            padding: 15px 20px; /* ลด Padding ให้บางลง */
             background: var(--primary-color);
             color: rgba(255,255,255,0.8);
             font-size: 14px;
             margin-top: auto;
         }
 
-     
         @media (max-width: 860px) {
             .head-section img#logo { width: 100px; }
             .head-text { font-size: 28px; }
@@ -419,7 +414,9 @@
                 <li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li>
             </ul>
         </li>
-        <li><a href="form.html">แบบฟอร์ม</a></li>
+
+        <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
+
         <li><a href="contact.html">ติดต่อ</a></li>
     </ul>
 </nav>
@@ -448,7 +445,8 @@
             <i class="fas fa-envelope"></i>
             <div class="contact-text">
                 <span class="contact-label">อีเมล:</span> 
-                adm.rfd5474@gmail.com
+             adm.frdo5474@forest.go.th <br>
+             adm.rfd5474@gmail.com
             </div>
         </div>
     </div>
@@ -510,5 +508,4 @@
 <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
 
 </body>
-
 </html>
