@@ -11,7 +11,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        /* === Theme Colors === */
         :root {
             --primary-color: #339999;
             --primary-dark: #206b6b;
@@ -25,7 +24,7 @@
             --radius: 12px;
         }
 
-        /* === General Styles === */
+
         body {
             margin: 0;
             background-color: var(--bg-color);
@@ -37,7 +36,7 @@
             min-height: 100vh;
         }
 
-        /* ป้องกันการเซฟรูปภาพ */
+
         img {
             user-select: none; -webkit-user-select: none; -moz-user-select: none;
             pointer-events: none; -webkit-user-drag: none;
@@ -46,7 +45,6 @@
             pointer-events: auto !important; cursor: pointer; 
         }
 
-        /* === Header Section === */
         .head-section {
             position: relative;
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
@@ -71,7 +69,6 @@
         }
         .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
 
-        /* === Navigation (Compact Style) === */
         nav {
             background: var(--primary-color);
             padding: 0 20px;
@@ -120,7 +117,6 @@
     .home-icon svg { fill: white; width: 22px; height: 22px; }
     .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-    /* === Dropdown Menu (Fix Gap Issue) === */
     .dropdown-menu {
         display: none;
         position: absolute;
@@ -135,14 +131,13 @@
         opacity: 0;
         transition: all 0.2s;
         border: 1px solid rgba(0,0,0,0.05);
-        margin-top: 10px; /* เว้นระยะห่าง */
+        margin-top: 10px; 
     }
 
-    /* Invisible Bridge */
     .dropdown-menu::before {
         content: "";
         position: absolute;
-        top: -10px; /* ยื่นขึ้นไปข้างบน */
+        top: -10px; 
         left: 0;
         width: 100%;
         height: 10px;
@@ -160,7 +155,7 @@
         border-radius: 0; 
         display: flex; 
         justify-content: space-between; 
-        font-size: 16px; /* Font Size Submenu */
+        font-size: 16px; 
         font-weight: 500;
     }
     .dropdown-menu li a:hover { 
@@ -169,7 +164,7 @@
         padding-left: 25px; 
     }
 
-    /* === Nested Submenu (Fix Gap Issue) === */
+
     .submenu {
         display: none;
         position: absolute;
@@ -188,7 +183,7 @@
         content: "";
         position: absolute;
         top: 0;
-        left: -15px; /* ยื่นไปทางซ้าย */
+        left: -15px; 
         width: 20px;
         height: 100%;
         background: transparent;
@@ -202,7 +197,7 @@
         from { opacity: 0; transform: translateY(5px); } 
         to { opacity: 1; transform: translateY(0); } 
     }
-        /* === Content Layout === */
+
         .content-container {
             flex-grow: 1; 
             max-width: 960px; 
@@ -246,7 +241,6 @@
         .quick-links li a:hover { background: #d4eaea; border-color: var(--primary-color); }
         .quick-links li i { margin-right: 10px; color: var(--primary-color); }
         
-        /* === Personnel Cards === */
         .person-card {
             text-align: center; padding: 15px 5px; background: #f7fcfc;
             border: 1px solid #e0f3f3; border-radius: 8px;
@@ -261,7 +255,6 @@
             display: flex; align-items: center; justify-content: center; 
         }
         
-        /* [แก้ไข] บังคับรูปในวงกลมให้เต็มกรอบเสมอ */
         .person-image img {
             width: 100%;
             height: 100%;
@@ -296,7 +289,7 @@
         .contact-section i { color: var(--primary-color); margin-right: 10px; }
         .contact-section .tel { font-weight: 700; font-size: 20px; }
 
-        /* === Footer === */
+
         footer {
             text-align: center;
             padding: 15px 20px;
@@ -306,7 +299,7 @@
             margin-top: auto;
         }
 
-        /* Responsive */
+
         @media (max-width: 860px) {
             .head-section img#logo { width: 100px; }
             .head-text { font-size: 28px; }
@@ -417,7 +410,7 @@
             </ul>
         </li>
 
-        <li><a href="form.html" target="_blank">แบบฟอร์ม</a></li>
+        <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
 
         <li><a href="contact.html">ติดต่อ</a></li>
     </ul>
@@ -516,6 +509,10 @@
             <i class="fas fa-phone-alt"></i> 
             <span class="tel">0 2561 4292 - 3 ต่อ 5661</span>
         </p>
+        <p>
+            <i class="fas fa-envelope"></i> 
+            acc.frdo5661@forest.go.th
+        </p>
     </div>
 
 </main>
@@ -529,5 +526,4 @@ document.addEventListener('contextmenu', function(e) {
 </script>
 
 </body>
-
 </html>
