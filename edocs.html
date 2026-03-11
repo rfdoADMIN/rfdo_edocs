@@ -11,7 +11,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
     :root {
         --primary-color: #339999;
         --primary-dark: #206b6b;
@@ -23,7 +22,7 @@
         --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
         --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
         --radius: 12px;
-        --danger-color: #ff4757; /* สีแดงสำหรับ NEW */
+        --danger-color: #ff4757; 
     }
 
     body {
@@ -44,7 +43,6 @@
     a, button, .dropdown:hover > a, .quick-links li a, .menu-item { 
         pointer-events: auto !important; cursor: pointer; 
     }
-
 
     .head-section {
         position: relative;
@@ -69,7 +67,6 @@
         text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
     .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
-
 
     nav {
         background: var(--primary-color);
@@ -119,7 +116,6 @@
     .home-icon svg { fill: white; width: 22px; height: 22px; }
     .home-icon:hover { background: rgba(255,255,255,0.4) !important; }
 
-
     .dropdown-menu {
         display: none;
         position: absolute;
@@ -167,7 +163,6 @@
         padding-left: 25px; 
     }
 
-
     .submenu {
         display: none;
         position: absolute;
@@ -201,142 +196,138 @@
         to { opacity: 1; transform: translateY(0); } 
     }
 
-        main.content-container {
-            flex-grow: 1; 
-            width: 100%;
-            max-width: 1200px; 
-            margin: 40px auto; 
-            padding: 40px; 
-            background: var(--white); 
-            border-radius: var(--radius); 
-            box-shadow: var(--shadow-md); 
-            min-height: 500px;
-            box-sizing: border-box; 
-        }
-        .content-container h2 { 
-            font-size: 24px; 
-            color: var(--primary-dark); 
-            border-bottom: 3px solid var(--primary-light); 
-            padding-bottom: 15px; 
-            margin-top: 0; 
-            margin-bottom: 25px;
-        }
+    main.content-container {
+        flex-grow: 1; 
+        width: 100%;
+        max-width: 1200px; 
+        margin: 40px auto; 
+        padding: 40px; 
+        background: var(--white); 
+        border-radius: var(--radius); 
+        box-shadow: var(--shadow-md); 
+        min-height: 500px;
+        box-sizing: border-box; 
+    }
+    .content-container h2 { 
+        font-size: 24px; 
+        color: var(--primary-dark); 
+        border-bottom: 3px solid var(--primary-light); 
+        padding-bottom: 15px; 
+        margin-top: 0; 
+        margin-bottom: 25px;
+    }
+
+    .doc-table { 
+        width:100%; 
+        border-collapse: separate; 
+        border-spacing: 0;
+        margin-top:10px; 
+        table-layout: fixed; 
+        border-radius: 8px 8px 0 0;
+        overflow: hidden;
+    }
+    .doc-table th, .doc-table td { 
+        padding: 15px; 
+        border-bottom: 1px solid #eee; 
+        text-align: left;
+        vertical-align: top;
+        font-size: 15px;
+    }
+
+    .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 40%; word-wrap: break-word; }
+    .doc-table th:nth-child(2), .doc-table td:nth-child(2) { width: 20%; text-align: center;  }
+    .doc-table th:nth-child(3), .doc-table td:nth-child(3) { width: 15%; text-align: center;  }
+    .doc-table th:nth-child(4), .doc-table td:nth-child(4) { width: 15%; text-align: center; }
+    .doc-table th:nth-child(5), .doc-table td:nth-child(5) { width: 10%; text-align: center; }
+
+    .doc-table th { 
+        background: var(--primary-color); 
+        color: #fff; 
+        font-weight: 500; 
+        border: none;
+        text-align: center;
+    }
+    .doc-table th:first-child { text-align: left; }
+    
+    .doc-table tr:hover td { background-color: #fafafa; }
+
+    .doc-table a { 
+        color: var(--primary-color); 
+        text-decoration: none; 
+        font-weight: 600; 
+        border: 1px solid var(--primary-color);
+        padding: 6px 14px;
+        border-radius: 20px;
+        transition: 0.2s;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .doc-table a:hover { 
+        background: var(--primary-color); 
+        color: white; 
+    }
+
+    .new-badge {
+        background-color: var(--danger-color);
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 12px;
+        margin-left: 8px;
+        vertical-align: middle;
+        text-transform: uppercase;
+        box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
+        animation: pulse 2s infinite;
+        display: inline-block;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 5px rgba(255, 71, 87, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+    }
+
+    footer { 
+        text-align: center; 
+        padding: 15px 20px; 
+        background: var(--primary-color); 
+        color: rgba(255,255,255,0.8); 
+        font-size: 14px; 
+        margin-top: auto; 
+    }
+
+    @media (max-width: 860px) { 
+        .head-section img#logo { width: 100px; } 
+        .head-text { font-size: 28px; } 
+        main.content-container { padding: 20px; margin: 20px auto; width: 95%; }
+
+        .doc-table th:nth-child(2), .doc-table td:nth-child(2),
+        .doc-table th:nth-child(3), .doc-table td:nth-child(3) { 
+            display: none; 
+        } 
+        .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 50%; }
+        .doc-table th:nth-child(4), .doc-table td:nth-child(4) { width: 25%; }
+        .doc-table th:nth-child(5), .doc-table td:nth-child(5) { width: 25%; }
+    }
+    @media (max-width: 600px) { 
+        .head-section { flex-direction: column; text-align: center; }
+        .head-text { font-size: 24px; } 
+        nav { padding: 5px 0; }
+        nav ul { justify-content: center; gap: 5px; }
+        nav ul li a { padding: 6px 12px; font-size: 13px; }
         
-
-        .doc-table { 
-            width:100%; 
-            border-collapse: separate; 
-            border-spacing: 0;
-            margin-top:10px; 
-            table-layout: fixed; 
-            border-radius: 8px 8px 0 0;
-            overflow: hidden;
+        .submenu {
+            position: static;
+            box-shadow: none;
+            margin-left: 20px;
+            border-left: 2px solid #eee;
+            min-width: auto;
         }
-        .doc-table th, .doc-table td { 
-            padding: 15px; 
-            border-bottom: 1px solid #eee; 
-            text-align: left;
-            vertical-align: top;
-            font-size: 15px;
-        }
-
-        .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 40%; word-wrap: break-word; } /* ชื่อเรื่อง */
-        .doc-table th:nth-child(2), .doc-table td:nth-child(2) { width: 20%; text-align: center;  } /* เลขที่ */
-        .doc-table th:nth-child(3), .doc-table td:nth-child(3) { width: 15%; text-align: center;  } /* ชั้นความลับ */
-        .doc-table th:nth-child(4), .doc-table td:nth-child(4) { width: 15%; text-align: center; } /* วันที่ */
-        .doc-table th:nth-child(5), .doc-table td:nth-child(5) { width: 10%; text-align: center; } /* ไฟล์ */
-
-        .doc-table th { 
-            background: var(--primary-color); 
-            color: #fff; 
-            font-weight: 500; 
-            border: none;
-            text-align: center;
-        }
-        .doc-table th:first-child { text-align: left; }
-        
-        .doc-table tr:hover td { background-color: #fafafa; }
-
-        .doc-table a { 
-            color: var(--primary-color); 
-            text-decoration: none; 
-            font-weight: 600; 
-            border: 1px solid var(--primary-color);
-            padding: 6px 14px;
-            border-radius: 20px;
-            transition: 0.2s;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .doc-table a:hover { 
-            background: var(--primary-color); 
-            color: white; 
-        }
-
-
-        .new-badge {
-            background-color: var(--danger-color);
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 12px;
-            margin-left: 8px;
-            vertical-align: middle;
-            text-transform: uppercase;
-            box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
-            animation: pulse 2s infinite;
-            display: inline-block;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 5px rgba(255, 71, 87, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
-        }
-
-
-        footer { 
-            text-align: center; 
-            padding: 15px 20px; 
-            background: var(--primary-color); 
-            color: rgba(255,255,255,0.8); 
-            font-size: 14px; 
-            margin-top: auto; 
-        }
-
-
-        @media (max-width: 860px) { 
-            .head-section img#logo { width: 100px; } 
-            .head-text { font-size: 28px; } 
-            main.content-container { padding: 20px; margin: 20px auto; width: 95%; }
-
-            .doc-table th:nth-child(2), .doc-table td:nth-child(2), /* เลขที่ */
-            .doc-table th:nth-child(3), .doc-table td:nth-child(3) { /* ชั้นความลับ */
-                display: none; 
-            } 
-            .doc-table th:nth-child(1), .doc-table td:nth-child(1) { width: 50%; }
-            .doc-table th:nth-child(4), .doc-table td:nth-child(4) { width: 25%; }
-            .doc-table th:nth-child(5), .doc-table td:nth-child(5) { width: 25%; }
-        }
-        @media (max-width: 600px) { 
-            .head-section { flex-direction: column; text-align: center; }
-            .head-text { font-size: 24px; } 
-            nav { padding: 5px 0; }
-            nav ul { justify-content: center; gap: 5px; }
-            nav ul li a { padding: 6px 12px; font-size: 13px; }
-            
-            .submenu {
-                position: static;
-                box-shadow: none;
-                margin-left: 20px;
-                border-left: 2px solid #eee;
-                min-width: auto;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
 
@@ -352,92 +343,89 @@
         <ul>
             <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
             
- <li class="dropdown">
-            <a href="#">เกี่ยวกับเรา ▾</a>
-            <ul class="dropdown-menu">
-                <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
-                <li class="nested-dropdown">
-                    <a href="#">ฝ่ายภายในส่วนอำนวยการ ▸</a>
-                    <ul class="submenu">
-                        <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
-                        <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
-                        <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
-                        <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
-                        <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
-                        <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
+            <li class="dropdown">
+                <a href="#">เกี่ยวกับเรา ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
+                    <li class="nested-dropdown">
+                        <a href="#">ฝ่ายภายในส่วนอำนวยการ ▸</a>
+                        <ul class="submenu">
+                            <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
+                            <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
+                            <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
+                            <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
+                            <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
+                            <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
 
-        <li class="dropdown">
-            <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
-            <ul class="dropdown-menu">
-                <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบรรณอิเล็กทรอนิกส์</a></li>
-                <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
-                <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
-            </ul>
-        </li>
+            <li class="dropdown">
+                <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบรรณอิเล็กทรอนิกส์</a></li>
+                    <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
+                    <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
+                </ul>
+            </li>
 
-        <li class="dropdown">
-            <a href="#">คำสั่ง/ประกาศ ▾</a>
-            <ul class="dropdown-menu">
-                <li><a href="command.html">คำสั่ง</a></li>
-                <li><a href="announce.html">ประกาศ</a></li>
-            </ul>
-        </li>
+            <li class="dropdown">
+                <a href="#">คำสั่ง/ประกาศ ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="command.html">คำสั่ง</a></li>
+                    <li><a href="announce.html">ประกาศ</a></li>
+                </ul>
+            </li>
 
-        <li class="dropdown">
-            <a href="#">ข่าวสาร ▾</a>
-            <ul class="dropdown-menu">
-                
-                <li class="nested-dropdown">
-                    <a href="#">จัดซื้อจัดจ้าง ▸</a>
-                    <ul class="submenu">
-                        <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
-                        <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
-                        <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
-                        <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
-                    </ul>
-                </li>
+            <li class="dropdown">
+                <a href="#">ข่าวสาร ▾</a>
+                <ul class="dropdown-menu">
+                    <li class="nested-dropdown">
+                        <a href="#">จัดซื้อจัดจ้าง ▸</a>
+                        <ul class="submenu">
+                            <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
+                            <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
+                            <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
+                            <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
+                        </ul>
+                    </li>
+                    <li class="nested-dropdown">
+                        <a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a>
+                        <ul class="submenu">
+                            <li><a href="https://edoc.forest.go.th/doccir/docindex.html" target="_blank">หนังสือเวียนกรมป่าไม้</a></li>
+                            <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
 
-                <li class="nested-dropdown">
-                    <a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a>
-                    <ul class="submenu">
-                        <li><a href="https://edoc.forest.go.th/doccir/docindex.html" target="_blank">หนังสือเวียนกรมป่าไม้</a></li>
-                        <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
-                    </ul>
-                </li>
+            <li class="dropdown">
+                <a href="#">ระเบียบ ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
+                    <li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li>
+                </ul>
+            </li>
 
-            </ul>
-        </li>
-
-        <li class="dropdown">
-            <a href="#">ระเบียบ ▾</a>
-            <ul class="dropdown-menu">
-                <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
-                <li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li>
-            </ul>
-        </li>
-
-        <li><a href="form.html">แบบฟอร์ม</a></li>
-        <li><a href="contact.html">ติดต่อ</a></li>
-    </ul>
-</nav>
+            <li><a href="form.html">แบบฟอร์ม</a></li>
+            <li><a href="contact.html">ติดต่อ</a></li>
+        </ul>
+    </nav>
 
     <main class="content-container">
         <h2>ระบบหนังสือเวียนกรมป่าไม้อิเล็กทรอนิกส์ ของสำนักวิจัยและพัฒนาการป่าไม้</h2>
         <table id="docTable" class="doc-table">
         <thead>
-        <tr>
-            <th class="title-col">ชื่อเรื่อง</th>
-            <th>เลขที่หนังสือ</th>
-            <th>ชั้นความลับ</th>
-            <th>วันที่</th>
-            <th>ไฟล์</th>
-        </tr>
-    </thead>
-    <tbody id="documentList">
+            <tr>
+                <th class="title-col">ชื่อเรื่อง</th>
+                <th>เลขที่หนังสือ</th>
+                <th>ชั้นความลับ</th>
+                <th>วันที่</th>
+                <th>ไฟล์</th>
+            </tr>
+        </thead>
+        <tbody id="documentList">
         </tbody>
     </table>
     </main>
@@ -456,7 +444,8 @@
         async function loadDocuments() {
             documentList.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:#666;">กำลังโหลดข้อมูลเอกสาร...</td></tr>';
 
-            const { data, error } = await supabase.from('documents')
+            // เปลี่ยนจาก .from('documents') เป็น .from('edoc')
+            const { data, error } = await supabase.from('edoc')
                 .select('*')
                 .order('date', { ascending: false });
 
@@ -471,7 +460,6 @@
                 return;
             }
 
-          
             const today = new Date();
             const sevenDaysAgo = new Date();
             sevenDaysAgo.setDate(today.getDate() - 7);
@@ -484,11 +472,9 @@
                     const fileIdMatch = fileUrl.match(/\/d\/([a-zA-Z0-9_-]+)/); 
                     if (fileIdMatch && fileIdMatch[1]) {
                         const fileId = fileIdMatch[1];
-                        // แก้ไข: ใช้ตัวแปร fileId ที่ถูกต้อง (จากเดิม id)
                         fileUrl = `https://drive.google.com/file/d/${fileId}/view`; 
                     }
                 }
-                
 
                 let formattedDate = '-';
                 let isNew = false;
@@ -499,13 +485,11 @@
                         year: 'numeric', month: 'short', day: 'numeric' 
                     });
                     
-                   
                     if (docDate >= sevenDaysAgo) {
                         isNew = true;
                     }
                 }
 
-             
                 const newBadge = isNew ? '<span class="new-badge">NEW</span>' : '';
 
                 const row = `<tr>
@@ -527,4 +511,3 @@
     </script>
 </body>
 </html>
-
