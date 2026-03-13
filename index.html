@@ -315,6 +315,12 @@
             <div id="announce-main-container"></div>
         </div>
 
+        <div class="section-title">ระบบหนังสือเวียน สวพ. อิเล็กทรอนิกส์</div>
+        <div class="procurement-wrapper">
+            <div id="loading-docs" style="text-align: center; color: var(--text-muted); display: none;"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</div>
+            <div id="docs-table-container"></div>
+        </div>
+
         <div class="section-title">ข่าวสารการจัดซื้อจัดจ้าง</div>
         <div class="procurement-wrapper">
             <div class="procurement-tabs">
@@ -554,26 +560,41 @@
     }
 
     async function loadDocuments() {
-        const container = document.getElementById('docs-table-container');
-        const loading = document.getElementById('loading-docs');
-        loading.style.display = 'block';
-        const { data, error } = await supabase.from('documents').select('*').order('date', { ascending: false }).limit(5);
-        loading.style.display = 'none';
-        if (error || !data || data.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">ไม่มีข้อมูล</div>'; return; }
-        let html = `<table class="doc-table"><tbody>`;
-        data.forEach(item => {
-            const date = item.date;
-            const badge = isNew(date) ? '<span class="new-badge">NEW</span>' : '';
-            const levelText = item.level ? `<span style="color:#d63031; font-size:13px; font-weight:600;">[${item.level}]</span> ` : '';
-            html += `<tr>
-                <td>${badge}${levelText}<a href="${item.filename || '#'}" target="_blank" class="title-link">ที่ ${item.doc_number || ''} : ${item.title}</a></td>
-                <td>${formatThaiDate(date)}</td>
-            </tr>`;
-        });
-        html += `</tbody></table><div class="view-all-container"><a href="edocs.html" class="view-all-link">อ่านทั้งหมด <i class="fas fa-arrow-right"></i></a></div>`;
-        container.innerHTML = html;
+    const container = document.getElementById('docs-table-container');
+    const loading = document.getElementById('loading-docs');
+    loading.style.display = 'block';
+
+    // เปลี่ยนจาก 'documents' เป็น 'edocs' ตามที่ต้องการ
+    const { data, error } = await supabase
+        .from('edocs') 
+        .select('*')
+        .order('date', { ascending: false })
+        .limit(5);
+
+    loading.style.display = 'none';
+
+    if (error || !data || data.length === 0) { 
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">ไม่มีข้อมูล</div>'; 
+        return; 
     }
 
+    let html = `<table class="doc-table"><tbody>`;
+    data.forEach(item => {
+        const date = item.date;
+        const badge = isNew(date) ? '<span class="new-badge">NEW</span>' : '';
+        
+        // ตรวจสอบว่ามีคอลัมน์ level หรือ doc_number ไหม (ถ้าไม่มีจะแสดงแค่ title)
+        const levelText = item.level ? `<span style="color:#d63031; font-size:13px; font-weight:600;">[${item.level}]</span> ` : '';
+        const docNo = item.doc_number ? `ที่ ${item.doc_number} : ` : '';
+
+        html += `<tr>
+            <td>${badge}${levelText}<a href="${item.filename || '#'}" target="_blank" class="title-link">${docNo}${item.title}</a></td>
+            <td>${formatThaiDate(date)}</td>
+        </tr>`;
+    });
+    html += `</tbody></table><div class="view-all-container"><a href="edocs.html" class="view-all-link">อ่านทั้งหมด <i class="fas fa-arrow-right"></i></a></div>`;
+    container.innerHTML = html;
+}
     const categories = { 'plan': { tableName: 'procurement_plan', link: 'procurement_plan.html' }, 'draft': { tableName: 'procurement_draft', link: 'procurement_draft.html' }, 'announce': { tableName: 'procurement_announce', link: 'procurement_announce.html' }, 'winner': { tableName: 'procurement_winner', link: 'procurement_winner.html' } };
     window.loadTable = async function(categoryKey) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -722,4 +743,3 @@ setInterval(() => moveGSlide(1), 6000);
 
 </body>
 </html>
-
