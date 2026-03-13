@@ -257,8 +257,6 @@
          <div class="section-title">ข่าวประชาสัมพันธ์</div>
         <div class="slideshow-container">
             <div class="slide-track" id="news-track">
-                <div class="slide-item"><img src="images/work31.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work30.png" class="zoomable"></div>
                 <div class="slide-item"><img src="images/work29.png" class="zoomable"></div>
                 <div class="slide-item"><img src="images/work28.jpg" class="zoomable"></div>
                 <div class="slide-item"><img src="images/work26.png" class="zoomable"></div>
@@ -292,15 +290,17 @@
         <div class="dots" id="news-dots"></div>
 
         <div class="section-title">แนวทาง</div>
-        <div class="slideshow-container" id="guideline-container">
-            <div class="slide-track" id="guideline-track">
-                <div class="slide-item"><img src="images/work32.jpg" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work27.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work18.png" class="zoomable"></div>
-                <div class="slide-item"><img src="images/work16.png" class="zoomable"></div>
-            </div>
+       <div class="slideshow-container" id="guideline-container">
+         <div class="slide-track" id="guideline-track">
+        <div class="slide-item"><img src="images/work32.jpg" class="zoomable"></div>
+        <div class="slide-item"><img src="images/work27.png" class="zoomable"></div>
+        <div class="slide-item"><img src="images/work18.png" class="zoomable"></div>
+        <div class="slide-item"><img src="images/work16.png" class="zoomable"></div>
+         </div>
+          <div class="prev" id="btn-guideline-prev"><i class="fas fa-chevron-left"></i></div>
+          <div class="next" id="btn-guideline-next"><i class="fas fa-chevron-right"></i></div>
         </div>
-        <div class="dots" id="guideline-dots"></div>
+<div class="dots" id="guideline-dots"></div>
 
         <div class="section-title">สื่อวีดิทัศน์</div>
         <div class="video-wrapper">
@@ -311,6 +311,12 @@
         <div class="procurement-wrapper">
             <div id="loading-announce-main" style="text-align: center; color: var(--text-muted); display: none;"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</div>
             <div id="announce-main-container"></div>
+        </div>
+
+        <div class="section-title">ระบบหนังสือเวียน สวพ. อิเล็กทรอนิกส์</div>
+        <div class="procurement-wrapper">
+            <div id="loading-docs" style="text-align: center; color: var(--text-muted); display: none;"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</div>
+            <div id="docs-table-container"></div>
         </div>
 
         <div class="section-title">ข่าวสารการจัดซื้อจัดจ้าง</div>
@@ -644,12 +650,79 @@
     loadDocuments();
     loadTable('plan');
     loadWelcomePopup();
+const gTrack = document.getElementById('guideline-track');
+const gItems = Array.from(gTrack.querySelectorAll('.slide-item'));
+const gBtnNext = document.getElementById('btn-guideline-next');
+const gBtnPrev = document.getElementById('btn-guideline-prev');
+const gDotsContainer = document.getElementById('guideline-dots');
 
+let gVisibleCount = (window.innerWidth <= 600) ? 1 : (window.innerWidth <= 992) ? 2 : 3;
+let gCurrentIndex = gVisibleCount;
+let gIsTransitioning = false;
+
+
+const gClonesBefore = gItems.slice(-gVisibleCount).map(item => item.cloneNode(true));
+const gClonesAfter = gItems.slice(0, gVisibleCount).map(item => item.cloneNode(true));
+gClonesBefore.reverse().forEach(clone => gTrack.insertBefore(clone, gTrack.firstChild));
+gClonesAfter.forEach(clone => gTrack.appendChild(clone));
+
+function updateGSlideWidth() {
+    const itemWidth = 100 / gVisibleCount;
+    gTrack.querySelectorAll('.slide-item').forEach(el => el.style.minWidth = `${itemWidth}%`);
+    gTrack.style.transform = `translateX(-${gCurrentIndex * (100 / gVisibleCount)}%)`;
+}
+
+function moveGSlide(step) {
+    if (gIsTransitioning) return;
+    gIsTransitioning = true;
+    gCurrentIndex += step;
+    gTrack.style.transition = "transform 0.5s ease-out";
+    gTrack.style.transform = `translateX(-${gCurrentIndex * (100 / gVisibleCount)}%)`;
+    updateGDots();
+}
+
+gTrack.addEventListener('transitionend', () => {
+    gIsTransitioning = false;
+    if (gCurrentIndex <= 0) {
+        gTrack.style.transition = "none";
+        gCurrentIndex = gItems.length;
+        gTrack.style.transform = `translateX(-${gCurrentIndex * (100 / gVisibleCount)}%)`;
+    } else if (gCurrentIndex >= gItems.length + gVisibleCount) {
+        gTrack.style.transition = "none";
+        gCurrentIndex = gVisibleCount;
+        gTrack.style.transform = `translateX(-${gCurrentIndex * (100 / gVisibleCount)}%)`;
+    }
+});
+
+
+gItems.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.classList.add('dot');
+    if (i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => {
+        if (gIsTransitioning) return;
+        gCurrentIndex = i + gVisibleCount;
+        gTrack.style.transition = "transform 0.5s ease-out";
+        gTrack.style.transform = `translateX(-${gCurrentIndex * (100 / gVisibleCount)}%)`;
+        updateGDots();
+    });
+    gDotsContainer.appendChild(dot);
+});
+
+function updateGDots() {
+    const dots = gDotsContainer.querySelectorAll('.dot');
+    dots.forEach(d => d.classList.remove('active'));
+    let activeIndex = (gCurrentIndex - gVisibleCount) % gItems.length;
+    if (activeIndex < 0) activeIndex += gItems.length;
+    if (dots[activeIndex]) dots[activeIndex].classList.add('active');
+}
+
+if(gBtnNext) gBtnNext.addEventListener('click', () => moveGSlide(1));
+if(gBtnPrev) gBtnPrev.addEventListener('click', () => moveGSlide(-1));
+
+updateGSlideWidth();
+setInterval(() => moveGSlide(1), 6000);
 </script>
+
 </body>
 </html>
-
-
-
-
-
