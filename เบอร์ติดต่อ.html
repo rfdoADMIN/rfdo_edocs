@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Directory - Royal Forest Department</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a4314;
+            --accent-color: #c5a059;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .search-container {
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+            margin-bottom: 40px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #searchInput:focus {
+            box-shadow: 0 10px 30px rgba(26, 67, 20, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .directory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dept-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .dept-abbr {
+            background: #f0f4f0;
+            color: var(--primary-color);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .contact-item {
+            margin-bottom: 12px;
+        }
+
+        .phone-number {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            display: block;
+        }
+
+        .staff-name {
+            color: var(--accent-color);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .section-break {
+            grid-column: 1 / -1;
+            margin-top: 30px;
+            padding: 10px 0;
+            border-bottom: 2px solid var(--accent-color);
+            width: fit-content;
+        }
+
+        .section-break h2 {
+            font-size: 1.3rem;
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 600px) {
+            .directory-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="subtitle">Royal Forest Department</div>
+        <h1>Internal Directory</h1>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="ค้นหาชื่อสำนัก ส่วนงาน หรือชื่อบุคคล (Search here...)">
+    </div>
+
+    <div class="directory-grid" id="directory">
+        
+        <div class="section-break"><h2>Administration & Executive</h2></div>
+        
+        <div class="card">
+            <div class="card-header"><span class="dept-title">หน้าห้อง อปม.</span></div>
+            <div class="contact-item"><span class="phone-number">5173 / 5199</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">หน้าห้อง รองพัฒน์พงษ์</span></div>
+            <div class="contact-item"><span class="phone-number">5583 / 5582</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">สำนักบริหารกลาง</span><span class="dept-abbr">สบก.</span></div>
+            <div class="contact-item">
+                <span class="phone-number">5185</span>
+                <span class="note">ยิงเลขกรม, รับเลขกรม, แก้ไขเลขในระบบ, แนบเอกสารไม่ครบ</span>
+            </div>
+            <div class="contact-item">
+                <span class="phone-number">5102</span>
+                <span class="note">สำหรับแนบไฟล์ในระบบ</span>
+            </div>
+        </div>
+
+        <div class="section-break"><h2>Research & Development (สวพ.)</h2></div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">สำนักวิจัยและพัฒนาการป่าไม้</span><span class="dept-abbr">สวพ.</span></div>
+            <div class="contact-item"><span class="phone-number">5478</span> <span class="staff-name">พี่นุช</span></div>
+            <div class="contact-item"><span class="phone-number">5095</span> <span class="staff-name">พี่แวน</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">ชช.บางรักษ์</span><span class="note">วิจัยผลิตผลป่าไม้</span></div>
+            <div class="contact-item"><span class="phone-number">5077</span> <span class="staff-name">พี่เข็ม</span></div>
+            <div class="contact-item"><span class="phone-number">5095</span> <span class="staff-name">พี่แวน</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">ชช.ดุริยะ</span><span class="note">วิจัยการจัดการป่าไม้</span></div>
+            <div class="contact-item"><span class="phone-number">5077</span> <span class="staff-name">พี่เจี๊ยบ / พี่กิ๊ง</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">ส่วนอำนวยการ</span><span class="dept-abbr">สอก.</span></div>
+            <div class="contact-item"><span class="phone-number">5474</span> <span class="note">ธุรการ</span></div>
+            <div class="contact-item"><span class="phone-number">5473</span> <span class="staff-name">พี่นุ๊ก</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">ส่วนวิจัยใช้ประโยชน์ป่าไม้</span></div>
+            <div class="contact-item"><span class="phone-number">5478</span> <span class="staff-name">พี่ละห์ / พี่หมอ</span></div>
+            <div class="contact-item"><span class="phone-number">5498</span> <span class="staff-name">พี่แอน</span></div>
+            <div class="contact-item"><span class="phone-number">5476</span> <span class="staff-name">พี่ดาว / พี่ทราย</span></div>
+            <div class="contact-item"><span class="phone-number">5491 / 5485 / 5486</span> <span class="staff-name">พี่รัตนา / พี่อุ๊</span></div>
+            <div class="contact-item"><span class="phone-number">5481</span> <span class="staff-name">พี่เอ๋ / พี่เปิ้ล</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">ส่วนวนวัฒนวิจัย</span><span class="dept-abbr">สวว.</span></div>
+            <div class="contact-item"><span class="phone-number">5449</span> <span class="staff-name">พี่ป้อม</span></div>
+            <div class="contact-item"><span class="phone-number">5430</span> <span class="staff-name">พี่ทิพย์</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">ส่วนวิจัยความหลากหลายฯ</span><span class="dept-abbr">สวล.</span></div>
+            <div class="contact-item"><span class="phone-number">5080</span> <span class="staff-name">ธุรการ / พี่ปอ / พี่มล / พี่มด / พี่แอน</span></div>
+            <div class="contact-item"><span class="phone-number">5491 / 5492</span> <span class="note">ฝ่ายประสานฯ</span></div>
+            <div class="contact-item"><span class="phone-number">5475</span> <span class="staff-name">พี่เปีย ชั้น 5</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">ส่วนส่งเสริมและถ่ายทอดฯ</span><span class="dept-abbr">สสท.</span></div>
+            <div class="contact-item"><span class="phone-number">5962</span> <span class="staff-name">ธุรการ พี่อ้อ / พี่บี / พี่ทิม</span></div>
+            <div class="contact-item"><span class="phone-number">5483</span> <span class="staff-name">ประชุม Zoom: พี่ต้น / พี่ไอซ์ / พี่อบ</span></div>
+            <div class="contact-item"><span class="phone-number">5432</span> <span class="staff-name">พี่หว้า / พี่หน่อย / พี่อ้อม / พี่ปลา / พี่ยุ้ย</span></div>
+        </div>
+
+        <div class="section-break"><h2>Bureaus & Divisions</h2></div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">สำนักแผนงานและสารสนเทศ</span><span class="dept-abbr">สผส.</span></div>
+            <div class="contact-item"><span class="phone-number">5228 / 5038</span></div>
+            <div class="contact-item">
+                <span class="staff-name">ส่วนติดตามและประเมินผล</span>
+                <span class="phone-number">5672 / 5603</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">สำนักป้องกันรักษาป่าฯ</span><span class="dept-abbr">สปฟ.</span></div>
+            <div class="contact-item"><span class="phone-number">5840</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">สำนักจัดการป่าชุมชน</span><span class="dept-abbr">สจช.</span></div>
+            <div class="contact-item"><span class="phone-number">5649</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">สำนักส่งเสริมการปลูกป่า</span><span class="dept-abbr">สสป.</span></div>
+            <div class="contact-item"><span class="phone-number">5028 / 5529</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">สำนักจัดการที่ดินป่าไม้</span><span class="dept-abbr">สจด.</span></div>
+            <div class="contact-item"><span class="phone-number">5762</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">กองการอนุญาต</span><span class="dept-abbr">สกญ.</span></div>
+            <div class="contact-item"><span class="phone-number">5209 / 5216</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">สำนักการป่าไม้ต่างประเทศ</span><span class="dept-abbr">สปต.</span></div>
+            <div class="contact-item"><span class="phone-number">5673</span> <span class="note">ธุรการ</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">สำนักโครงการพระราชดำริฯ</span><span class="dept-abbr">สคร.</span></div>
+            <div class="contact-item"><span class="phone-number">5103</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">สำนักเศรษฐกิจการป่าไม้</span><span class="dept-abbr">สศม.</span></div>
+            <div class="contact-item"><span class="phone-number">5249</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">สำนักจัดการป่านันทนาการ</span><span class="dept-abbr">สปน.</span></div>
+            <div class="contact-item"><span class="phone-number">5534</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">ศูนย์ IT</span><span class="dept-abbr">ศผส.</span></div>
+            <div class="contact-item"><span class="phone-number">5754 / 5621</span></div>
+        </div>
+
+        <div class="section-break"><h2>Internal Specialist Groups</h2></div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">กลุ่มนิติการ</span><span class="dept-abbr">กนต.</span></div>
+            <div class="contact-item"><span class="phone-number">5668</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">กลุ่มพัฒนาระบบบริหาร</span><span class="dept-abbr">กพร.</span></div>
+            <div class="contact-item"><span class="phone-number">5240 / 5048</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">กลุ่มตรวจสอบภายใน</span><span class="dept-abbr">กตน.</span></div>
+            <div class="contact-item"><span class="phone-number">5160 / 5161</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="dept-title">กลุ่มงานจริยธรรม</span><span class="dept-abbr">กจธ.</span></div>
+            <div class="contact-item"><span class="phone-number">5914</span></div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        let filter = this.value.toLowerCase();
+        let cards = document.querySelectorAll('.card');
+        
+        cards.forEach(card => {
+            let text = card.textContent.toLowerCase();
+            card.style.display = text.includes(filter) ? 'flex' : 'none';
+        });
+
+        // Toggle section headers visibility based on visible children
+        document.querySelectorAll('.section-break').forEach(header => {
+            let nextElements = [];
+            let curr = header.nextElementSibling;
+            while(curr && !curr.classList.contains('section-break')) {
+                nextElements.push(curr);
+                curr = curr.nextElementSibling;
+            }
+            let hasVisible = nextElements.some(el => el.style.display !== 'none');
+            header.style.display = hasVisible ? 'block' : 'none';
+        });
+    });
+</script>
+
+</body>
+</html>
