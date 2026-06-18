@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RFDO e-Doc - ประกาศร่างขอบเขตของงานและราคากลาง</title> 
+    <title>ประกาศร่างขอบเขตของงานและราคากลาง - ส่วนอำนวยการ</title> 
     
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="icon" type="image/png" href="images/logorfdo.png">
+    <link rel="icon" type="image/png" href="images/logo.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -15,15 +15,20 @@
             --primary-color: #339999;
             --primary-dark: #206b6b;
             --primary-light: #e6f7f7;
-            --text-color: #333;
-            --text-muted: #666;
-            --bg-color: #f8fcfc;
+            --primary-mid: #2a8585;
+            --text-color: #1a2a2a;
+            --text-muted: #5a7070;
+            --bg-color: #f2f9f9;
             --white: #ffffff;
-            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
-            --shadow-md: 0 10px 15px rgba(0,0,0,0.08);
-            --radius: 12px;
+            --shadow-sm: 0 4px 12px rgba(51,153,153,0.06);
+            --shadow-md: 0 8px 32px rgba(51,153,153,0.1);
+            --shadow-lg: 0 20px 60px rgba(51,153,153,0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
             --danger-color: #ff4757;
         }
+
+        *, *::before, *::after { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -34,72 +39,142 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
+
+        img {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        a, button, .year-header, .btn-table-dl { cursor: pointer; }
 
         /* Header Section */
         .head-section {
             position: relative;
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('images/head.jpg') no-repeat center center;
+            background: url('images/head.jpg') no-repeat center center;
             background-size: cover;
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
+            text-align: center;
             padding: 60px 5%;
             min-height: 250px;
-            gap: 20px;
+            gap: 16px;
             color: var(--white);
+            overflow: hidden;
         }
-        .head-section img#logo { 
-            width: 100px; height: auto; 
+ 
+        .head-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10,35,35,0.4);
+            pointer-events: none;
+        }
+ 
+        .head-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, transparent 0%, var(--bg-color) 100%);
+            pointer-events: none;
+        }
+ 
+        .head-section img#logo {
+            width: 100px;
+            height: auto;
             filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
         }
-        .head-text-container { display: flex; flex-direction: column; }
-        .head-text { 
-            font-size: 48px; font-weight: 700; line-height: 1.2; 
+ 
+        .head-text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+ 
+        .head-text {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
-        .sub-text { font-size: 20px; font-weight: 400; opacity: 0.9; }
-
-        /* Navigation Bar */
-        nav {
-            background: var(--primary-color);
-            padding: 0 20px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+ 
+        .sub-text {
+            font-size: 20px;
+            font-weight: 400;
+            opacity: 0.9;
         }
+
+        /* Navigation Menu */
+        nav {
+            position: sticky;
+            top: 12px;
+            z-index: 1000;
+            padding: 0 20px;
+            margin-top: -24px;
+        }
+
         nav ul {
             display: flex;
             justify-content: center;
             gap: 20px;
             list-style: none;
-            margin: 0;
-            padding: 5px 0;
+            margin: 0 auto;
+            padding: 8px 20px;
             flex-wrap: wrap;
             align-items: center;
-            max-width: 1600px;
-            margin: 0 auto;
+            max-width: 1100px;
+            background: #339999;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 50px;
+            box-shadow: 0 8px 32px rgba(32,107,107,0.35), 0 1px 0 rgba(255,255,255,0.15) inset;
+            border: 1px solid rgba(255,255,255,0.18);
         }
+
         nav ul li { position: relative; }
+
         nav ul li a {
             text-decoration: none;
-            color: rgba(255, 255, 255, 0.95);
-            font-size: 16px;
+            color: rgba(255,255,255,0.92);
+            font-size: 14.5px;
             font-weight: 500;
-            padding: 8px 14px;
+            padding: 7px 14px;
             border-radius: 30px;
             display: flex;
             align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
+            gap: 5px;
+            transition: all 0.25s ease;
             white-space: nowrap;
+            letter-spacing: 0.1px;
         }
-        nav ul li a:hover { background: rgba(255, 255, 255, 0.2); }
-        .home-icon { background: rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
 
-        /* Dropdown Style */
+        nav ul li a:hover {
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+        }
+
+        .home-icon {
+            background: rgba(255,255,255,0.15) !important;
+            padding: 7px 11px !important;
+        }
+
+        .home-icon svg {
+            fill: white;
+            width: 20px;
+            height: 20px;
+        }
+
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -111,15 +186,24 @@
             min-width: 270px;
             padding: 8px 0;
             z-index: 1001;
+            opacity: 0;
+            transition: all 0.2s;
             border: 1px solid rgba(0,0,0,0.05);
             margin-top: 10px;
         }
-        .dropdown-menu::before { content: ""; position: absolute; top: -10px; left: 0; width: 100%; height: 10px; background: transparent; }
-        .dropdown:hover > .dropdown-menu { display: block; opacity: 1; animation: fadeIn 0.2s ease-out forwards; }
-        .dropdown-menu li a { color: var(--text-color); padding: 12px 20px; border-radius: 0; display: flex; justify-content: space-between; font-size: 16px; font-weight: 500; }
+        .dropdown-menu::before {
+            content: ""; position: absolute; top: -10px; left: 0;
+            width: 100%; height: 10px; background: transparent;
+        }
+        
+        .dropdown-menu li { position: relative; }
+        .dropdown-menu li a { 
+            color: var(--text-color); padding: 12px 20px; 
+            border-radius: 0; display: flex; justify-content: space-between; 
+            font-size: 16px; font-weight: 500;
+        }
         .dropdown-menu li a:hover { background: var(--primary-light); color: var(--primary-dark); padding-left: 25px; }
 
-        /* Submenu Style */
         .submenu {
             display: none;
             position: absolute;
@@ -129,50 +213,232 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             min-width: 290px;
             padding: 8px 0;
+            border: 1px solid rgba(0,0,0,0.05);
         }
-        .submenu::after { content: ""; position: absolute; top: 0; left: -15px; width: 20px; height: 100%; background: transparent; }
-        .nested-dropdown:hover > .submenu { display: block; animation: fadeIn 0.2s ease-out forwards; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        main.content-container { flex-grow: 1; width: 100%; max-width: 1000px; margin: 40px auto; padding: 40px; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); box-sizing: border-box; }
-        .content-container h2 { font-size: 26px; color: var(--primary-dark); border-bottom: 3px solid var(--primary-light); padding-bottom: 15px; margin-bottom: 25px; }
-
-        /* Accordion */
-        .year-container { margin-bottom: 12px; border: 1px solid #eee; border-radius: 8px; overflow: hidden; }
-        .year-header { background: #f9fdfd; padding: 18px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--primary-dark); font-size: 22px; }
-        .year-header:hover { background: var(--primary-light); }
-        .year-content { display: none; padding: 0 20px 20px 20px; }
-        .month-title { font-size: 16px; font-weight: 600; color: var(--primary-color); margin: 25px 0 10px 0; padding-left: 10px; border-left: 4px solid var(--primary-color); }
-
-        /* Table Styles - Updated */
-        .doc-table { width:100%; border-collapse: collapse; }
-        .doc-table th { background: #fafafa; color: #888; font-size: 13px; padding: 10px; text-align: left; border-bottom: 2px solid #eee; }
-        .doc-table td { 
-            padding: 15px 10px; border-bottom: 1px solid #eee; font-size: 15px; 
-            vertical-align: top; /* ชิดบน */
+        .submenu::after {
+            content: ""; position: absolute; top: 0; left: -15px; 
+            width: 20px; height: 100%; background: transparent;
         }
         
-        /* จัดวางตำแหน่งคอลัมน์ไฟล์ให้อยู่กึ่งกลาง */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (min-width: 769px) {
+            .dropdown:hover > .dropdown-menu { display: block; opacity: 1; animation: fadeIn 0.2s ease-out forwards; }
+            .nested-dropdown:hover > .submenu { display: block; animation: fadeIn 0.2s ease-out forwards; }
+        }
+
+        /* Content Container */
+        main.content-container { 
+            flex-grow: 1; width: 100%; max-width: 1100px; margin: 40px auto;
+            padding: 35px; background: var(--white); border-radius: var(--radius);
+            box-shadow: var(--shadow-md); min-height: 500px; box-sizing: border-box;
+        }
+        .content-container h2 { 
+            font-size: 26px; 
+            color: var(--primary-dark); 
+            border-bottom: 3px solid var(--primary-light); 
+            padding-bottom: 12px; 
+            margin: 0 0 30px 0; 
+            font-weight: 600;
+        }
+
+        /* Modernized Year Accordion UI */
+        .year-container { 
+            margin-bottom: 20px; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid #edf4f4; 
+            box-shadow: var(--shadow-sm);
+            background: #ffffff;
+            transition: all 0.3s ease;
+        }
+        .year-container:hover {
+            box-shadow: 0 6px 18px rgba(51,153,153,0.1);
+        }
+        .year-header { 
+            background: linear-gradient(to right, #f4fbfb, #e6f5f5); 
+            padding: 16px 25px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-size: 19px; 
+            font-weight: 700; 
+            color: var(--primary-dark);
+            border-bottom: 1px solid #edf4f4;
+            transition: background 0.2s;
+        }
+        .year-header:hover {
+            background: linear-gradient(to right, #edf7f7, #e1f1f1);
+        }
+        .year-header i {
+            transition: transform 0.3s ease;
+            color: var(--primary-mid);
+        }
+        .year-container.active .year-header i {
+            transform: rotate(180deg);
+        }
+        .year-content { padding: 10px 25px 25px 25px; }
+        
+        .month-title { 
+            font-size: 16px; 
+            font-weight: 600; 
+            color: var(--primary-mid); 
+            margin: 25px 0 12px 0; 
+            padding-left: 12px; 
+            border-left: 4px solid var(--primary-color); 
+        }
+
+        /* Modern Table Responsive Box */
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid #edf4f4;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.01);
+            margin-bottom: 15px;
+        }
+
+        /* Modern Table Styles */
+        .doc-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .doc-table th { 
+            background: #f5fbfb; 
+            color: var(--text-muted); 
+            font-size: 14.5px; 
+            font-weight: 600;
+            padding: 14px 16px;
+            border-bottom: 2px solid #e1eeee;
+        }
+        .doc-table td { 
+            padding: 15px 16px; 
+            border-bottom: 1px solid #edf4f4; 
+            font-size: 15px; 
+            vertical-align: middle;
+            color: var(--text-color);
+        }
+        .doc-table tr:last-child td { border-bottom: none; }
+        .doc-table tr:hover td { background-color: #fafdfd; }
+        
+        /* Column Alignments */
         .doc-table th:last-child, .doc-table td:last-child { text-align: center; }
 
-        .doc-table a { color: var(--primary-color); text-decoration: none; font-weight: 600; border: 1px solid var(--primary-color); padding: 4px 12px; border-radius: 20px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
-        .doc-table a:hover { background: var(--primary-color); color: white; }
+        /* Premium Pill Download/View Button */
+        .btn-table-dl { 
+            color: var(--primary-color); 
+            text-decoration: none; 
+            font-weight: 600;
+            border: 1px solid var(--primary-color); 
+            padding: 5px 14px;
+            border-radius: 30px; 
+            font-size: 13px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+            background: transparent;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .btn-table-dl:hover { 
+            background: var(--primary-color); 
+            color: white; 
+            box-shadow: 0 4px 10px rgba(51,153,153,0.18);
+        }
 
         /* Pulsing NEW Badge - AT FRONT */
         .new-badge {
-            background-color: var(--danger-color); color: white; font-size: 10px; font-weight: 700;
-            padding: 2px 8px; border-radius: 12px; margin-right: 10px; vertical-align: middle;
-            display: inline-block; box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7);
+            background-color: var(--danger-color); 
+            color: white; 
+            font-size: 10px; 
+            font-weight: 700;
+            padding: 2px 8px; 
+            border-radius: 12px; 
+            margin-right: 10px; 
+            vertical-align: middle;
+            display: inline-block; 
+            box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7);
             animation: pulse-red 2s infinite;
         }
         @keyframes pulse-red {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); }
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.5); }
             70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255, 71, 87, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
         }
 
-        footer { text-align: center; padding: 15px; background: var(--primary-color); color: white; font-size: 14px; margin-top: auto; }
+        /* Footer */
+        footer { 
+            background: linear-gradient(135deg, #339999, #2f5858);
+            color: var(--white);
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            margin-top: auto;
+        }
+
+        .hamburger-btn {
+            display: none;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-family: "Prompt", sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 30px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(51,153,153,0.2);
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger-btn { display: flex; }
+            nav { padding: 0 15px; top: 10px; margin-top: -15px; }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                border-radius: 14px;
+                padding: 8px 0;
+                margin-top: 10px;
+                max-height: 75vh;
+                overflow-y: auto;
+                background: var(--white);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+                border: 1px solid rgba(0,0,0,0.08);
+            }
+            nav ul.active { display: flex; }
+            nav ul li { border-bottom: 1px solid #edf4f4; width: 100%; }
+            nav ul li:last-child { border-bottom: none; }
+            nav ul li a { padding: 12px 20px; border-radius: 0; justify-content: space-between; color: var(--text-color); font-size: 15px; font-weight: 500; display: flex; align-items: center; width: 100%; }
+            nav ul li a:hover { background: #f4fbfb; color: var(--primary-mid); }
+            
+            .home-icon { background: #8ec7c7 !important; margin: 8px 20px; justify-content: center !important; border-radius: 8px !important; width: auto !important; }
+            .home-icon svg { fill: var(--primary-dark) !important; }
+            
+            .dropdown-menu, .submenu { position: static !important; opacity: 1 !important; display: none; box-shadow: none !important; border: none !important; background: #f7fbfb !important; margin-top: 0 !important; width: 100% !important; border-radius: 0 !important; padding: 0 !important; transition: none !important; }
+            .dropdown-menu.open, .submenu.open { display: block !important; }
+            .dropdown-menu li { border-bottom: 1px solid #eaf3f3; }
+            .dropdown-menu li:last-child { border-bottom: none; }
+            .dropdown-menu li a { color: #334444; padding: 11px 20px 11px 35px; font-size: 14.5px; font-weight: 400; }
+            .dropdown-menu li a:hover { background: #eef7f7; padding-left: 40px; color: var(--primary-dark); }
+            
+            .submenu { background: #edf6f6 !important; }
+            .submenu li { border-bottom: 1px solid #e1eeee; }
+            .submenu li:last-child { border-bottom: none; }
+            .submenu li a { color: #445555; padding: 10px 20px 10px 50px; font-size: 14px; }
+            .submenu li a:hover { background: #e1f0f0; padding-left: 55px; }
+
+            .year-content { padding: 10px 15px 15px 15px; }
+            .doc-table th, .doc-table td { padding: 12px 14px; font-size: 14.5px; }
+        }
+
+        @media (max-width: 600px) {
+            .head-section { flex-direction: column; text-align: center; }
+            .head-text { font-size: 24px; }
+            .content-container { padding: 20px; width: 95%; margin: 20px auto; }
+        }
     </style>
 </head>
 <body>
@@ -186,26 +452,60 @@
     </div>
 
     <nav>
-        <ul>
-            <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
+        <button class="hamburger-btn" onclick="toggleMainMenu()">
+            <i class="fas fa-bars"></i> เมนูเว็บไซต์
+        </button>
+        <ul id="nav-menu">
+            <li><a href="index.html" class="home-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z" fill="white"/></svg></a></li>
             <li class="dropdown"><a href="#">เกี่ยวกับเรา ▾</a><ul class="dropdown-menu"><li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li><li class="nested-dropdown"><a href="#">ฝ่ายภายในส่วนอำนวยการ ▸</a><ul class="submenu"><li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li><li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li><li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li><li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li><li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li><li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li></ul></li></ul></li>
             <li class="dropdown"><a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a><ul class="dropdown-menu"><li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบรรณอิเล็กทรอนิกส์</a></li><li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li><li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li></ul></li>
             <li class="dropdown"><a href="#">คำสั่ง/ประกาศ ▾</a><ul class="dropdown-menu"><li><a href="command.html">คำสั่ง</a></li><li><a href="announce.html">ประกาศ</a></li></ul></li>
             <li class="dropdown"><a href="#">ข่าวสาร ▾</a><ul class="dropdown-menu"><li class="nested-dropdown"><a href="#">จัดซื้อจัดจ้าง ▸</a><ul class="submenu"><li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li><li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li><li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li><li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li></ul></li><li class="nested-dropdown"><a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a><ul class="submenu"><li><a href="https://edoc.forest.go.th/doccir/docindex.html" target="_blank">หนังสือเวียนกรมป่าไม้</a></li><li><a href="edocs.html">หนังสือเวียน สวพ.</a></li></ul></li></ul></li>
             <li class="dropdown"><a href="#">ระเบียบ ▾</a><ul class="dropdown-menu"><li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li><li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li></ul></li>
-            <li><a href="form.html">แบบฟอร์ม</a></li>
+            <li><a href="https://forprod.forest.go.th/forprod/forprod2017/form/default.html" target="_blank">แบบฟอร์ม</a></li>
             <li><a href="contact.html">ติดต่อ</a></li>
         </ul>
     </nav>
 
     <main class="content-container">
-        <h2>ประกาศร่างขอบเขตของงานและราคากลาง</h2>
+        <h2><i class="fas fa-file-signature" style="margin-right: 12px; color: var(--primary-color);"></i>ประกาศร่างขอบเขตของงานและราคากลาง</h2>
         <div id="accordion-root">
-            <p style="text-align:center; padding:20px; color:#999;">กำลังโหลดข้อมูล...</p>
+            <p style="text-align:center; padding:30px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูลร่างประกาศ...</p>
         </div>
     </main>
 
-    <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
+    <footer>© 2026 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
+
+    <script>
+    function toggleMainMenu() {
+        const navMenu = document.getElementById('nav-menu');
+        navMenu.classList.toggle('active');
+        
+        if (!navMenu.classList.contains('active')) {
+            document.querySelectorAll('.dropdown-menu, .submenu').forEach(sub => {
+                sub.classList.remove('open');
+            });
+        }
+    }
+
+    document.querySelectorAll('nav ul li.dropdown > a, nav ul li.nested-dropdown > a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                const submenu = this.nextElementSibling;
+                if (submenu) {
+                    const isOpen = submenu.classList.contains('open');
+                    if (isOpen) {
+                        submenu.classList.remove('open');
+                        submenu.querySelectorAll('.submenu, .dropdown-menu').forEach(inner => inner.classList.remove('open'));
+                    } else {
+                        submenu.classList.add('open');
+                    }
+                }
+            }
+        });
+    });
+    </script>
 
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; 
@@ -221,7 +521,7 @@
             const { data, error } = await supabase.from('procurement_draft').select('*').order('date', { ascending: false });
 
             if(error || !data || data.length === 0) {
-                root.innerHTML = "<p style='text-align:center; padding:40px;'>ไม่พบข้อมูล</p>";
+                root.innerHTML = "<p style='text-align:center; padding:30px; color:var(--text-muted);'><i class=\"fas fa-folder-open\"></i> ไม่พบข้อมูลร่างขอบเขตของงานและราคากลางในระบบ</p>";
                 return;
             }
 
@@ -235,28 +535,35 @@
                 grouped[year][month].push(doc);
             });
 
-
-            const NEW_LIMIT = Date.now() - (7 * 24 * 60 * 60 * 1000);
+            const NEW_LIMIT = Date.now() - (7 * 24 * 60 * 60 * 1000); 
             let html = '';
             const years = Object.keys(grouped).sort((a,b) => b-a);
 
             years.forEach((year, idx) => {
-                const isOpen = idx === 0 ? 'active' : '';
-                const display = idx === 0 ? 'block' : 'none';
-
+                const displayStyle = idx === 0 ? 'block' : 'none';
+                const activeClass = idx === 0 ? 'active' : '';
+                
                 html += `
-                <div class="year-container">
-                    <div class="year-header ${isOpen}" onclick="toggleYear(this)">
-                        <span>ปี พ.ศ. ${year}</span>
+                <div class="year-container ${activeClass}">
+                    <div class="year-header ${activeClass}" onclick="toggleYear(this)">
+                        <span><i class="far fa-calendar-alt" style="margin-right: 8px;"></i> ปี พ.ศ. ${year}</span>
                         <i class="fas fa-chevron-down"></i>
                     </div>
-                    <div class="year-content" style="display: ${display}">
-                `;
+                    <div class="year-content" style="display: ${displayStyle}">`;
 
                 const months = Object.keys(grouped[year]).sort((a,b) => b-a);
                 months.forEach(m => {
                     html += `<div class="month-title">เดือน${monthNames[m]}</div>`;
-                    html += `<table class="doc-table"><thead><tr><th style="width:85%">ชื่อประกาศ</th><th style="width:15%">ไฟล์</th></tr></thead><tbody>`;
+                    html += `
+                    <div class="table-responsive">
+                        <table class="doc-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:85%">ชื่อประกาศ</th>
+                                    <th style="width:15%">ไฟล์</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
                     
                     grouped[year][m].forEach(doc => {
                         let url = doc.filename;
@@ -267,13 +574,17 @@
 
                         const badge = new Date(doc.date).getTime() >= NEW_LIMIT ? '<span class="new-badge">NEW</span>' : '';
                         
-
-                        html += `<tr>
-                            <td>${badge}${doc.title}</td>
-                            <td><a href="${url}" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a></td>
+                        html += `
+                        <tr>
+                            <td style="font-weight: 500;">${badge}${doc.title}</td>
+                            <td>
+                                <a href="${url}" target="_blank" class="btn-table-dl">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </a>
+                            </td>
                         </tr>`;
                     });
-                    html += `</tbody></table>`;
+                    html += `</tbody></table></div>`;
                 });
                 html += `</div></div>`;
             });
@@ -281,13 +592,21 @@
         }
 
         window.toggleYear = (el) => {
-            el.classList.toggle('active');
+            const container = el.parentElement;
             const content = el.nextElementSibling;
-            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+            
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                el.classList.remove('active');
+                container.classList.remove('active');
+            } else {
+                content.style.display = 'block';
+                el.classList.add('active');
+                container.classList.add('active');
+            }
         };
 
         loadData();
     </script>
 </body>
-
 </html>
