@@ -11,18 +11,19 @@
 
     <style>
         :root {
-            --bg-canvas: #fdf8fa;
+            --bg-canvas: #f4fbfb;
             --bg-card: #ffffff;
-            --color-primary: #ec4899; /* Pink-500 */
-            --color-primary-deep: #db2777; /* Pink-600 */
-            --color-pink-soft: #fbcfe8;
-            --text-dark: #334155;
-            --text-muted: #64748b;
-            --border-color: #fbcfe8;
+            --primary-color: #339999;
+            --primary-dark: #206b6b;
+            --primary-light: #e6f7f7;
+            --primary-mid: #2a8585;
+            --text-dark: #2d3748;
+            --text-muted: #5a6a85;
+            --border-color: #b2e0e0;
             --error-color: #e11d48;
             --radius-lg: 24px;
             --radius-md: 16px;
-            --shadow-soft: 0 20px 50px rgba(236, 72, 153, 0.12);
+            --shadow-soft: 0 20px 50px rgba(51, 153, 153, 0.15);
         }
 
         * { box-sizing: border-box; font-family: 'Sarabun', sans-serif; margin: 0; padding: 0; }
@@ -32,7 +33,7 @@
         /* ฝั่งซ้าย - แบรนด์และธีม */
         .brand-side {
             flex: 1.1; position: relative;
-            background: linear-gradient(160deg, #db2777 0%, #ec4899 55%, #f472b6 100%);
+            background: linear-gradient(160deg, var(--primary-dark) 0%, var(--primary-color) 55%, #42b3b3 100%);
             color: #ffffff; display: flex; flex-direction: column; justify-content: space-between; padding: 56px 60px; overflow: hidden;
         }
         .brand-side::before, .brand-side::after { content: ''; position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.08); }
@@ -56,7 +57,7 @@
         /* ฝั่งขวา - ฟอร์มเข้าสู่ระบบ */
         .form-side { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
         .login-card { width: 100%; max-width: 380px; }
-        .login-card .eyebrow { font-size: 13px; font-weight: 600; color: var(--color-primary); letter-spacing: 0.4px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .login-card .eyebrow { font-size: 13px; font-weight: 600; color: var(--primary-color); letter-spacing: 0.4px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
         .login-card h2 { font-size: 26px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
         .login-card .subtitle { color: var(--text-muted); font-size: 14px; font-weight: 300; margin-bottom: 32px; }
 
@@ -65,12 +66,12 @@
         .input-wrap { position: relative; }
 
         input {
-            width: 100%; padding: 13px 16px; border: 1.5px solid #e2e8f0; border-radius: var(--radius-md);
-            font-size: 15px; color: var(--text-dark); background-color: #f8fafc; transition: all 0.2s;
+            width: 100%; padding: 13px 16px; border: 1.5px solid #d0e8e8; border-radius: var(--radius-md);
+            font-size: 15px; color: var(--text-dark); background-color: #f7fcfc; transition: all 0.2s;
         }
         input.uppercase-input { text-transform: uppercase; }
-        input::placeholder { color: #94a3b8; font-weight: 300; }
-        input:focus { border-color: var(--color-primary); background-color: #fff; box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.12); outline: none; }
+        input::placeholder { color: #8ba3a3; font-weight: 300; }
+        input:focus { border-color: var(--primary-color); background-color: #fff; box-shadow: 0 0 0 4px rgba(51, 153, 153, 0.15); outline: none; }
 
         .input-wrap.has-toggle input { padding-right: 46px; }
         .toggle-visibility {
@@ -79,7 +80,7 @@
             align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted);
             border-radius: 8px; padding: 0; transition: all 0.2s;
         }
-        .toggle-visibility:hover { background: #f1f5f9; color: var(--color-primary); }
+        .toggle-visibility:hover { background: var(--primary-light); color: var(--primary-color); }
 
         .form-error {
             display: none; align-items: center; gap: 8px; background: #fff1f2;
@@ -89,10 +90,10 @@
 
         button[type="submit"] {
             width: 100%; padding: 14px; border: none; border-radius: var(--radius-md);
-            font-size: 15.5px; font-weight: 600; color: white; background-color: var(--color-primary);
+            font-size: 15.5px; font-weight: 600; color: white; background-color: var(--primary-color);
             cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        button[type="submit"]:hover { background-color: var(--color-primary-deep); transform: translateY(-1px); box-shadow: 0 10px 22px rgba(236, 72, 153, 0.25); }
+        button[type="submit"]:hover { background-color: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 10px 22px rgba(51, 153, 153, 0.3); }
 
         .login-footnote { text-align: center; font-size: 12.5px; color: var(--text-muted); font-weight: 300; margin-top: 24px; }
 
@@ -104,9 +105,9 @@
         .modal-overlay.active { display: flex; }
         .modal-box {
             background: #fff; width: 100%; max-width: 400px; border-radius: 24px; overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid #fbcfe8;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color);
         }
-        .modal-header { background: #f59e0b; color: #fff; padding: 20px 24px; display: flex; align-items: center; gap: 10px; }
+        .modal-header { background: var(--primary-mid); color: #fff; padding: 20px 24px; display: flex; align-items: center; gap: 10px; }
         .modal-header h3 { font-size: 16px; font-weight: 700; }
         .modal-body { padding: 24px; }
 
@@ -121,11 +122,11 @@
             <div class="brand-icon">
                 <i class="fa-solid fa-book-bookmark"></i>
             </div>
-            <span>ฝ่ายธุรการ · สำนักงาน</span>
+            <span>ฝ่ายธุรการ ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</span>
         </div>
         <div class="brand-copy">
-            <h1>ระบบสารบรรณดิจิทัล<br>และทะเบียนรับหนังสือ</h1>
-            <p>ระบบบันทึกรับหนังสือ มอบหมายงาน และติดตามสถานะเอกสารสารบรรณสำหรับเจ้าหน้าที่ธุรการ</p>
+            <h1>ระบบสารบรรณดิจิทัล<br>สำหรับทะเบียนรับหนังสือ</h1>
+            <p>สำหรับเจ้าหน้าที่ฝ่ายธุรการ</p>
         </div>
         <div class="brand-footer">ระบบทะเบียนรับ ฝ่ายธุรการ © 2026</div>
     </div>
@@ -163,7 +164,7 @@
                     <span>เข้าสู่ระบบ</span>
                 </button>
             </form>
-            <div class="login-footnote">หากลืมรหัสผ่าน? กรุณาติดต่อผู้ดูแลระบบธุรการ</div>
+            <div class="login-footnote">หากลืมรหัสผ่าน? กรุณาติดต่อผู้ดูแลระบบ</div>
         </div>
     </div>
 
@@ -186,7 +187,7 @@
                     <label>ยืนยันรหัสผ่านใหม่</label>
                     <input type="password" id="confirmNewPassword" required minlength="4" placeholder="กรอกรหัสผ่านใหม่อีกครั้ง...">
                 </div>
-                <button type="submit" style="background-color: #f59e0b; margin-top: 8px;">
+                <button type="submit" style="background-color: var(--primary-mid); margin-top: 8px;">
                     บันทึกรหัสผ่านใหม่
                 </button>
             </form>
@@ -208,7 +209,6 @@
         let currentUserTemp = null;
 
         window.onload = function() {
-            // หากเข้าสู่ระบบไว้แล้ว ให้ไปหน้า dashboard.html ทันที
             if (sessionStorage.getItem('docApp_user')) {
                 window.location.href = 'dashboard.html';
             }
