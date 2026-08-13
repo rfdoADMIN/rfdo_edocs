@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบทะเบียนรับ ฝ่ายธุรการ</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sarabun: ['Sarabun', 'sans-serif'] },
+                    colors: {
+                        lavender: {
+                            50:  '#F7F4FB', 100: '#EFE9F6', 200: '#DDD0EC', 300: '#C3B1E1',
+                            400: '#A98FD1', 500: '#8F6EC0', 600: '#7454A6', 700: '#5C4285',
+                            800: '#453163', 900: '#2E2142'
+                        },
+                        blossom: {
+                            50:  '#FDF3F7', 100: '#FCE6EE', 200: '#F8C8DC', 300: '#F2A0C0',
+                            400: '#EA76A2', 500: '#DE5385', 600: '#C13A6A', 700: '#9C2D54',
+                            800: '#75213E', 900: '#4F1629'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Sarabun', sans-serif; background-color: #FBF6FA; color: #334155; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #FBF6FA; }
+        ::-webkit-scrollbar-thumb { background: #C3B1E1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #F8C8DC; }
+    </style>
+</head>
+<body class="bg-pastel-bg min-h-screen flex flex-col font-sarabun antialiased text-slate-700">
+
+    <datalist id="fromHistoryList"></datalist>
+    <datalist id="toHistoryList"></datalist>
+
+    <div id="app" class="flex-grow flex flex-col">
+        <header class="bg-white sticky top-0 z-40 px-4 lg:px-8 py-3.5 border-b border-lavender-200 shadow-sm">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-lavender-100 text-lavender-500 flex items-center justify-center font-bold border border-lavender-200">
+                        <i class="fa-solid fa-book-bookmark text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-slate-800 leading-tight">ระบบทะเบียนรับ ฝ่ายธุรการ</h1>
+                        <p class="text-xs text-slate-500">บันทึกหนังสือรับ มอบหมายงาน ติดตามสถานะ (เชื่อมต่อ Google Sheets)</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="bg-lavender-50 px-3 py-1.5 rounded-2xl flex items-center gap-2 border border-lavender-200 text-xs font-medium">
+                        <i class="fa-solid fa-calendar-days text-lavender-500"></i>
+                        <span class="text-lavender-800">ปีทะเบียน:</span>
+                        <select id="selectedYear" onchange="changeYear(this.value)" class="bg-white px-2.5 py-1 rounded-xl text-slate-700 font-bold border border-lavender-200 focus:outline-none focus:ring-2 focus:ring-lavender-300">
+                        </select>
+                    </div>
+
+                    <div id="currentUserBadge" class="flex items-center gap-2 bg-lavender-50 border border-lavender-200 pl-3 pr-2 py-1.5 rounded-2xl">
+                        <div class="text-right">
+                            <p id="navUserName" class="text-xs font-bold text-lavender-900 leading-none whitespace-nowrap"></p>
+                        </div>
+                        <button onclick="openOwnResetModal()" title="รีเซ็ตรหัสผ่านของตัวเอง" class="p-1.5 text-slate-400 hover:text-blossom-600 rounded-xl hover:bg-blossom-100 transition">
+                            <i class="fa-solid fa-key text-xs"></i>
+                        </button>
+                        <button onclick="handleLogout()" title="ออกจากระบบ" class="p-1.5 text-slate-400 hover:text-rose-500 rounded-xl hover:bg-rose-100 transition">
+                            <i class="fa-solid fa-right-from-bracket text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl w-full mx-auto p-4 lg:p-6 flex-grow space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-lavender-50 rounded-3xl p-4 border border-lavender-200 shadow-xs flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-lavender-700">รวมทะเบียนรับทั้งหมด</p>
+                        <h3 id="statTotal" class="text-2xl font-bold text-lavender-900 mt-1">0</h3>
+                        <p class="text-[11px] text-lavender-600 mt-1" id="statYearLabel">ประจำปี พ.ศ. 2569</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-lavender-200/80 text-lavender-700 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 rounded-3xl p-4 border border-amber-200 shadow-xs flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-amber-800">รอมอบหมาย</p>
+                        <h3 id="statPending" class="text-2xl font-bold text-amber-900 mt-1">0</h3>
+                        <p class="text-[11px] text-amber-700 mt-1">รอหัวหน้าลงนามกระดาษจริง</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-amber-200/80 text-amber-800 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xs border border-lavender-100 p-4 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <button id="tabActive" onclick="switchTab('active')" class="px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-2 bg-lavender-500 text-white shadow-xs">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>ทะเบียนรับทั้งหมด</span>
+                    </button>
+                    <button id="tabPending" onclick="switchTab('pending')" class="px-4 py-2 rounded-2xl text-xs font-bold text-slate-600 hover:bg-blossom-50 transition flex items-center gap-2">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                        <span>รอมอบหมาย</span>
+                    </button>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+                    <button onclick="loadData()" title="รีเฟรชข้อมูล" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl text-xs transition">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+
+                    <div class="relative flex-grow sm:flex-grow-0 sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-xs text-slate-400"></i>
+                        <input type="text" id="searchInput" onkeyup="currentPage = 1; renderTable();" placeholder="ค้นหา เลขรับ, เลขหนังสือ, เรื่อง..." class="w-full pl-9 pr-4 py-2 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-lavender-300 focus:outline-none">
+                    </div>
+
+                    <button onclick="openExportModal()" class="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold rounded-2xl text-xs border border-blue-200 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-word text-blue-600"></i>
+                        <span>ดาวน์โหลด Word</span>
+                    </button>
+
+                    <button onclick="openAddModal()" class="px-4 py-2 bg-lavender-500 hover:bg-blossom-500 text-white font-bold rounded-2xl text-xs shadow-xs transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>ลงทะเบียนหนังสือ</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xs border border-lavender-100 overflow-hidden relative">
+                <div id="loadingOverlay" class="hidden absolute inset-0 bg-white/80 backdrop-blur-xs z-30 flex items-center justify-center gap-2 text-lavender-700 font-bold text-xs">
+                    <i class="fa-solid fa-circle-notch fa-spin text-lg"></i>
+                    <span>กำลังโหลดข้อมูล...</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-lavender-50/70 border-b border-lavender-100 text-slate-700 font-bold">
+                                <th class="py-3.5 px-4 text-center whitespace-nowrap">เลขทะเบียนรับ</th>
+                                <th class="py-3.5 px-4 whitespace-nowrap">เลขหนังสือ</th>
+                                <th class="py-3.5 px-4 whitespace-nowrap">วันที่</th>
+                                <th class="py-3.5 px-4 whitespace-nowrap">จาก</th>
+                                <th class="py-3.5 px-4 whitespace-nowrap">ถึง</th>
+                                <th class="py-3.5 px-4 min-w-[220px]">เรื่อง</th>
+                                <th class="py-3.5 px-4 whitespace-nowrap">มอบหมายใคร</th>
+                                <th class="py-3.5 px-4 whitespace-nowrap">หมายเหตุ / การปฏิบัติงาน</th>
+                                <th class="py-3.5 px-4 text-center whitespace-nowrap">จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+
+                <div id="emptyState" class="hidden py-12 text-center text-slate-400">
+                    <i class="fa-solid fa-folder-open text-4xl text-slate-300 mb-2"></i>
+                    <p class="text-xs">ไม่พบรายการทะเบียนรับหนังสือ</p>
+                </div>
+
+                <div id="paginationBar" class="hidden items-center justify-between gap-3 px-4 py-3 border-t border-slate-100 flex-wrap">
+                    <p id="paginationInfo" class="text-[11px] text-slate-500"></p>
+                    <div id="paginationControls" class="flex items-center gap-1"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="entryModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden border border-lavender-200 my-8">
+            <div class="bg-lavender-100 px-6 py-4 text-slate-800 flex items-center justify-between border-b border-lavender-200">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-lavender-500"></i>
+                    <h3 id="modalTitle" class="font-bold text-sm text-lavender-900">ลงทะเบียนรับหนังสือ</h3>
+                </div>
+                <button onclick="closeEntryModal()" class="w-7 h-7 rounded-full bg-white hover:bg-blossom-50 flex items-center justify-center text-slate-600 transition border border-lavender-200">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="recordForm" onsubmit="saveRecord(event)" class="p-6 space-y-4">
+                <input type="hidden" id="editRecordId">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">เลขทะเบียนรับ <span class="text-rose-500">*</span></label>
+                        <input type="number" id="receiveNo" required placeholder="เช่น 1, 102" class="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs font-bold text-lavender-700 bg-white focus:ring-2 focus:ring-lavender-300 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">เลขหนังสือ <span class="text-rose-500">*</span></label>
+                        <input type="text" id="docNo" required placeholder="เช่น ศธ 04001/ว123" class="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-lavender-300 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">วันที่ (ตามหนังสือ) <span class="text-rose-500">*</span></label>
+                        <input type="date" id="docDate" required class="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-lavender-300 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">จาก <span class="text-rose-500">*</span></label>
+                        <input type="text" id="docFrom" list="fromHistoryList" required placeholder="เช่น สำนักงาน กพ." class="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-lavender-300 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ถึง <span class="text-rose-500">*</span></label>
+                        <input type="text" id="docTo" list="toHistoryList" required placeholder="เช่น ผู้อำนวยการกองธุรการ" class="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-lavender-300 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">เรื่อง <span class="text-rose-500">*</span></label>
+                    <textarea id="docSubject" required rows="2" placeholder="กรอกชื่อเรื่องหรือหัวข้อหนังสือรับ..." class="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-lavender-300 focus:outline-none resize-none"></textarea>
+                </div>
+
+                <div id="docAssigneeBox" class="p-3.5 bg-lavender-50/60 rounded-2xl border border-lavender-100 space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">มอบหมายงานให้</label>
+                        <select id="docAssigneeSelect" onchange="handleModalAssigneeChange(this.value)" class="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-lavender-300 focus:outline-none bg-white">
+                            <option value="">-- รอมอบหมาย (ยังไม่ระบุ) --</option>
+                            <option value="นางสาวชัชระพี สอนไวย์">นางสาวชัชระพี สอนไวย์</option>
+                            <option value="นางสาวนัทธมน นุชบางเดื่อ">นางสาวนัทธมน นุชบางเดื่อ</option>
+                            <option value="นางสาวปาริตา มงคล">นางสาวปาริตา มงคล</option>
+                            <option value="นางสาวขวัญพ์ตะวัน วงศ์ชัยนเรศ">นางสาวขวัญพ์ตะวัน วงศ์ชัยนเรศ</option>
+                            <option value="นางสาวจิดาภา ลีละวัฒนากูล">นางสาวจิดาภา ลีละวัฒนากูล</option>
+                            <option value="นางสาวณัฏฐนิช บุญสวน">นางสาวณัฏฐนิช บุญสวน</option>
+                            <option value="นางสาวพลอยไพลิน อั้นทอง">นางสาวพลอยไพลิน อั้นทอง</option>
+                            <option value="CUSTOM">-- กรอกชื่ออื่นๆ เอง --</option>
+                        </select>
+                        <input type="text" id="docAssigneeCustom" placeholder="กรอกชื่อผู้รับมอบหมาย..." class="hidden mt-2 w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-lavender-300 focus:outline-none bg-white">
+                        <p id="docAssigneeStatic" class="hidden px-3.5 py-2 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold">รอมอบหมาย</p>
+                    </div>
+
+                    <div id="modalRemarksSection" class="hidden pt-2 border-t border-lavender-200/60">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">หมายเหตุ / การปฏิบัติงาน</label>
+                        <select id="docRemarksSelect" onchange="handleModalRemarksChange(this.value)" class="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-lavender-300 focus:outline-none bg-white">
+                            <option value="">-- ไม่ระบุ --</option>
+                            <option value="รวมเรื่อง">รวมเรื่อง</option>
+                            <option value="ดำเนินการ">ดำเนินการ</option>
+                            <option value="ดำเนินการ (หากมี)">ดำเนินการ (หากมี)</option>
+                            <option value="เพื่อทราบและปฏิบัติ">เพื่อทราบและปฏิบัติ</option>
+                            <option value="ทราบ / รวมเรื่อง">ทราบ / รวมเรื่อง</option>
+                            <option value="เพื่อทราบ">เพื่อทราบ</option>
+                            <option value="CUSTOM">-- กรอกเอง --</option>
+                        </select>
+                        <input type="text" id="docRemarksCustom" placeholder="ระบุเพิ่มเติม..." class="hidden mt-2 w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-lavender-300 focus:outline-none bg-white">
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+                    <button type="button" onclick="closeEntryModal()" class="px-4 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-100 rounded-2xl transition">ยกเลิก</button>
+                    <button type="submit" class="px-5 py-2 bg-lavender-500 hover:bg-blossom-500 text-white font-bold rounded-2xl text-xs shadow-xs transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>บันทึกข้อมูล</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="quickAssignModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-amber-200">
+            <div class="bg-amber-100 px-6 py-4 text-amber-900 flex items-center justify-between border-b border-amber-200">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-user-pen text-amber-600"></i>
+                    <h3 class="font-bold text-sm">มอบหมายงานและการปฏิบัติงาน</h3>
+                </div>
+                <button onclick="closeQuickAssignModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p class="text-xs text-slate-600">
+                    เลขทะเบียนรับ: <strong id="qaReceiveNo" class="text-lavender-700"></strong><br>
+                    เรื่อง: <span id="qaSubject" class="font-medium text-slate-800"></span>
+                </p>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">เลือกผู้รับมอบหมาย <span class="text-rose-500">*</span></label>
+                    <select id="qaSelect" onchange="handleQASelectChange(this.value)" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none">
+                        <option value="">-- เลือกเจ้าหน้าที่ --</option>
+                        <option value="นางสาวชัชระพี สอนไวย์">นางสาวชัชระพี สอนไวย์</option>
+                        <option value="นางสาวนัทธมน นุชบางเดื่อ">นางสาวนัทธมน นุชบางเดื่อ</option>
+                        <option value="นางสาวปาริตา มงคล">นางสาวปาริตา มงคล</option>
+                        <option value="นางสาวขวัญพ์ตะวัน วงศ์ชัยนเรศ">นางสาวขวัญพ์ตะวัน วงศ์ชัยนเรศ</option>
+                        <option value="นางสาวจิดาภา ลีละวัฒนากูล">นางสาวจิดาภา ลีละวัฒนากูล</option>
+                        <option value="นางสาวณัฏฐนิช บุญสวน">นางสาวณัฏฐนิช บุญสวน</option>
+                        <option value="นางสาวพลอยไพลิน อั้นทอง">นางสาวพลอยไพลิน อั้นทอง</option>
+                        <option value="CUSTOM">-- กรอกชื่ออื่นๆ เอง --</option>
+                    </select>
+                    <input type="text" id="qaCustom" placeholder="กรอกชื่อผู้รับมอบหมาย..." class="hidden mt-2 w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">หมายเหตุ / การปฏิบัติงาน</label>
+                    <select id="qaRemarksSelect" onchange="handleQARemarksChange(this.value)" class="w-full px-3.5 py-2.5 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none bg-white">
+                        <option value="">-- ไม่ระบุ --</option>
+                        <option value="รวมเรื่อง">รวมเรื่อง</option>
+                        <option value="ดำเนินการ">ดำเนินการ</option>
+                        <option value="ดำเนินการ (หากมี)">ดำเนินการ (หากมี)</option>
+                        <option value="เพื่อทราบและปฏิบัติ">เพื่อทราบและปฏิบัติ</option>
+                        <option value="ทราบ / รวมเรื่อง">ทราบ / รวมเรื่อง</option>
+                        <option value="เพื่อทราบ">เพื่อทราบ</option>
+                        <option value="CUSTOM">-- กรอกเอง --</option>
+                    </select>
+                    <input type="text" id="qaRemarksCustom" placeholder="ระบุการปฏิบัติงานเพิ่มเติม..." class="hidden mt-2 w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs focus:ring-2 focus:ring-amber-300 focus:outline-none bg-white">
+                </div>
+
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="closeQuickAssignModal()" class="px-4 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-100 rounded-2xl">ยกเลิก</button>
+                    <button type="button" onclick="saveQuickAssign()" class="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl text-xs shadow-xs">บันทึกการมอบหมาย</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ownResetModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-lavender-200">
+            <div class="bg-lavender-100 px-6 py-4 text-lavender-900 flex items-center justify-between border-b border-lavender-200">
+                <div class="flex items-center gap-2"><i class="fa-solid fa-key text-lavender-600"></i><h3 class="font-bold text-sm">เปลี่ยนรหัสผ่าน</h3></div>
+                <button onclick="closeOwnResetModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="executeOwnPasswordChange(event)" class="p-6 space-y-4">
+                <div class="bg-lavender-50 p-3 rounded-2xl border border-lavender-200 text-xs text-lavender-900">ผู้ใช้งาน: <strong id="resetOwnUserLabel" class="text-lavender-700"></strong></div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">รหัสผ่านใหม่</label>
+                    <input type="password" id="ownNewPassword" required minlength="4" class="w-full px-4 py-2.5 rounded-2xl border border-slate-200 text-xs focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">ยืนยันรหัสผ่านใหม่</label>
+                    <input type="password" id="ownConfirmPassword" required minlength="4" class="w-full px-4 py-2.5 rounded-2xl border border-slate-200 text-xs focus:outline-none">
+                </div>
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="closeOwnResetModal()" class="px-4 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-100 rounded-2xl">ยกเลิก</button>
+                    <button type="submit" class="px-5 py-2 bg-lavender-600 hover:bg-blossom-700 text-white font-bold rounded-2xl text-xs">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="exportModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-blue-200">
+            <div class="bg-blue-100 px-6 py-4 text-blue-900 flex items-center justify-between border-b border-blue-200">
+                <div class="flex items-center gap-2"><i class="fa-solid fa-file-word text-blue-600"></i><h3 class="font-bold text-sm">ดาวน์โหลดไฟล์ WORD</h3></div>
+                <button onclick="closeExportModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">จากเลขรับ</label>
+                        <input type="number" id="exportStartNo" class="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs font-bold text-blue-800">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ถึงเลขรับ</label>
+                        <input type="number" id="exportEndNo" class="w-full px-3.5 py-2 rounded-2xl border border-slate-200 text-xs font-bold text-blue-800">
+                    </div>
+                </div>
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="closeExportModal()" class="px-4 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-100 rounded-2xl">ยกเลิก</button>
+                    <button type="button" onclick="executeWordExport()" class="px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-2xl text-xs"><i class="fa-solid fa-download mr-1"></i>ดาวน์โหลด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="historyModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-lavender-200 max-h-[85vh] flex flex-col">
+            <div class="bg-lavender-100 px-6 py-4 text-lavender-900 flex items-center justify-between border-b border-lavender-200">
+                <div class="flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-lavender-600"></i><h3 class="font-bold text-sm">ประวัติการแก้ไข</h3></div>
+                <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4 flex-grow">
+                <div class="bg-lavender-50 p-3.5 rounded-2xl border border-lavender-100 text-xs space-y-1">
+                    <p><strong>เลขรับ:</strong> <span id="histReceiveNo" class="text-lavender-700 font-bold"></span></p>
+                    <p><strong>เรื่อง:</strong> <span id="histSubject"></span></p>
+                </div>
+                <div class="border-l-2 border-lavender-200 pl-4 space-y-4 text-xs" id="historyTimeline"></div>
+            </div>
+            <div class="p-4 bg-slate-50 border-t border-slate-100 text-right">
+                <button onclick="closeHistoryModal()" class="px-4 py-2 bg-slate-700 text-white rounded-2xl text-xs font-semibold">ปิด</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 border border-rose-200 text-center space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 mx-auto flex items-center justify-center text-xl"><i class="fa-solid fa-trash-can"></i></div>
+            <div>
+                <h4 class="font-bold text-base text-slate-800">ยืนยันการลบรายการ</h4>
+                <p class="text-xs text-slate-500 mt-1">ต้องการลบทะเบียนรับเลขที่ <strong id="deleteTargetNo" class="text-rose-600"></strong> ใช่หรือไม่?</p>
+            </div>
+            <div class="flex items-center justify-center gap-2 pt-2">
+                <button onclick="closeDeleteModal()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded-2xl">ยกเลิก</button>
+                <button onclick="executeDeleteRecord()" class="w-full py-2 bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold rounded-2xl">ยืนยันลบ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="customAlertModal" class="fixed inset-0 z-50 hidden bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-5 border border-slate-100 text-center space-y-3">
+            <div id="alertIconContainer" class="w-12 h-12 rounded-2xl mx-auto flex items-center justify-center text-xl"></div>
+            <h4 id="alertTitle" class="font-bold text-base text-slate-800"></h4>
+            <p id="alertMessage" class="text-xs text-slate-600"></p>
+            <button onclick="closeCustomAlert()" class="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-2xl">ตกลง</button>
+        </div>
+    </div>
+
+    <script>
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbyzq2Ut9HgFFV4DzpT_QIDqbSvqZlR0DXoosEitj7HeyOs3GUIEm9XaYFcqH691NhUL8Q/exec";
+
+        // รายชื่อมาตรฐานสำหรับระบบ
+        const standardList = [
+            "นางสาวชัชระพี สอนไวย์",
+            "นางสาวนัทธมน นุชบางเดื่อ",
+            "นางสาวปาริตา มงคล",
+            "นางสาวขวัญพ์ตะวัน วงศ์ชัยนเรศ",
+            "นางสาวจิดาภา ลีละวัฒนากูล",
+            "นางสาวณัฏฐนิช บุญสวน",
+            "นางสาวพลอยไพลิน อั้นทอง"
+        ];
+
+        let currentUser = null;
+        let passwords = {};
+        let currentYear = 2569;
+        let records = [];
+        let activeTab = 'active';
+        let quickAssignTargetId = null;
+        let deleteTargetId = null;
+        let currentPage = 1;
+        const PAGE_SIZE = 30;
+
+        window.onload = function() {
+            checkSession();
+            initYears();
+            loadPasswords();
+            loadData();
+        };
+
+        function checkSession() {
+            const savedUser = sessionStorage.getItem('docApp_user');
+            if (!savedUser) {
+                currentUser = { name: 'เจ้าหน้าที่ธุรการ', code: 'admin' };
+                document.getElementById('navUserName').innerText = currentUser.name;
+            } else {
+                currentUser = JSON.parse(savedUser);
+                document.getElementById('navUserName').innerText = currentUser.name;
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('docApp_user');
+            window.location.href = 'index.html';
+        }
+
+        function loadPasswords() {
+            const savedPwds = localStorage.getItem('docApp_passwords');
+            if (savedPwds) passwords = JSON.parse(savedPwds);
+        }
+
+        function showLoading(show) {
+            const loader = document.getElementById('loadingOverlay');
+            if (show) loader.classList.remove('hidden');
+            else loader.classList.add('hidden');
+        }
+
+        async function loadData() {
+            showLoading(true);
+            try {
+                const response = await fetch(`${GAS_URL}?action=getData&t=${Date.now()}`);
+                const data = await response.json();
+                
+                records = data.map(item => ({
+                    ...item,
+                    yearBE: Number(item.yearBE) || currentYear,
+                    receiveNo: Number(item.receiveNo) || 0,
+                    history: typeof item.history === 'string' ? JSON.parse(item.history || '[]') : (item.history || [])
+                }));
+                
+                updateHistoryDatalists();
+                renderTable();
+                updateStats();
+            } catch (error) {
+                console.error("Error loading records:", error);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function updateHistoryDatalists() {
+            const fromList = document.getElementById('fromHistoryList');
+            const toList = document.getElementById('toHistoryList');
+
+            const uniqueFroms = [...new Set(records.map(r => r.from).filter(Boolean))];
+            const uniqueTos = [...new Set(records.map(r => r.to).filter(Boolean))];
+
+            fromList.innerHTML = uniqueFroms.map(val => `<option value="${val}">`).join('');
+            toList.innerHTML = uniqueTos.map(val => `<option value="${val}">`).join('');
+        }
+
+        function saveDataToGAS(recordData) {
+            fetch(GAS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    action: 'saveRecord',
+                    record: recordData
+                })
+            }).catch(error => console.error("Error saving background:", error));
+        }
+
+        function deleteDataFromGAS(id) {
+            fetch(GAS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    action: 'deleteRecord',
+                    id: id
+                })
+            }).catch(error => console.error("Error deleting background:", error));
+        }
+
+        function openOwnResetModal() {
+            if (!currentUser) return;
+            document.getElementById('resetOwnUserLabel').innerText = currentUser.name;
+            document.getElementById('ownNewPassword').value = '';
+            document.getElementById('ownConfirmPassword').value = '';
+            document.getElementById('ownResetModal').classList.remove('hidden');
+        }
+
+        function closeOwnResetModal() {
+            document.getElementById('ownResetModal').classList.add('hidden');
+        }
+
+        function executeOwnPasswordChange(e) {
+            e.preventDefault();
+            const newPwd = document.getElementById('ownNewPassword').value.trim();
+            const confirmPwd = document.getElementById('ownConfirmPassword').value.trim();
+
+            if (newPwd !== confirmPwd) {
+                showCustomAlert('รหัสผ่านไม่ตรงกัน', 'กรุณากรอกรหัสผ่านใหม่ทั้งสองช่องให้ตรงกัน', 'warning');
+                return;
+            }
+
+            passwords[currentUser.code] = newPwd;
+            localStorage.setItem('docApp_passwords', JSON.stringify(passwords));
+            closeOwnResetModal();
+            showCustomAlert('เปลี่ยนรหัสผ่านสำเร็จ', 'บันทึกรหัสผ่านใหม่เรียบร้อยแล้ว', 'success');
+        }
+
+        function initYears() {
+            const yearSelect = document.getElementById('selectedYear');
+            yearSelect.innerHTML = '';
+            const thisYearBE = new Date().getFullYear() + 543;
+            const startYear = 2569;
+            const maxYear = Math.max(startYear, thisYearBE); 
+
+            for (let y = maxYear; y >= startYear; y--) {
+                const opt = document.createElement('option');
+                opt.value = y;
+                opt.innerText = `พ.ศ. ${y}`;
+                if (y === startYear) opt.selected = true;
+                yearSelect.appendChild(opt);
+            }
+
+            currentYear = parseInt(yearSelect.value);
+            document.getElementById('statYearLabel').innerText = `ประจำปี พ.ศ. ${currentYear}`;
+        }
+
+        function changeYear(yearVal) {
+            currentYear = parseInt(yearVal);
+            document.getElementById('statYearLabel').innerText = `ประจำปี พ.ศ. ${currentYear}`;
+            renderTable();
+            updateStats();
+        }
+
+        function getNextReceiveNumber(yearBE) {
+            const yearRecords = records.filter(r => r.yearBE === yearBE);
+            if (yearRecords.length === 0) return 1;
+            const maxNo = Math.max(...yearRecords.map(r => parseInt(r.receiveNo) || 0));
+            return maxNo + 1;
+        }
+
+        function switchTab(tab) {
+            activeTab = tab;
+            currentPage = 1;
+            const btnActive = document.getElementById('tabActive');
+            const btnPending = document.getElementById('tabPending');
+
+            const activeClass = 'px-4 py-2 rounded-2xl text-xs font-bold transition flex items-center gap-2 bg-lavender-500 text-white shadow-xs';
+            const inactiveClass = 'px-4 py-2 rounded-2xl text-xs font-bold text-slate-600 hover:bg-blossom-50 transition flex items-center gap-2';
+
+            btnActive.className = tab === 'active' ? activeClass : inactiveClass;
+            btnPending.className = tab === 'pending' ? activeClass : inactiveClass;
+
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const emptyState = document.getElementById('emptyState');
+            const paginationBar = document.getElementById('paginationBar');
+            const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            tbody.innerHTML = '';
+            let list = activeTab === 'pending' 
+                ? records.filter(r => r.yearBE === currentYear && !r.assignee) 
+                : records.filter(r => r.yearBE === currentYear);
+
+            if (searchVal) {
+                list = list.filter(r => 
+                    r.receiveNo.toString().includes(searchVal) ||
+                    (r.docNo && r.docNo.toLowerCase().includes(searchVal)) ||
+                    (r.subject && r.subject.toLowerCase().includes(searchVal)) ||
+                    (r.from && r.from.toLowerCase().includes(searchVal)) ||
+                    (r.to && r.to.toLowerCase().includes(searchVal)) ||
+                    (r.assignee && r.assignee.toLowerCase().includes(searchVal)) ||
+                    (r.remarks && r.remarks.toLowerCase().includes(searchVal))
+                );
+            }
+
+            if (list.length === 0) {
+                emptyState.classList.remove('hidden');
+                paginationBar.classList.add('hidden');
+                paginationBar.classList.remove('flex');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            list.sort((a, b) => b.receiveNo - a.receiveNo);
+
+            const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const startIdx = (currentPage - 1) * PAGE_SIZE;
+            const pageItems = list.slice(startIdx, startIdx + PAGE_SIZE);
+
+            let lastGroupDate = null;
+
+            pageItems.forEach(item => {
+                const itemDatePart = (item.createdAt || '').split(' ')[0] || 'ไม่ระบุวันที่';
+                if (itemDatePart !== lastGroupDate) {
+                    lastGroupDate = itemDatePart;
+                    const groupRow = document.createElement('tr');
+                    groupRow.innerHTML = `
+                        <td colspan="9" class="px-4 py-2 bg-lavender-100/70 border-y border-lavender-200">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-calendar-day text-lavender-600 text-[11px]"></i>
+                                <span class="text-[11px] font-bold text-lavender-800">ลงทะเบียนวันที่ ${itemDatePart}</span>
+                                <div class="flex-grow border-t border-dashed border-lavender-300"></div>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(groupRow);
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-blossom-50/40 transition border-b border-slate-100';
+
+                const formattedDate = formatDateDisplay(item.docDate);
+                let assigneeHtml = item.assignee 
+                    ? `<span class="inline-flex items-center gap-1 text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-xl font-semibold border border-emerald-200 whitespace-nowrap"><i class="fa-solid fa-user-check text-[10px]"></i>${item.assignee}</span>`
+                    : `<div class="flex items-center gap-1.5 whitespace-nowrap">
+                        <span class="inline-flex items-center gap-1 text-amber-800 bg-amber-50 px-2 py-0.5 rounded-lg text-[11px] font-semibold border border-amber-200 whitespace-nowrap"><i class="fa-solid fa-hourglass-half text-[10px]"></i>รอมอบหมาย</span>
+                        <button onclick="openQuickAssign('${item.id}')" title="มอบหมายงาน" class="text-xs text-lavender-600 hover:text-blossom-800 font-bold underline ml-1 whitespace-nowrap">มอบหมาย</button>
+                    </div>`;
+
+                let creatorDisplayName = item.createdBy || '-';
+                if (creatorDisplayName.includes('(')) creatorDisplayName = creatorDisplayName.split('(')[0].trim();
+
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4 text-center font-bold text-lavender-700 bg-lavender-50/20 whitespace-nowrap">${item.receiveNo}</td>
+                    <td class="py-3.5 px-4 font-semibold text-slate-800 whitespace-nowrap">${item.docNo || '-'}</td>
+                    <td class="py-3.5 px-4 whitespace-nowrap">${formattedDate}</td>
+                    <td class="py-3.5 px-4">${item.from || '-'}</td>
+                    <td class="py-3.5 px-4">${item.to || '-'}</td>
+                    <td class="py-3.5 px-4">
+                        <p class="font-medium text-slate-800 leading-snug">${item.subject}</p>
+                        <p class="text-[10px] text-lavender-500 font-medium mt-1 whitespace-nowrap">ลงระบบโดย: ${creatorDisplayName}</p>
+                    </td>
+                    <td class="py-3.5 px-4 whitespace-nowrap">${assigneeHtml}</td>
+                    <td class="py-3.5 px-4 text-slate-600 font-medium">${item.remarks || '-'}</td>
+                    <td class="py-3.5 px-4 text-center whitespace-nowrap">
+                        <div class="flex items-center justify-center gap-1 whitespace-nowrap">
+                            <button onclick="openHistoryModal('${item.id}')" title="ประวัติ" class="p-1.5 text-blue-500 hover:bg-blue-50 rounded-xl transition"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                            <button onclick="openEditModal('${item.id}')" title="แก้ไข" class="p-1.5 text-lavender-600 hover:bg-blossom-50 rounded-xl transition"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="confirmDeleteRecord('${item.id}')" title="ลบ" class="p-1.5 text-rose-500 hover:bg-rose-50 rounded-xl transition"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            renderPaginationBar(list.length, totalPages);
+        }
+
+        function renderPaginationBar(totalItems, totalPages) {
+            const paginationBar = document.getElementById('paginationBar');
+            const paginationInfo = document.getElementById('paginationInfo');
+            const paginationControls = document.getElementById('paginationControls');
+
+            if (totalPages <= 1) {
+                paginationBar.classList.add('hidden');
+                paginationBar.classList.remove('flex');
+                return;
+            }
+
+            paginationBar.classList.remove('hidden');
+            paginationBar.classList.add('flex');
+
+            const startNo = (currentPage - 1) * PAGE_SIZE + 1;
+            const endNo = Math.min(currentPage * PAGE_SIZE, totalItems);
+            paginationInfo.innerText = `แสดง ${startNo}-${endNo} จาก ${totalItems} รายการ (หน้า ${currentPage}/${totalPages})`;
+
+            const baseBtn = 'w-7 h-7 flex items-center justify-center rounded-xl text-xs font-bold transition';
+            const inactiveBtn = `${baseBtn} text-slate-500 hover:bg-blossom-50 disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed`;
+            const activeBtn = `${baseBtn} bg-lavender-500 text-white shadow-xs`;
+
+            let html = `<button onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} class="${inactiveBtn}"><i class="fa-solid fa-chevron-left text-[10px]"></i></button>`;
+
+            for (let p = 1; p <= totalPages; p++) {
+                if (totalPages > 7 && p !== 1 && p !== totalPages && Math.abs(p - currentPage) > 1) {
+                    if (p === 2 || p === totalPages - 1) {
+                        html += `<span class="w-7 h-7 flex items-center justify-center text-slate-400 text-xs">…</span>`;
+                    }
+                    continue;
+                }
+                html += `<button onclick="goToPage(${p})" class="${p === currentPage ? activeBtn : inactiveBtn}">${p}</button>`;
+            }
+
+            html += `<button onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} class="${inactiveBtn}"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>`;
+
+            paginationControls.innerHTML = html;
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            renderTable();
+        }
+
+        function formatDateDisplay(dateStr) {
+            if (!dateStr) return '-';
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                const yBE = parseInt(parts[0]) > 2500 ? parts[0] : parseInt(parts[0]) + 543;
+                return `${parts[2]}/${parts[1]}/${yBE}`;
+            }
+            return dateStr;
+        }
+
+        // ฟังก์ชันตัดชื่อสำหรับส่งออก Word:
+        // - หากเป็นชื่อใน standardList: จะตัดคำนำหน้าและนามสกุลออก
+        // - หากเป็นพิมพ์กรอกเอง หรือชื่ออื่นๆ: จะคงข้อความเต็มตามที่พิมพ์ทุกประการ
+        function getFirstNameOnly(fullName) {
+            if (!fullName || fullName === '-') return '-';
+
+            // ตรวจสอบว่าตรงกับรายชื่อมาตรฐานในระบบหรือไม่
+            const isStandard = standardList.includes(fullName.trim());
+
+            if (isStandard) {
+                let clean = fullName.replace(/^(นางสาว|นาย|นาง|ดร\.|ว่าที่ร้อยตรี|ว่าที่ ร\.ต\.| ผอ\.| ช่าง| ชบ\.)\s*/g, '').trim();
+                const parts = clean.split(/\s+/);
+                return parts[0] || fullName;
+            } else {
+                // หากเป็นการพิมพ์กรอกเอง ให้แสดงตามที่พิมพ์ไว้แบบตรงตัวโดยไม่ตัดใดๆ
+                return fullName;
+            }
+        }
+
+        function handleModalAssigneeChange(val) {
+            const customInput = document.getElementById('docAssigneeCustom');
+            const remarksSec = document.getElementById('modalRemarksSection');
+
+            if (val === 'CUSTOM') customInput.classList.remove('hidden');
+            else customInput.classList.add('hidden');
+
+            if (val !== '') remarksSec.classList.remove('hidden');
+            else remarksSec.classList.add('hidden');
+        }
+
+        function handleModalRemarksChange(val) {
+            const customInput = document.getElementById('docRemarksCustom');
+            if (val === 'CUSTOM') customInput.classList.remove('hidden');
+            else customInput.classList.add('hidden');
+        }
+
+        function handleQARemarksChange(val) {
+            const customInput = document.getElementById('qaRemarksCustom');
+            if (val === 'CUSTOM') customInput.classList.remove('hidden');
+            else customInput.classList.add('hidden');
+        }
+
+        function openAddModal() {
+            document.getElementById('modalTitle').innerText = 'ลงทะเบียนรับหนังสือใหม่';
+            document.getElementById('editRecordId').value = '';
+            document.getElementById('recordForm').reset();
+            document.getElementById('receiveNo').value = getNextReceiveNumber(currentYear);
+            document.getElementById('docDate').value = new Date().toISOString().split('T')[0];
+            
+            document.getElementById('docAssigneeSelect').value = '';
+            document.getElementById('docAssigneeCustom').value = '';
+            document.getElementById('docAssigneeCustom').classList.add('hidden');
+            document.getElementById('docAssigneeSelect').classList.add('hidden');
+            document.getElementById('docAssigneeStatic').classList.remove('hidden');
+
+            document.getElementById('modalRemarksSection').classList.add('hidden');
+            document.getElementById('docRemarksSelect').value = '';
+            document.getElementById('docRemarksCustom').value = '';
+            document.getElementById('docRemarksCustom').classList.add('hidden');
+
+            document.getElementById('entryModal').classList.remove('hidden');
+        }
+
+        function closeEntryModal() {
+            document.getElementById('entryModal').classList.add('hidden');
+        }
+
+        async function saveRecord(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const recordId = document.getElementById('editRecordId').value;
+            const requestedNo = parseInt(document.getElementById('receiveNo').value);
+            const docNo = document.getElementById('docNo').value.trim();
+            const docDate = document.getElementById('docDate').value;
+            const docFrom = document.getElementById('docFrom').value.trim();
+            const docTo = document.getElementById('docTo').value.trim();
+            const docSubject = document.getElementById('docSubject').value.trim();
+
+            if (isNaN(requestedNo) || requestedNo <= 0) {
+                showCustomAlert('เลขทะเบียนรับไม่ถูกต้อง', 'กรุณาระบุเลขทะเบียนรับเป็นตัวเลขที่มากกว่า 0', 'warning');
+                return;
+            }
+
+            const isDuplicate = records.some(r => r.yearBE === currentYear && r.receiveNo === requestedNo && r.id !== recordId);
+            if (isDuplicate) {
+                showCustomAlert('เลขทะเบียนรับซ้ำ!', `เลขทะเบียนรับที่ ${requestedNo} มีอยู่ในระบบของปี พ.ศ. ${currentYear} แล้ว กรุณาตรวจสอบหรือเปลี่ยนเลขทะเบียน`, 'warning');
+                return;
+            }
+
+            const assigneeSelect = document.getElementById('docAssigneeSelect').value;
+            let assignee = assigneeSelect === 'CUSTOM' ? document.getElementById('docAssigneeCustom').value.trim() : assigneeSelect;
+
+            const remarksSelect = document.getElementById('docRemarksSelect').value;
+            let docRemarks = remarksSelect === 'CUSTOM' ? document.getElementById('docRemarksCustom').value.trim() : remarksSelect;
+
+            if (!assignee) docRemarks = '';
+
+            const now = new Date();
+            const nowTimestamp = `${now.toLocaleDateString('th-TH', {day:'2-digit', month:'2-digit', year:'numeric'})} ${now.toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit'})}`;
+
+            let recordObj = {};
+
+            if (recordId) {
+                const targetIdx = records.findIndex(r => r.id === recordId);
+                if (targetIdx !== -1) {
+                    const target = records[targetIdx];
+                    const changes = [];
+                    if (Number(target.receiveNo) !== requestedNo) changes.push(`เลขทะเบียนรับ: ${target.receiveNo} ➔ ${requestedNo}`);
+                    if ((target.docNo || '') !== docNo) changes.push(`เลขหนังสือ: ${target.docNo || '-'} ➔ ${docNo}`);
+                    if ((target.docDate || '') !== docDate) changes.push(`วันที่: ${formatDateDisplay(target.docDate)} ➔ ${formatDateDisplay(docDate)}`);
+                    if ((target.from || '') !== docFrom) changes.push(`จาก: ${target.from || '-'} ➔ ${docFrom}`);
+                    if ((target.to || '') !== docTo) changes.push(`ถึง: ${target.to || '-'} ➔ ${docTo}`);
+                    if ((target.subject || '') !== docSubject) changes.push(`เรื่อง: ${target.subject || '-'} ➔ ${docSubject}`);
+                    if ((target.assignee || '') !== (assignee || '')) changes.push(`ผู้รับมอบหมาย: ${target.assignee || 'รอมอบหมาย'} ➔ ${assignee || 'รอมอบหมาย'}`);
+                    if ((target.remarks || '') !== docRemarks) changes.push(`หมายเหตุ: ${target.remarks || '-'} ➔ ${docRemarks || '-'}`);
+
+                    const changeNote = changes.length > 0 ? changes.join(', ') : 'ไม่มีการเปลี่ยนแปลงรายละเอียดข้อมูล';
+
+                    const editCount = (target.history.filter(h => h.type === 'EDIT').length) + 1;
+                    const updatedHistory = [...target.history, {
+                        type: 'EDIT',
+                        editNo: editCount,
+                        by: currentUser.name,
+                        time: nowTimestamp,
+                        note: changeNote
+                    }];
+
+                    recordObj = {
+                        ...target,
+                        receiveNo: requestedNo,
+                        docNo: docNo,
+                        docDate: docDate,
+                        from: docFrom,
+                        to: docTo,
+                        subject: docSubject,
+                        assignee: assignee,
+                        remarks: docRemarks,
+                        history: updatedHistory
+                    };
+
+                    records[targetIdx] = recordObj;
+                }
+            } else {
+                recordObj = {
+                    id: 'REC-' + Date.now(),
+                    yearBE: currentYear,
+                    receiveNo: requestedNo,
+                    docNo: docNo,
+                    docDate: docDate,
+                    from: docFrom,
+                    to: docTo,
+                    subject: docSubject,
+                    assignee: assignee,
+                    remarks: docRemarks,
+                    createdBy: currentUser.name,
+                    createdAt: nowTimestamp,
+                    history: [
+                        { type: 'CREATE', by: currentUser.name, time: nowTimestamp, note: 'ลงทะเบียนรับหนังสือใหม่' }
+                    ]
+                };
+                records.unshift(recordObj);
+            }
+
+            closeEntryModal();
+            updateHistoryDatalists();
+            renderTable();
+            updateStats();
+
+            saveDataToGAS(recordObj);
+        }
+
+        function openEditModal(id) {
+            const target = records.find(r => r.id === id);
+            if (!target) return;
+
+            document.getElementById('modalTitle').innerText = `แก้ไขทะเบียนรับ (เลขรับ ${target.receiveNo})`;
+            document.getElementById('editRecordId').value = target.id;
+            document.getElementById('receiveNo').value = target.receiveNo;
+            document.getElementById('docNo').value = target.docNo;
+            document.getElementById('docDate').value = target.docDate;
+            document.getElementById('docFrom').value = target.from;
+            document.getElementById('docTo').value = target.to;
+            document.getElementById('docSubject').value = target.subject;
+
+            const selectEl = document.getElementById('docAssigneeSelect');
+            const customInput = document.getElementById('docAssigneeCustom');
+            const remarksSec = document.getElementById('modalRemarksSection');
+
+            selectEl.classList.remove('hidden');
+            document.getElementById('docAssigneeStatic').classList.add('hidden');
+
+            if (!target.assignee) {
+                selectEl.value = '';
+                customInput.classList.add('hidden');
+                remarksSec.classList.add('hidden');
+            } else {
+                remarksSec.classList.remove('hidden');
+                const exists = Array.from(selectEl.options).some(opt => opt.value === target.assignee);
+                if (exists) {
+                    selectEl.value = target.assignee;
+                    customInput.classList.add('hidden');
+                } else {
+                    selectEl.value = 'CUSTOM';
+                    customInput.value = target.assignee;
+                    customInput.classList.remove('hidden');
+                }
+            }
+
+            const remSelect = document.getElementById('docRemarksSelect');
+            const remCustom = document.getElementById('docRemarksCustom');
+            if (!target.remarks) {
+                remSelect.value = '';
+                remCustom.classList.add('hidden');
+            } else {
+                const remExists = Array.from(remSelect.options).some(opt => opt.value === target.remarks);
+                if (remExists) {
+                    remSelect.value = target.remarks;
+                    remCustom.classList.add('hidden');
+                } else {
+                    remSelect.value = 'CUSTOM';
+                    remCustom.value = target.remarks;
+                    remCustom.classList.remove('hidden');
+                }
+            }
+
+            document.getElementById('entryModal').classList.remove('hidden');
+        }
+
+        function openQuickAssign(id) {
+            const target = records.find(r => r.id === id);
+            if (!target) return;
+
+            quickAssignTargetId = id;
+            document.getElementById('qaReceiveNo').innerText = target.receiveNo;
+            document.getElementById('qaSubject').innerText = target.subject;
+            document.getElementById('qaSelect').value = '';
+            document.getElementById('qaCustom').value = '';
+            document.getElementById('qaCustom').classList.add('hidden');
+
+            const remSelect = document.getElementById('qaRemarksSelect');
+            const remCustom = document.getElementById('qaRemarksCustom');
+            if (!target.remarks) {
+                remSelect.value = '';
+                remCustom.classList.add('hidden');
+            } else {
+                const remExists = Array.from(remSelect.options).some(opt => opt.value === target.remarks);
+                if (remExists) {
+                    remSelect.value = target.remarks;
+                    remCustom.classList.add('hidden');
+                } else {
+                    remSelect.value = 'CUSTOM';
+                    remCustom.value = target.remarks;
+                    remCustom.classList.remove('hidden');
+                }
+            }
+
+            document.getElementById('quickAssignModal').classList.remove('hidden');
+        }
+
+        function closeQuickAssignModal() {
+            document.getElementById('quickAssignModal').classList.add('hidden');
+            quickAssignTargetId = null;
+        }
+
+        function handleQASelectChange(val) {
+            const custom = document.getElementById('qaCustom');
+            if (val === 'CUSTOM') custom.classList.remove('hidden');
+            else custom.classList.add('hidden');
+        }
+
+        async function saveQuickAssign() {
+            if (!quickAssignTargetId || !currentUser) return;
+            const targetIdx = records.findIndex(r => r.id === quickAssignTargetId);
+            if (targetIdx === -1) return;
+            const target = records[targetIdx];
+
+            const selectVal = document.getElementById('qaSelect').value;
+            let assignee = selectVal === 'CUSTOM' ? document.getElementById('qaCustom').value.trim() : selectVal;
+
+            const remSelect = document.getElementById('qaRemarksSelect').value;
+            let remarks = remSelect === 'CUSTOM' ? document.getElementById('qaRemarksCustom').value.trim() : remSelect;
+
+            if (!assignee) {
+                showCustomAlert('กรุณาเลือกผู้รับมอบหมาย', 'โปรดระบุชื่อผู้รับมอบหมายงาน', 'warning');
+                return;
+            }
+
+            const now = new Date();
+            const nowTimestamp = `${now.toLocaleDateString('th-TH', {day:'2-digit', month:'2-digit', year:'numeric'})} ${now.toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit'})}`;
+            
+            const updatedHistory = [...target.history, {
+                type: 'EDIT',
+                by: currentUser.name,
+                time: nowTimestamp,
+                note: `มอบหมายงานให้: ${assignee}${remarks ? ' (การปฏิบัติงาน: ' + remarks + ')' : ''}`
+            }];
+
+            const recordObj = {
+                ...target,
+                assignee: assignee,
+                remarks: remarks,
+                history: updatedHistory
+            };
+
+            records[targetIdx] = recordObj;
+
+            closeQuickAssignModal();
+            renderTable();
+            updateStats();
+
+            saveDataToGAS(recordObj);
+        }
+
+        function openHistoryModal(id) {
+            const target = records.find(r => r.id === id);
+            if (!target) return;
+
+            document.getElementById('histReceiveNo').innerText = target.receiveNo;
+            document.getElementById('histSubject').innerText = target.subject;
+
+            const timeline = document.getElementById('historyTimeline');
+            timeline.innerHTML = '';
+
+            target.history.forEach((h, idx) => {
+                const item = document.createElement('div');
+                item.className = 'relative pb-3';
+                let badge = h.type === 'CREATE' 
+                    ? '<span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-md font-bold">ลงทะเบียน</span>'
+                    : `<span class="bg-lavender-100 text-lavender-800 text-[10px] px-2 py-0.5 rounded-md font-bold">แก้ไข (${h.time})</span>`;
+
+                item.innerHTML = `
+                    <div class="flex items-center justify-between">${badge}</div>
+                    <p class="font-semibold text-slate-800 mt-1">${h.by}</p>
+                    <p class="text-slate-500 text-[11px]">${h.note}</p>
+                `;
+                timeline.appendChild(item);
+            });
+
+            document.getElementById('historyModal').classList.remove('hidden');
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('historyModal').classList.add('hidden');
+        }
+
+        function confirmDeleteRecord(id) {
+            const target = records.find(r => r.id === id);
+            if (!target) return;
+            deleteTargetId = id;
+            document.getElementById('deleteTargetNo').innerText = target.receiveNo;
+            document.getElementById('deleteModal').classList.remove('hidden');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+            deleteTargetId = null;
+        }
+
+        function executeDeleteRecord() {
+            if (!deleteTargetId) return;
+            const targetId = deleteTargetId;
+            records = records.filter(r => r.id !== targetId);
+
+            closeDeleteModal();
+            renderTable();
+            updateStats();
+
+            deleteDataFromGAS(targetId);
+        }
+
+        function updateStats() {
+            const yearRecords = records.filter(r => r.yearBE === currentYear);
+            const pendingRecords = yearRecords.filter(r => !r.assignee);
+            document.getElementById('statTotal').innerText = yearRecords.length;
+            document.getElementById('statPending').innerText = pendingRecords.length;
+        }
+
+        function openExportModal() {
+            document.getElementById('exportStartNo').value = '';
+            document.getElementById('exportEndNo').value = '';
+            document.getElementById('exportModal').classList.remove('hidden');
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.add('hidden');
+        }
+
+        function executeWordExport() {
+            let yearRecords = records.filter(r => r.yearBE === currentYear);
+            if (yearRecords.length === 0) {
+                showCustomAlert('ไม่พบข้อมูล', 'ไม่มีรายการทะเบียนรับในปีนี้สำหรับส่งออก', 'warning');
+                return;
+            }
+
+            const startNo = parseInt(document.getElementById('exportStartNo').value);
+            const endNo = parseInt(document.getElementById('exportEndNo').value);
+
+            if (!isNaN(startNo) && !isNaN(endNo)) yearRecords = yearRecords.filter(r => r.receiveNo >= startNo && r.receiveNo <= endNo);
+            else if (!isNaN(startNo)) yearRecords = yearRecords.filter(r => r.receiveNo >= startNo);
+            else if (!isNaN(endNo)) yearRecords = yearRecords.filter(r => r.receiveNo <= endNo);
+
+            yearRecords.sort((a, b) => a.receiveNo - b.receiveNo);
+
+            const now = new Date();
+            const printDateStr = `${now.toLocaleDateString('th-TH', { day: '2-digit', month: 'long', year: 'numeric' })} เวลา ${now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })} น.`;
+
+            let tableRowsHtml = '';
+            yearRecords.forEach(item => {
+                // ดึงชื่อมาแสดงผล โดยถ้าเป็นพิมพ์กรอกเองจะแสดงตามตรง ไม่ตัดใดๆ ออก
+                const shortAssignee = getFirstNameOnly(item.assignee);
+
+                tableRowsHtml += `
+                    <tr>
+                        <td style="text-align: center; font-weight: bold;">${item.receiveNo}</td>
+                        <td>${item.docNo || '-'}</td>
+                        <td style="text-align: center;">${formatDateDisplay(item.docDate)}</td>
+                        <td>${item.from || '-'}</td>
+                        <td>${item.to || '-'}</td>
+                        <td>${item.subject || '-'}</td>
+                        <td style="text-align: center;">${shortAssignee}</td>
+                        <td>${item.remarks || '-'}</td>
+                    </tr>
+                `;
+            });
+
+            const docHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <style>
+                        @page Section1 { size: 841.9pt 595.3pt; mso-page-orientation: landscape; margin: 1.0in; }
+                        div.Section1 { page: Section1; }
+                        body, table, td, th { font-family: "TH SarabunPSK", sans-serif !important; font-size: 16pt; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                        th, td { border: 1px solid #000; padding: 5px; }
+                        th { background-color: #f2f2f2; }
+                    </style>
+                </head>
+                <body>
+                    <div class="Section1">
+                        <h2 style="text-align:center; margin-bottom: 0px;">ทะเบียนรับหนังสือ ฝ่ายธุรการ (ปี พ.ศ. ${currentYear})</h2>
+                        <p style="text-align:center; font-size: 14pt; color: #555555; margin-top: 2px; margin-bottom: 15px;">
+                            วันที่พิมพ์: ${printDateStr}
+                        </p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ทะเบียนรับ</th><th>เลขหนังสือ</th><th>วันที่</th><th>จาก</th><th>ถึง</th><th>เรื่อง</th><th>มอบหมาย</th><th>หมายเหตุ / การปฏิบัติงาน</th>
+                                </tr>
+                            </thead>
+                            <tbody>${tableRowsHtml}</tbody>
+                        </table>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\ufeff', docHtml], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.appendElement ? document.appendElement('a') : document.createElement('a');
+            a.href = url;
+            a.download = `ทะเบียนรับ_ปี_${currentYear}.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            closeExportModal();
+        }
+
+        function showCustomAlert(title, message, iconType) {
+            const alertModal = document.getElementById('customAlertModal');
+            document.getElementById('alertTitle').innerText = title;
+            document.getElementById('alertMessage').innerText = message;
+            const iconContainer = document.getElementById('alertIconContainer');
+
+            if (iconType === 'success') {
+                iconContainer.className = 'w-12 h-12 rounded-2xl mx-auto flex items-center justify-center text-xl bg-emerald-100 text-emerald-600';
+                iconContainer.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+            } else {
+                iconContainer.className = 'w-12 h-12 rounded-2xl mx-auto flex items-center justify-center text-xl bg-amber-100 text-amber-600';
+                iconContainer.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            }
+            alertModal.classList.remove('hidden');
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('customAlertModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

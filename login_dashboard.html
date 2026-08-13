@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ | ระบบทะเบียนรับ ฝ่ายธุรการ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-canvas: #fdf8fa;
+            --bg-card: #ffffff;
+            --color-primary: #ec4899; /* Pink-500 */
+            --color-primary-deep: #db2777; /* Pink-600 */
+            --color-pink-soft: #fbcfe8;
+            --text-dark: #334155;
+            --text-muted: #64748b;
+            --border-color: #fbcfe8;
+            --error-color: #e11d48;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --shadow-soft: 0 20px 50px rgba(236, 72, 153, 0.12);
+        }
+
+        * { box-sizing: border-box; font-family: 'Sarabun', sans-serif; margin: 0; padding: 0; }
+        html, body { height: 100%; }
+        body { background: var(--bg-canvas); color: var(--text-dark); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        /* ฝั่งซ้าย - แบรนด์และธีม */
+        .brand-side {
+            flex: 1.1; position: relative;
+            background: linear-gradient(160deg, #db2777 0%, #ec4899 55%, #f472b6 100%);
+            color: #ffffff; display: flex; flex-direction: column; justify-content: space-between; padding: 56px 60px; overflow: hidden;
+        }
+        .brand-side::before, .brand-side::after { content: ''; position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.08); }
+        .brand-side::before { width: 420px; height: 420px; top: -140px; right: -120px; }
+        .brand-side::after { width: 280px; height: 280px; bottom: -100px; left: -60px; background: rgba(255, 255, 255, 0.05); }
+
+        .brand-mark { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
+        .brand-mark .brand-icon {
+            width: 42px; height: 42px; border-radius: 14px; background: rgba(255, 255, 255, 0.2);
+            display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff;
+            backdrop-filter: blur(4px);
+        }
+        .brand-mark span { font-size: 15px; font-weight: 600; letter-spacing: 0.3px; opacity: 0.95; }
+
+        .brand-copy { position: relative; z-index: 1; max-width: 420px; }
+        .brand-copy h1 { font-size: 34px; font-weight: 700; line-height: 1.35; margin-bottom: 16px; }
+        .brand-copy p { font-size: 15px; font-weight: 300; opacity: 0.9; line-height: 1.6; }
+
+        .brand-footer { position: relative; z-index: 1; font-size: 13px; font-weight: 300; opacity: 0.8; }
+
+        /* ฝั่งขวา - ฟอร์มเข้าสู่ระบบ */
+        .form-side { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+        .login-card { width: 100%; max-width: 380px; }
+        .login-card .eyebrow { font-size: 13px; font-weight: 600; color: var(--color-primary); letter-spacing: 0.4px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .login-card h2 { font-size: 26px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
+        .login-card .subtitle { color: var(--text-muted); font-size: 14px; font-weight: 300; margin-bottom: 32px; }
+
+        .input-group { margin-bottom: 18px; }
+        .input-group label { display: block; margin-bottom: 7px; font-size: 13px; color: var(--text-muted); font-weight: 600; }
+        .input-wrap { position: relative; }
+
+        input {
+            width: 100%; padding: 13px 16px; border: 1.5px solid #e2e8f0; border-radius: var(--radius-md);
+            font-size: 15px; color: var(--text-dark); background-color: #f8fafc; transition: all 0.2s;
+        }
+        input.uppercase-input { text-transform: uppercase; }
+        input::placeholder { color: #94a3b8; font-weight: 300; }
+        input:focus { border-color: var(--color-primary); background-color: #fff; box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.12); outline: none; }
+
+        .input-wrap.has-toggle input { padding-right: 46px; }
+        .toggle-visibility {
+            position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; width: 34px; height: 34px; display: flex;
+            align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted);
+            border-radius: 8px; padding: 0; transition: all 0.2s;
+        }
+        .toggle-visibility:hover { background: #f1f5f9; color: var(--color-primary); }
+
+        .form-error {
+            display: none; align-items: center; gap: 8px; background: #fff1f2;
+            border: 1px solid #fecdd3; color: var(--error-color); font-size: 13px;
+            font-weight: 500; padding: 11px 14px; border-radius: var(--radius-md); margin-bottom: 18px;
+        }
+
+        button[type="submit"] {
+            width: 100%; padding: 14px; border: none; border-radius: var(--radius-md);
+            font-size: 15.5px; font-weight: 600; color: white; background-color: var(--color-primary);
+            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        button[type="submit"]:hover { background-color: var(--color-primary-deep); transform: translateY(-1px); box-shadow: 0 10px 22px rgba(236, 72, 153, 0.25); }
+
+        .login-footnote { text-align: center; font-size: 12.5px; color: var(--text-muted); font-weight: 300; margin-top: 24px; }
+
+        /* Modal เปลี่ยนรหัสผ่านครั้งแรก */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 50; display: none; align-items: center; justify-content: center;
+            padding: 16px; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: #fff; width: 100%; max-width: 400px; border-radius: 24px; overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid #fbcfe8;
+        }
+        .modal-header { background: #f59e0b; color: #fff; padding: 20px 24px; display: flex; align-items: center; gap: 10px; }
+        .modal-header h3 { font-size: 16px; font-weight: 700; }
+        .modal-body { padding: 24px; }
+
+        @media (max-width: 900px) { .brand-side { display: none; } .form-side { padding: 60px 24px; } }
+    </style>
+</head>
+<body>
+
+    <!-- ฝั่งซ้าย (Brand Banner) -->
+    <div class="brand-side">
+        <div class="brand-mark">
+            <div class="brand-icon">
+                <i class="fa-solid fa-book-bookmark"></i>
+            </div>
+            <span>ฝ่ายธุรการ · สำนักงาน</span>
+        </div>
+        <div class="brand-copy">
+            <h1>ระบบสารบรรณดิจิทัล<br>และทะเบียนรับหนังสือ</h1>
+            <p>ระบบบันทึกรับหนังสือ มอบหมายงาน และติดตามสถานะเอกสารสารบรรณสำหรับเจ้าหน้าที่ธุรการ</p>
+        </div>
+        <div class="brand-footer">ระบบทะเบียนรับ ฝ่ายธุรการ © 2026</div>
+    </div>
+
+    <!-- ฝั่งขวา (Login Form) -->
+    <div class="form-side">
+        <div class="login-card">
+            <div class="eyebrow">
+                <i class="fa-solid fa-user-lock"></i>
+                <span>เข้าสู่ระบบสำหรับเจ้าหน้าที่</span>
+            </div>
+            <h2>ยินดีต้อนรับ</h2>
+            <div class="subtitle">กรอก Username และรหัสผ่าน เพื่อเข้าใช้งาน</div>
+
+            <div class="form-error" id="formError">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="formErrorText">เกิดข้อผิดพลาด</span>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label for="loginUser">Username (รหัสผู้ใช้)</label>
+                    <input type="text" id="loginUser" class="uppercase-input" placeholder="เช่น ADMIN001" autocomplete="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="loginPass">รหัสผ่าน</label>
+                    <div class="input-wrap has-toggle">
+                        <input type="password" id="loginPass" placeholder="กรุณากรอบรหัสผ่าน" autocomplete="current-password" required>
+                        <button type="button" class="toggle-visibility" onclick="togglePasswordVisibility()" aria-label="แสดงรหัสผ่าน">
+                            <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" id="submitBtn">
+                    <span>เข้าสู่ระบบ</span>
+                </button>
+            </form>
+            <div class="login-footnote">หากลืมรหัสผ่าน? กรุณาติดต่อผู้ดูแลระบบธุรการ</div>
+        </div>
+    </div>
+
+    <!-- Modal เปลี่ยนรหัสผ่านครั้งแรก (สำหรับรหัสผ่านตั้งต้น 5474) -->
+    <div id="changePasswordModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <i class="fa-solid fa-key"></i>
+                <h3>เปลี่ยนรหัสผ่านครั้งแรก</h3>
+            </div>
+            <form onsubmit="handleSaveNewPassword(event)" class="modal-body">
+                <p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">
+                    เนื่องจากคุณใช้รหัสผ่านเริ่มต้น (5474) กรุณาตั้งรหัสผ่านใหม่เพื่อความปลอดภัยก่อนเริ่มใช้งาน
+                </p>
+                <div class="input-group">
+                    <label>รหัสผ่านใหม่</label>
+                    <input type="password" id="newPassword" required minlength="4" placeholder="กรอกรหัสผ่านใหม่...">
+                </div>
+                <div class="input-group">
+                    <label>ยืนยันรหัสผ่านใหม่</label>
+                    <input type="password" id="confirmNewPassword" required minlength="4" placeholder="กรอกรหัสผ่านใหม่อีกครั้ง...">
+                </div>
+                <button type="submit" style="background-color: #f59e0b; margin-top: 8px;">
+                    บันทึกรหัสผ่านใหม่
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const STAFF_ACCOUNTS = {
+            'ADMIN001': { name: 'นางสาวชัชระพี สอนไวย์', code: 'ADMIN001' },
+            'ADMIN002': { name: 'นางสาวนัทธมน นุชบางเดื่อ', code: 'ADMIN002' },
+            'ADMIN003': { name: 'นางสาวปาริตา มงคล', code: 'ADMIN003' },
+            'ADMIN004': { name: 'นางสาวขวัญพ์ตะวัน วงศ์ชัยนเรศ', code: 'ADMIN004' },
+            'ADMIN005': { name: 'นางสาวจิดาภา ลีละวัฒนากูล', code: 'ADMIN005' },
+            'ADMIN006': { name: 'นางสาวณัฏฐนิช บุญสวน', code: 'ADMIN006' },
+            'ADMIN007': { name: 'นางสาวพลอยไพลิน อั้นทอง', code: 'ADMIN007' }
+        };
+        const DEFAULT_PASSWORD = '5474';
+        let passwords = {};
+        let currentUserTemp = null;
+
+        window.onload = function() {
+            // หากเข้าสู่ระบบไว้แล้ว ให้ไปหน้า dashboard.html ทันที
+            if (sessionStorage.getItem('docApp_user')) {
+                window.location.href = 'dashboard.html';
+            }
+            loadPasswords();
+        };
+
+        function loadPasswords() {
+            const savedPwds = localStorage.getItem('docApp_passwords');
+            if (savedPwds) {
+                passwords = JSON.parse(savedPwds);
+            } else {
+                Object.keys(STAFF_ACCOUNTS).forEach(k => { passwords[k] = DEFAULT_PASSWORD; });
+                localStorage.setItem('docApp_passwords', JSON.stringify(passwords));
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('loginPass');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                pwdInput.type = 'password';
+                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        function showFormError(msg) {
+            document.getElementById('formErrorText').innerText = msg;
+            document.getElementById('formError').style.display = 'flex';
+        }
+
+        function hideFormError() {
+            document.getElementById('formError').style.display = 'none';
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            hideFormError();
+
+            const usernameInput = document.getElementById('loginUser').value.trim().toUpperCase();
+            const pwdInput = document.getElementById('loginPass').value.trim();
+
+            if (!STAFF_ACCOUNTS[usernameInput]) {
+                showFormError(`ไม่พบรหัสผู้ใช้งาน ${usernameInput} ในระบบ`);
+                return;
+            }
+
+            const currentPwd = passwords[usernameInput] || DEFAULT_PASSWORD;
+            if (pwdInput !== currentPwd) {
+                showFormError('รหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง');
+                return;
+            }
+
+            currentUserTemp = STAFF_ACCOUNTS[usernameInput];
+
+            if (pwdInput === DEFAULT_PASSWORD) {
+                document.getElementById('changePasswordModal').classList.add('active');
+            } else {
+                sessionStorage.setItem('docApp_user', JSON.stringify(currentUserTemp));
+                window.location.href = 'dashboard.html';
+            }
+        }
+
+        function handleSaveNewPassword(e) {
+            e.preventDefault();
+            const newPwd = document.getElementById('newPassword').value.trim();
+            const confirmPwd = document.getElementById('confirmNewPassword').value.trim();
+
+            if (newPwd !== confirmPwd) {
+                alert('กรุณากรอกรหัสผ่านใหม่ทั้งสองช่องให้ตรงกัน');
+                return;
+            }
+            if (newPwd === DEFAULT_PASSWORD) {
+                alert('รหัสผ่านใหม่ต้องไม่เป็น 5474');
+                return;
+            }
+
+            passwords[currentUserTemp.code] = newPwd;
+            localStorage.setItem('docApp_passwords', JSON.stringify(passwords));
+            sessionStorage.setItem('docApp_user', JSON.stringify(currentUserTemp));
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>
