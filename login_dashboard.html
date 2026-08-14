@@ -13,8 +13,8 @@
         :root {
             --bg-canvas: #fdf8fa;
             --bg-card: #ffffff;
-            --color-primary: #ec4899; /* Pink-500 */
-            --color-primary-deep: #db2777; /* Pink-600 */
+            --color-primary: #ec4899;
+            --color-primary-deep: #db2777;
             --color-pink-soft: #fbcfe8;
             --text-dark: #334155;
             --text-muted: #64748b;
@@ -29,7 +29,6 @@
         html, body { height: 100%; }
         body { background: var(--bg-canvas); color: var(--text-dark); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* ฝั่งซ้าย - แบรนด์และธีม */
         .brand-side {
             flex: 1.1; position: relative;
             background: linear-gradient(160deg, #db2777 0%, #ec4899 55%, #f472b6 100%);
@@ -53,7 +52,6 @@
 
         .brand-footer { position: relative; z-index: 1; font-size: 13px; font-weight: 300; opacity: 0.8; }
 
-        /* ฝั่งขวา - ฟอร์มเข้าสู่ระบบ */
         .form-side { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
         .login-card { width: 100%; max-width: 380px; }
         .login-card .eyebrow { font-size: 13px; font-weight: 600; color: var(--color-primary); letter-spacing: 0.4px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
@@ -68,7 +66,6 @@
             width: 100%; padding: 13px 16px; border: 1.5px solid #e2e8f0; border-radius: var(--radius-md);
             font-size: 15px; color: var(--text-dark); background-color: #f8fafc; transition: all 0.2s;
         }
-        input.uppercase-input { text-transform: uppercase; }
         input::placeholder { color: #94a3b8; font-weight: 300; }
         input:focus { border-color: var(--color-primary); background-color: #fff; box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.12); outline: none; }
 
@@ -96,7 +93,6 @@
 
         .login-footnote { text-align: center; font-size: 12.5px; color: var(--text-muted); font-weight: 300; margin-top: 24px; }
 
-        /* Modal เปลี่ยนรหัสผ่านครั้งแรก */
         .modal-overlay {
             position: fixed; inset: 0; z-index: 50; display: none; align-items: center; justify-content: center;
             padding: 16px; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
@@ -115,7 +111,6 @@
 </head>
 <body>
 
-    <!-- ฝั่งซ้าย (Brand Banner) -->
     <div class="brand-side">
         <div class="brand-mark">
             <div class="brand-icon">
@@ -130,7 +125,6 @@
         <div class="brand-footer">ระบบทะเบียนรับ ฝ่ายธุรการ © 2026</div>
     </div>
 
-    <!-- ฝั่งขวา (Login Form) -->
     <div class="form-side">
         <div class="login-card">
             <div class="eyebrow">
@@ -148,7 +142,7 @@
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="input-group">
                     <label for="loginUser">Username (รหัสผู้ใช้)</label>
-                    <input type="text" id="loginUser" class="uppercase-input" placeholder="เช่น ADMIN001" autocomplete="username" required>
+                    <input type="text" id="loginUser" placeholder="เช่น Chatrapee.S" autocomplete="username" required>
                 </div>
                 <div class="input-group">
                     <label for="loginPass">รหัสผ่าน</label>
@@ -201,7 +195,7 @@
             'Jidapa.L': { name: 'นางสาวจิดาภา ลีละวัฒนากูล', code: 'Jidapa.L' },
             'Nuttanich.B': { name: 'นางสาวณัฏฐนิช บุญสวน', code: 'Nuttanich.B' },
             'Ploypailin.U': { name: 'นางสาวพลอยไพลิน อั้นทอง', code: 'Ploypailin.U' }
-};
+        };
         const DEFAULT_PASSWORD = '5474';
         let passwords = {};
         let currentUserTemp = null;
@@ -248,7 +242,7 @@
             e.preventDefault();
             hideFormError();
 
-            const usernameInput = document.getElementById('loginUser').value.trim().toUpperCase();
+            const usernameInput = document.getElementById('loginUser').value.trim();
             const pwdInput = document.getElementById('loginPass').value.trim();
 
             if (!STAFF_ACCOUNTS[usernameInput]) {
