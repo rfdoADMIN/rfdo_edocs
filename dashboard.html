@@ -457,7 +457,7 @@
 
         function handleLogout() {
             sessionStorage.removeItem('docApp_user');
-            window.location.href = 'index.html';
+            window.location.href = 'login_dashboard.html';
         }
 
         function loadPasswords() {
@@ -759,9 +759,7 @@
             return dateStr;
         }
 
-        // ฟังก์ชันตัดชื่อสำหรับส่งออก Word:
-        // - หากเป็นชื่อใน standardList: จะตัดคำนำหน้าและนามสกุลออก
-        // - หากเป็นพิมพ์กรอกเอง หรือชื่ออื่นๆ: จะคงข้อความเต็มตามที่พิมพ์ทุกประการ
+    
         function getFirstNameOnly(fullName) {
             if (!fullName || fullName === '-') return '-';
 
@@ -1168,7 +1166,6 @@
 
             let tableRowsHtml = '';
             yearRecords.forEach(item => {
-                // ดึงชื่อมาแสดงผล โดยถ้าเป็นพิมพ์กรอกเองจะแสดงตามตรง ไม่ตัดใดๆ ออก
                 const shortAssignee = getFirstNameOnly(item.assignee);
 
                 tableRowsHtml += `
