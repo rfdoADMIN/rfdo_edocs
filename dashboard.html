@@ -157,7 +157,7 @@
                                 <th class="py-3.5 px-4 whitespace-nowrap">วันที่</th>
                                 <th class="py-3.5 px-4 whitespace-nowrap">จาก</th>
                                 <th class="py-3.5 px-4 whitespace-nowrap">ถึง</th>
-                                <th class="py-3.5 px-4 min-w-[220px]">เรื่อง</th>
+                                <th class="py-3.5 px-4 min-w-[280px]">เรื่อง</th>
                                 <th class="py-3.5 px-4 whitespace-nowrap">มอบหมายใคร</th>
                                 <th class="py-3.5 px-4 whitespace-nowrap">หมายเหตุ / การปฏิบัติงาน</th>
                                 <th class="py-3.5 px-4 text-center whitespace-nowrap">จัดการ</th>
@@ -676,7 +676,7 @@
 
                 const formattedDate = formatDateDisplay(item.docDate);
                 let assigneeHtml = item.assignee 
-                    ? `<span class="inline-flex items-center gap-1 text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-xl font-semibold border border-emerald-200 whitespace-nowrap"><i class="fa-solid fa-user-check text-[10px]"></i>${item.assignee}</span>`
+                    ? `<span class="inline-flex items-center gap-1 text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-xl font-semibold border border-emerald-200 whitespace-nowrap"><i class="fa-solid fa-user-check text-[10px]"></i>${getFirstNameOnly(item.assignee)}</span>`
                     : `<div class="flex items-center gap-1.5 whitespace-nowrap">
                         <span class="inline-flex items-center gap-1 text-amber-800 bg-amber-50 px-2 py-0.5 rounded-lg text-[11px] font-semibold border border-amber-200 whitespace-nowrap"><i class="fa-solid fa-hourglass-half text-[10px]"></i>รอมอบหมาย</span>
                         <button onclick="openQuickAssign('${item.id}')" title="มอบหมายงาน" class="text-xs text-lavender-600 hover:text-blossom-800 font-bold underline ml-1 whitespace-nowrap">มอบหมาย</button>
