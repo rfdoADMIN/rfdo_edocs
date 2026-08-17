@@ -511,28 +511,40 @@
             toList.innerHTML = uniqueTos.map(val => `<option value="${val}">`).join('');
         }
 
-        function saveDataToGAS(recordData) {
-            fetch(GAS_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({
-                    action: 'saveRecord',
-                    record: recordData
-                })
-            }).catch(error => console.error("Error saving background:", error));
+        async function saveDataToGAS(recordData) {
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'saveRecord',
+                        record: recordData
+                    })
+                });
+                return await response.json();
+            } catch (error) {
+                console.error("Error saving record:", error);
+                return { status: 'error', code: 'NETWORK_ERROR', message: 'เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่' };
+            }
         }
 
-        function deleteDataFromGAS(id) {
-            fetch(GAS_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({
-                    action: 'deleteRecord',
-                    id: id
-                })
-            }).catch(error => console.error("Error deleting background:", error));
+        async function deleteDataFromGAS(id) {
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'deleteRecord',
+                        id: id
+                    })
+                });
+                return await response.json();
+            } catch (error) {
+                console.error("Error deleting record:", error);
+                return { status: 'error', code: 'NETWORK_ERROR', message: 'เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่' };
+            }
         }
 
         function openOwnResetModal() {
@@ -844,8 +856,9 @@
                 return;
             }
 
-            const isDuplicate = records.some(r => r.yearBE === currentYear && r.receiveNo === requestedNo && r.id !== recordId);
-            if (isDuplicate) {
+            // เช็คเบื้องต้นจากข้อมูลในเครื่อง (ให้ feedback ไว) - การเช็คจริงที่กันซ้ำได้แน่นอนอยู่ที่เซิร์ฟเวอร์ด้านล่าง
+            const isDuplicateLocally = records.some(r => r.yearBE === currentYear && r.receiveNo === requestedNo && r.id !== recordId);
+            if (isDuplicateLocally) {
                 showCustomAlert('เลขทะเบียนรับซ้ำ!', `เลขทะเบียนรับที่ ${requestedNo} มีอยู่ในระบบของปี พ.ศ. ${currentYear} แล้ว กรุณาตรวจสอบหรือเปลี่ยนเลขทะเบียน`, 'warning');
                 return;
             }
@@ -861,10 +874,13 @@
             const now = new Date();
             const nowTimestamp = `${now.toLocaleDateString('th-TH', {day:'2-digit', month:'2-digit', year:'numeric'})} ${now.toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit'})}`;
 
+            // สร้าง recordObj ไว้ก่อน แต่ "ยังไม่" แก้ไข records[] ในเครื่อง
+            // เพื่อไม่ให้ UI แสดงผลว่าสำเร็จก่อนที่เซิร์ฟเวอร์จะยืนยันจริง
             let recordObj = {};
+            let targetIdx = -1;
 
             if (recordId) {
-                const targetIdx = records.findIndex(r => r.id === recordId);
+                targetIdx = records.findIndex(r => r.id === recordId);
                 if (targetIdx !== -1) {
                     const target = records[targetIdx];
                     const changes = [];
@@ -900,8 +916,6 @@
                         remarks: docRemarks,
                         history: updatedHistory
                     };
-
-                    records[targetIdx] = recordObj;
                 }
             } else {
                 recordObj = {
@@ -921,6 +935,34 @@
                         { type: 'CREATE', by: currentUser.name, time: nowTimestamp, note: 'ลงทะเบียนรับหนังสือใหม่' }
                     ]
                 };
+            }
+
+            // ล็อกปุ่มบันทึกกันกดซ้ำระหว่างรอเซิร์ฟเวอร์ตอบกลับ
+            const submitBtn = document.querySelector('#recordForm button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = true;
+            showLoading(true);
+
+            const result = await saveDataToGAS(recordObj);
+
+            if (submitBtn) submitBtn.disabled = false;
+            showLoading(false);
+
+            if (!result || result.status !== 'success') {
+                // เซิร์ฟเวอร์ปฏิเสธ (เช่นเลขซ้ำที่เพิ่งถูกคนอื่นบันทึกไปพร้อมกัน) - ไม่แตะ records[] ในเครื่อง
+                const msg = (result && result.message) || 'บันทึกข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
+                showCustomAlert('บันทึกไม่สำเร็จ', msg, 'warning');
+                if (result && result.code === 'DUPLICATE_NO') {
+                    // รีเฟรชข้อมูลล่าสุดจากเซิร์ฟเวอร์ แล้วเสนอเลขทะเบียนรับถัดไปให้ใหม่
+                    await loadData();
+                    document.getElementById('receiveNo').value = getNextReceiveNumber(currentYear);
+                }
+                return;
+            }
+
+            // เซิร์ฟเวอร์ยืนยันสำเร็จแล้ว ค่อยอัปเดต records[] ในเครื่องและ UI
+            if (targetIdx !== -1) {
+                records[targetIdx] = recordObj;
+            } else {
                 records.unshift(recordObj);
             }
 
@@ -928,8 +970,6 @@
             updateHistoryDatalists();
             renderTable();
             updateStats();
-
-            saveDataToGAS(recordObj);
         }
 
         function openEditModal(id) {
@@ -1065,13 +1105,21 @@
                 history: updatedHistory
             };
 
+            showLoading(true);
+            const result = await saveDataToGAS(recordObj);
+            showLoading(false);
+
+            if (!result || result.status !== 'success') {
+                const msg = (result && result.message) || 'บันทึกการมอบหมายไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
+                showCustomAlert('บันทึกไม่สำเร็จ', msg, 'warning');
+                return;
+            }
+
             records[targetIdx] = recordObj;
 
             closeQuickAssignModal();
             renderTable();
             updateStats();
-
-            saveDataToGAS(recordObj);
         }
 
         function openHistoryModal(id) {
@@ -1119,16 +1167,24 @@
             deleteTargetId = null;
         }
 
-        function executeDeleteRecord() {
+        async function executeDeleteRecord() {
             if (!deleteTargetId) return;
             const targetId = deleteTargetId;
-            records = records.filter(r => r.id !== targetId);
 
             closeDeleteModal();
+            showLoading(true);
+            const result = await deleteDataFromGAS(targetId);
+            showLoading(false);
+
+            if (!result || result.status !== 'success') {
+                const msg = (result && result.message) || 'ลบข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
+                showCustomAlert('ลบไม่สำเร็จ', msg, 'warning');
+                return;
+            }
+
+            records = records.filter(r => r.id !== targetId);
             renderTable();
             updateStats();
-
-            deleteDataFromGAS(targetId);
         }
 
         function updateStats() {
