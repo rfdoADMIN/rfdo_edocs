@@ -56,7 +56,7 @@
                     </div>
                     <div>
                         <h1 class="text-lg font-bold text-slate-800 leading-tight">ระบบทะเบียนรับ ฝ่ายธุรการ</h1>
-                        <p class="text-xs text-slate-500">บันทึกหนังสือรับ มอบหมายงาน ติดตามสถานะ (เชื่อมต่อ Google Sheets)</p>
+                        <p class="text-xs text-slate-500">ส่วนอำนวยการ ฝ่ายธุรการ</p>
                     </div>
                 </div>
 
@@ -100,7 +100,7 @@
                     <div>
                         <p class="text-xs font-semibold text-amber-800">รอมอบหมาย</p>
                         <h3 id="statPending" class="text-2xl font-bold text-amber-900 mt-1">0</h3>
-                        <p class="text-[11px] text-amber-700 mt-1">รอหัวหน้าลงนามกระดาษจริง</p>
+                        <p class="text-[11px] text-amber-700 mt-1">รอมอบหมาย</p>
                     </div>
                     <div class="w-12 h-12 rounded-2xl bg-amber-200/80 text-amber-800 flex items-center justify-center text-xl">
                         <i class="fa-solid fa-clock-rotate-left"></i>
@@ -158,7 +158,7 @@
                                 <th class="py-3.5 px-4 whitespace-nowrap">จาก</th>
                                 <th class="py-3.5 px-4 whitespace-nowrap">ถึง</th>
                                 <th class="py-3.5 px-4 min-w-[280px]">เรื่อง</th>
-                                <th class="py-3.5 px-4 whitespace-nowrap">มอบหมายใคร</th>
+                                <th class="py-3.5 px-4 whitespace-nowrap">ผู้ปฏิบัติงาน</th>
                                 <th class="py-3.5 px-4 whitespace-nowrap">หมายเหตุ / การปฏิบัติงาน</th>
                                 <th class="py-3.5 px-4 text-center whitespace-nowrap">จัดการ</th>
                             </tr>
@@ -434,7 +434,6 @@
         ];
 
         let currentUser = null;
-        let passwords = {};
         let currentYear = 2569;
         let records = [];
         let activeTab = 'active';
@@ -446,7 +445,6 @@
         window.onload = function() {
             checkSession();
             initYears();
-            loadPasswords();
             loadData();
         };
 
@@ -466,9 +464,19 @@
             window.location.href = 'login_dashboard.html';
         }
 
-        function loadPasswords() {
-            const savedPwds = localStorage.getItem('docApp_passwords');
-            if (savedPwds) passwords = JSON.parse(savedPwds);
+        async function callAuthAPI(action, payload) {
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action, ...payload })
+                });
+                return await response.json();
+            } catch (error) {
+                console.error("Auth API error:", error);
+                return { status: 'error', message: 'เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่' };
+            }
         }
 
         function showLoading(show) {
@@ -559,7 +567,7 @@
             document.getElementById('ownResetModal').classList.add('hidden');
         }
 
-        function executeOwnPasswordChange(e) {
+        async function executeOwnPasswordChange(e) {
             e.preventDefault();
             const newPwd = document.getElementById('ownNewPassword').value.trim();
             const confirmPwd = document.getElementById('ownConfirmPassword').value.trim();
@@ -569,8 +577,18 @@
                 return;
             }
 
-            passwords[currentUser.code] = newPwd;
-            localStorage.setItem('docApp_passwords', JSON.stringify(passwords));
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = true;
+
+            const result = await callAuthAPI('authChangePassword', { code: currentUser.code, newPassword: newPwd });
+
+            if (submitBtn) submitBtn.disabled = false;
+
+            if (!result || result.status !== 'success') {
+                showCustomAlert('เปลี่ยนรหัสผ่านไม่สำเร็จ', (result && result.message) || 'กรุณาลองใหม่อีกครั้ง', 'warning');
+                return;
+            }
+
             closeOwnResetModal();
             showCustomAlert('เปลี่ยนรหัสผ่านสำเร็จ', 'บันทึกรหัสผ่านใหม่เรียบร้อยแล้ว', 'success');
         }
