@@ -1162,7 +1162,7 @@
 
                 item.innerHTML = `
                     <div class="flex items-center justify-between">${badge}</div>
-                    <p class="font-semibold text-slate-800 mt-1">${h.by}</p>
+                    ${h.type === 'ASSIGN' ? '' : `<p class="font-semibold text-slate-800 mt-1">${h.by}</p>`}
                     <p class="text-slate-500 text-[11px]">${h.note}</p>
                 `;
                 timeline.appendChild(item);

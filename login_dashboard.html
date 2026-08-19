@@ -191,6 +191,8 @@
     </div>
 
     <script>
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbyzq2Ut9HgFFV4DzpT_QIDqbSvqZlR0DXoosEitj7HeyOs3GUIEm9XaYFcqH691NhUL8Q/exec";
+
         const STAFF_ACCOUNTS = {
             'Chatrapee.S': { name: 'นางสาวชัชระพี สอนไวย์', code: 'Chatrapee.S' },
             'Nuttamon.N': { name: 'นางสาวนัทธมน นุชบางเดื่อ', code: 'Nuttamon.N' },
@@ -201,23 +203,26 @@
             'Ploypailin.U': { name: 'นางสาวพลอยไพลิน อั้นทอง', code: 'Ploypailin.U' }
         };
         const DEFAULT_PASSWORD = '5474';
-        let passwords = {};
         let currentUserTemp = null;
 
         window.onload = function() {
             if (sessionStorage.getItem('docApp_user')) {
                 window.location.href = 'dashboard.html';
             }
-            loadPasswords();
         };
 
-        function loadPasswords() {
-            const savedPwds = localStorage.getItem('docApp_passwords');
-            if (savedPwds) {
-                passwords = JSON.parse(savedPwds);
-            } else {
-                Object.keys(STAFF_ACCOUNTS).forEach(k => { passwords[k] = DEFAULT_PASSWORD; });
-                localStorage.setItem('docApp_passwords', JSON.stringify(passwords));
+        async function callAuthAPI(action, payload) {
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action, ...payload })
+                });
+                return await response.json();
+            } catch (error) {
+                console.error("Auth API error:", error);
+                return { status: 'error', message: 'เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่' };
             }
         }
 
@@ -242,7 +247,7 @@
             document.getElementById('formError').style.display = 'none';
         }
 
-        function handleLogin(e) {
+        async function handleLogin(e) {
             e.preventDefault();
             hideFormError();
 
@@ -259,15 +264,24 @@
                 return;
             }
 
-            const currentPwd = passwords[matchedKey] || DEFAULT_PASSWORD;
-            if (pwdInput !== currentPwd) {
-                showFormError('รหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง');
+            const submitBtn = document.getElementById('submitBtn');
+            const originalBtnHtml = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>กำลังตรวจสอบ...</span>';
+
+            const result = await callAuthAPI('authLogin', { username: matchedKey, password: pwdInput });
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHtml;
+
+            if (!result || result.status !== 'success') {
+                showFormError((result && result.message) || 'เข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
                 return;
             }
 
             currentUserTemp = STAFF_ACCOUNTS[matchedKey];
 
-            if (pwdInput === DEFAULT_PASSWORD) {
+            if (result.isDefault) {
                 document.getElementById('changePasswordModal').classList.add('active');
             } else {
                 sessionStorage.setItem('docApp_user', JSON.stringify(currentUserTemp));
@@ -275,7 +289,7 @@
             }
         }
 
-        function handleSaveNewPassword(e) {
+        async function handleSaveNewPassword(e) {
             e.preventDefault();
             const newPwd = document.getElementById('newPassword').value.trim();
             const confirmPwd = document.getElementById('confirmNewPassword').value.trim();
@@ -289,8 +303,18 @@
                 return;
             }
 
-            passwords[currentUserTemp.code] = newPwd;
-            localStorage.setItem('docApp_passwords', JSON.stringify(passwords));
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+
+            const result = await callAuthAPI('authChangePassword', { code: currentUserTemp.code, newPassword: newPwd });
+
+            submitBtn.disabled = false;
+
+            if (!result || result.status !== 'success') {
+                alert((result && result.message) || 'บันทึกรหัสผ่านใหม่ไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+                return;
+            }
+
             sessionStorage.setItem('docApp_user', JSON.stringify(currentUserTemp));
             window.location.href = 'dashboard.html';
         }
