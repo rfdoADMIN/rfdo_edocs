@@ -521,7 +521,7 @@
         <li class="dropdown">
             <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
             <ul class="dropdown-menu">
-                <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบรรณอิเล็กทรอนิกส์</a></li>
+                <li><a href="https://forest.eoffice.go.th/" target="_blank">ระบบสารบรรณอิเล็กทรอนิกส์</a></li>
                 <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
                 <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
             </ul>
@@ -635,7 +635,7 @@
             <div class="menu-icons">
                 <a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank" class="menu-item"><img src="images/menu1.png"></a>
                 <a href="https://www.forest.go.th/product/th/zoom/" target="_blank" class="menu-item"><img src="images/menu5.png"></a>
-                <a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank" class="menu-item"><img src="images/menu3.png"></a>
+                <a href="https://forest.eoffice.go.th/" target="_blank" class="menu-item"><img src="images/menu3.png"></a>
                 <a href="form.html" target="_blank" class="menu-item"><img src="images/menu6.png"></a>
             </div>
         </div>
@@ -712,8 +712,6 @@
     }
     setInterval(slideBanner, 5000);
 
-    // หมายเหตุ: แกลเลอรี "ข่าวประชาสัมพันธ์" และ "แนวทาง" ถูกย้ายไปโหลดแบบไดนามิกจาก Supabase
-    // ดูฟังก์ชัน initGallerySlider() ในสคริปต์ module ด้านล่าง (ทำงานหลังดึงรูปภาพเสร็จ)
 
     const modal = document.getElementById("modal");
     const modalImg = document.getElementById("modal-img");
@@ -900,8 +898,6 @@
         if (e.target === popupOverlay) popupOverlay.classList.remove('show');
     });
 
-    // ===== แกลเลอรีรูปภาพแบบไดนามิก (โหลดจากตาราง gallery ใน Supabase) =====
-    // ฟังก์ชันเดียวใช้สร้าง carousel ได้ทั้งสองแกลเลอรี (ข่าวประชาสัมพันธ์ = 'activity', แนวทาง = 'guideline')
     async function initGallerySlider({ category, trackId, dotsId, prevBtnId, nextBtnId, autoplayMs }) {
         const track = document.getElementById(trackId);
         const dotsContainer = document.getElementById(dotsId);
