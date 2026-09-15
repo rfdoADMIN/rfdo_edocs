@@ -147,6 +147,93 @@
         }
         .logout-link:hover { color: var(--primary-dark); text-decoration: underline; }
 
+        /* --- แท็บเพิ่ม/จัดการคำสั่ง --- */
+        .view-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            background: var(--primary-light);
+            padding: 5px;
+            border-radius: 12px;
+        }
+        .view-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px 8px;
+            border-radius: 9px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .view-tab.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 3px 10px rgba(51,153,153,0.25);
+        }
+        .view-panel.hidden { display: none; }
+
+        /* --- รายการจัดการ/ลบ --- */
+        .manage-list {
+            max-height: 480px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .manage-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            border: 1px solid #eaf3f3;
+            border-radius: 10px;
+            background: #fafeff;
+        }
+        .manage-item-info { flex: 1; min-width: 0; }
+        .manage-item-title {
+            font-size: 14px;
+            color: var(--text-color);
+            line-height: 1.5;
+            word-break: break-word;
+        }
+        .manage-item-date { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+        .manage-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .icon-btn {
+            border: none;
+            border-radius: 8px;
+            width: 34px; height: 34px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .icon-btn.view-btn { background: var(--primary-light); color: var(--primary-dark); }
+        .icon-btn.view-btn:hover { background: #cdeaea; }
+        .icon-btn.delete-btn { background: #fdeeee; color: #c0392b; }
+        .icon-btn.delete-btn:hover { background: #f8d3d3; }
+        .icon-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .manage-empty, .manage-loading {
+            text-align: center;
+            padding: 30px 10px;
+            color: var(--text-muted);
+            font-size: 13.5px;
+        }
+
+        .refresh-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12.5px;
+            color: var(--primary-color);
+            cursor: pointer;
+            margin-bottom: 14px;
+        }
+        .refresh-link:hover { color: var(--primary-dark); text-decoration: underline; }
+
         .status-msg {
             margin-top: 16px;
             padding: 12px 16px;
@@ -175,10 +262,9 @@
     <div class="page-header">
         <h1><i class="fas fa-upload"></i> อัปโหลดคำสั่ง</h1>
         <p>ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</p>
-        <a href="command.html"><i class="fas fa-arrow-left"></i> กลับไปหน้ารายการคำสั่ง</a>
+        <a href="command.html">กลับไปหน้ารายการคำสั่ง</a>
     </div>
 
-    <!-- หน้าจอที่ 1: เข้าสู่ระบบด้วยรหัสผ่าน -->
     <div class="card" id="loginScreen">
         <i class="fas fa-lock"></i>
         <h2>กรอกรหัสผ่านเพื่อเข้าใช้งาน</h2>
@@ -191,60 +277,75 @@
         </form>
     </div>
 
-    <!-- หน้าจอที่ 2: ฟอร์มกรอกข้อมูลคำสั่ง (แสดงหลังผ่านรหัสผ่านแล้ว) -->
-    <div class="card hidden" id="formScreen">
-        <form id="uploadForm">
-            <div class="field">
-                <label>ประเภทคำสั่ง</label>
-                <div class="type-choice">
-                    <div class="type-option">
-                        <input type="radio" name="docType" id="typeDept" value="กรมป่าไม้" checked>
-                        <label for="typeDept">คำสั่งกรมป่าไม้</label>
+    <div class="card hidden" id="formScreen" style="max-width: 600px;">
+        <div class="view-tabs">
+            <div class="view-tab active" data-view="addView">เพิ่มคำสั่งใหม่</div>
+            <div class="view-tab" data-view="manageView">จัดการ/ลบคำสั่ง</div>
+        </div>
+
+        <div class="view-panel" id="addView">
+            <form id="uploadForm">
+                <div class="field">
+                    <label>ประเภทคำสั่ง</label>
+                    <div class="type-choice">
+                        <div class="type-option">
+                            <input type="radio" name="docType" id="typeDept" value="กรมป่าไม้" checked>
+                            <label for="typeDept">คำสั่งกรมป่าไม้</label>
+                        </div>
+                        <div class="type-option">
+                            <input type="radio" name="docType" id="typeBureau" value="สำนักวิจัยและพัฒนาการป่าไม้">
+                            <label for="typeBureau">คำสั่งสำนักวิจัยและพัฒนาการป่าไม้</label>
+                        </div>
                     </div>
-                    <div class="type-option">
-                        <input type="radio" name="docType" id="typeBureau" value="สำนักวิจัยและพัฒนาการป่าไม้">
-                        <label for="typeBureau">คำสั่งสำนักวิจัยและพัฒนาการป่าไม้</label>
+                </div>
+
+                <div class="field">
+                    <label for="docNumber">เลขที่คำสั่ง</label>
+                    <div class="docnum-row">
+                        <span>ที่</span>
+                        <input type="text" id="docNumber" placeholder="เช่น 122" required>
+                        <span>/</span>
+                        <input type="text" id="docYear" placeholder="เช่น 2569" required>
                     </div>
                 </div>
-            </div>
 
-            <div class="field">
-                <label for="docNumber">เลขที่คำสั่ง</label>
-                <div class="docnum-row">
-                    <span>ที่</span>
-                    <input type="text" id="docNumber" placeholder="เช่น 122" required>
-                    <span>/</span>
-                    <input type="text" id="docYear" placeholder="เช่น 2569" required>
+                <div class="field">
+                    <label for="docSubject">เรื่อง</label>
+                    <input type="text" id="docSubject" placeholder="เช่น ให้พนักงานราชการไปปฏิบัติงาน..." required>
                 </div>
-            </div>
 
-            <div class="field">
-                <label for="docSubject">เรื่อง</label>
-                <input type="text" id="docSubject" placeholder="เช่น ให้พนักงานราชการไปปฏิบัติงาน..." required>
-            </div>
-
-            <div class="field">
-                <label for="docDate">วันที่ของคำสั่ง</label>
-                <input type="date" id="docDate" required>
-            </div>
-
-            <div class="field">
-                <label>ไฟล์ PDF</label>
-                <div class="file-drop" id="fileDrop">
-                    <i class="fas fa-file-pdf"></i>
-                    <span id="fileDropText">คลิกเพื่อเลือกไฟล์ PDF</span>
-                    <span class="filename" id="fileNameDisplay"></span>
-                    <input type="file" id="pdfFile" accept="application/pdf" required>
+                <div class="field">
+                    <label for="docDate">วันที่ของคำสั่ง</label>
+                    <input type="date" id="docDate" required>
                 </div>
+
+                <div class="field">
+                    <label>ไฟล์ PDF</label>
+                    <div class="file-drop" id="fileDrop">
+                        <i class="fas fa-file-pdf"></i>
+                        <span id="fileDropText">คลิกเพื่อเลือกไฟล์ PDF</span>
+                        <span class="filename" id="fileNameDisplay"></span>
+                        <input type="file" id="pdfFile" accept="application/pdf" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-cloud-upload-alt"></i> บันทึกคำสั่ง
+                </button>
+
+                <div class="status-msg" id="statusMsg"></div>
+            </form>
+        </div>
+
+        <div class="view-panel hidden" id="manageView">
+            <span class="refresh-link" id="refreshListBtn"><i class="fas fa-rotate"></i> รีเฟรชรายการ</span>
+            <div class="manage-list" id="manageList">
+                <div class="manage-loading"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดรายการ...</div>
             </div>
+            <div class="status-msg" id="manageStatusMsg"></div>
+        </div>
 
-            <button type="submit" class="submit-btn" id="submitBtn">
-                <i class="fas fa-cloud-upload-alt"></i> บันทึกคำสั่ง
-            </button>
-
-            <div class="status-msg" id="statusMsg"></div>
-            <span class="logout-link" id="logoutLink">ออกจากระบบ</span>
-        </form>
+        <span class="logout-link" id="logoutLink">ออกจากระบบ</span>
     </div>
 
     <script type="module">
@@ -282,6 +383,119 @@
             loginScreen.classList.remove('hidden');
             document.getElementById('pin').value = '';
         });
+
+        const viewTabs = document.querySelectorAll('.view-tab');
+        const addView = document.getElementById('addView');
+        const manageView = document.getElementById('manageView');
+
+        viewTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                viewTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                if (tab.dataset.view === 'addView') {
+                    addView.classList.remove('hidden');
+                    manageView.classList.add('hidden');
+                } else {
+                    addView.classList.add('hidden');
+                    manageView.classList.remove('hidden');
+                    loadManageList();
+                }
+            });
+        });
+
+        const manageList = document.getElementById('manageList');
+        const manageStatusMsg = document.getElementById('manageStatusMsg');
+        const refreshListBtn = document.getElementById('refreshListBtn');
+
+        function extractStoragePath(url) {
+            if (!url) return null;
+            const marker = `/storage/v1/object/public/${BUCKET_NAME}/`;
+            const idx = url.indexOf(marker);
+            if (idx === -1) return null; // ไม่ใช่ไฟล์ใน Supabase Storage (เช่น ลิงก์ Google Drive เก่า)
+            return decodeURIComponent(url.substring(idx + marker.length));
+        }
+
+        async function loadManageList() {
+            manageList.innerHTML = `<div class="manage-loading"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดรายการ...</div>`;
+            manageStatusMsg.className = 'status-msg';
+
+            const { data, error } = await supabase
+                .from('command')
+                .select('*')
+                .order('date', { ascending: false });
+
+            if (error) {
+                manageList.innerHTML = `<div class="manage-empty">โหลดรายการไม่สำเร็จ: ${error.message}</div>`;
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                manageList.innerHTML = `<div class="manage-empty">ยังไม่มีรายการคำสั่ง</div>`;
+                return;
+            }
+
+            manageList.innerHTML = '';
+            data.forEach(doc => {
+                const d = new Date(doc.date);
+                const dStr = d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+
+                const item = document.createElement('div');
+                item.className = 'manage-item';
+                item.innerHTML = `
+                    <div class="manage-item-info">
+                        <div class="manage-item-title">${doc.title}</div>
+                        <div class="manage-item-date">${dStr}</div>
+                    </div>
+                    <div class="manage-item-actions">
+                        <a class="icon-btn view-btn" href="${doc.filename}" target="_blank" title="เปิดไฟล์ PDF"><i class="fas fa-file-pdf"></i></a>
+                        <button type="button" class="icon-btn delete-btn" title="ลบคำสั่งนี้"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+
+                item.querySelector('.delete-btn').addEventListener('click', () => handleDelete(doc, item));
+                manageList.appendChild(item);
+            });
+        }
+
+        async function handleDelete(doc, itemEl) {
+            const confirmed = window.confirm(`ยืนยันลบคำสั่งนี้ใช่ไหม?\n\n${doc.title}`);
+            if (!confirmed) return;
+
+            const deleteBtn = itemEl.querySelector('.delete-btn');
+            deleteBtn.disabled = true;
+            deleteBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+
+            try {
+                const { error: deleteRowError } = await supabase
+                    .from('command')
+                    .delete()
+                    .eq('id', doc.id);
+
+                if (deleteRowError) {
+                    throw new Error(`ลบข้อมูลไม่สำเร็จ: ${deleteRowError.message}`);
+                }
+
+                const storagePath = extractStoragePath(doc.filename);
+                if (storagePath) {
+                    await supabase.storage.from(BUCKET_NAME).remove([storagePath]);
+                }
+
+                itemEl.remove();
+                manageStatusMsg.className = 'status-msg show success';
+                manageStatusMsg.innerHTML = '<i class="fas fa-check-circle"></i> ลบคำสั่งเรียบร้อยแล้ว';
+
+                if (manageList.children.length === 0) {
+                    manageList.innerHTML = `<div class="manage-empty">ยังไม่มีรายการคำสั่ง</div>`;
+                }
+            } catch (err) {
+                manageStatusMsg.className = 'status-msg show error';
+                manageStatusMsg.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${err.message}`;
+                deleteBtn.disabled = false;
+                deleteBtn.innerHTML = `<i class="fas fa-trash"></i>`;
+            }
+        }
+
+        refreshListBtn.addEventListener('click', loadManageList);
 
         const form = document.getElementById('uploadForm');
         const fileDrop = document.getElementById('fileDrop');
@@ -344,7 +558,6 @@
                 return;
             }
 
-        
             const fullTitle = `คำสั่ง${docType} ที่ ${docNumber}/${docYear} ${docSubject}`;
 
             setLoading(true);
