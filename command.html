@@ -248,6 +248,23 @@
             margin-bottom: 25px;
         }
 
+        /* === Command Source Tabs === */
+        .command-tabs {
+            display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap;
+        }
+        .command-tab {
+            flex: 1; min-width: 200px; text-align: center; cursor: pointer;
+            padding: 14px 16px; border-radius: 10px; font-weight: 600; font-size: 15.5px;
+            background: var(--primary-light); color: var(--primary-dark);
+            border: 2px solid transparent; transition: all 0.2s ease;
+        }
+        .command-tab:hover { background: #d9f0f0; }
+        .command-tab.active {
+            background: var(--primary-color); color: white;
+            box-shadow: 0 6px 16px rgba(51,153,153,0.3);
+        }
+        .command-empty { text-align:center; padding:30px; color:#999; }
+
         .year-group { margin-bottom: 20px; border: 1px solid #e2eeee; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); }
         .year-header {
             background-color: #f7fcfc; padding: 16px 25px; cursor: pointer;
@@ -530,7 +547,11 @@
 </nav>
 
     <main class="content-container">
-        <h2>คำสั่ง</h2> 
+        <h2>คำสั่ง</h2>
+        <div class="command-tabs">
+            <div class="command-tab active" data-tab="dept" onclick="switchTab('dept')">คำสั่งกรมป่าไม้</div>
+            <div class="command-tab" data-tab="bureau" onclick="switchTab('bureau')">คำสั่งสำนักวิจัยและพัฒนาการป่าไม้</div>
+        </div>
         <div id="accordionContainer">
             <p style="text-align:center; padding:30px; color:#999;">กำลังโหลดข้อมูลคำสั่ง...</p>
         </div>
@@ -548,6 +569,19 @@
         const accordionContainer = document.getElementById('accordionContainer');
         const thaiMonths = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
 
+        // เนื่องจากตาราง command ไม่มีคอลัมน์แยกหน่วยงานเจ้าของคำสั่งโดยตรง
+        // จึงแยกประเภทจากคำในชื่อเรื่อง (title) แทน:
+        // - ถ้าชื่อเรื่องมีคำว่า "กรมป่าไม้" (และไม่ใช่ชื่อเต็มของสำนักฯ) จัดเป็น "คำสั่งกรมป่าไม้"
+        // - นอกนั้นถือเป็น "คำสั่งสำนักวิจัยและพัฒนาการป่าไม้" (สวพ.) ซึ่งเป็นเจ้าของเว็บไซต์นี้
+        function classifyDoc(title) {
+            const t = title || '';
+            if (t.includes('กรมป่าไม้')) return 'dept';
+            return 'bureau';
+        }
+
+        let allDocs = [];
+        let currentTab = 'dept';
+
         async function loadDocuments() {
             const { data, error } = await supabase.from('command').select('*').order('date', { ascending: false });
 
@@ -556,18 +590,35 @@
                 return;
             }
 
-            const grouped = {};
             const today = new Date();
             const sevenDaysAgo = new Date();
             sevenDaysAgo.setDate(today.getDate() - 7);
 
-            data.forEach(doc => {
+            allDocs = data.map(doc => {
+                const d = new Date(doc.date);
+                return { ...doc, isNew: d >= sevenDaysAgo, category: classifyDoc(doc.title) };
+            });
+
+            renderTab(currentTab);
+        }
+
+        function renderTab(tab) {
+            currentTab = tab;
+            const filtered = allDocs.filter(doc => doc.category === tab);
+
+            if (filtered.length === 0) {
+                accordionContainer.innerHTML = `<p class="command-empty">ยังไม่มีข้อมูลคำสั่งในหมวดนี้</p>`;
+                return;
+            }
+
+            const grouped = {};
+            filtered.forEach(doc => {
                 const d = new Date(doc.date);
                 const year = d.getFullYear() + 543;
                 const month = d.getMonth();
                 if (!grouped[year]) grouped[year] = {};
                 if (!grouped[year][month]) grouped[year][month] = [];
-                grouped[year][month].push({...doc, isNew: d >= sevenDaysAgo});
+                grouped[year][month].push(doc);
             });
 
             accordionContainer.innerHTML = '';
@@ -630,6 +681,13 @@
         window.toggleAcc = function(el) {
             el.classList.toggle('active');
             el.nextElementSibling.classList.toggle('show');
+        }
+
+        window.switchTab = function(tab) {
+            document.querySelectorAll('.command-tab').forEach(el => {
+                el.classList.toggle('active', el.dataset.tab === tab);
+            });
+            renderTab(tab);
         }
 
         loadDocuments();
