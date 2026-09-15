@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>อัปโหลดคำสั่ง - ส่วนอำนวยการ</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" type="image/png" href="images/logorfdo.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --primary-color: #339999;
+            --primary-dark: #206b6b;
+            --primary-light: #e6f7f7;
+            --text-color: #1a2a2a;
+            --text-muted: #5a7070;
+            --bg-color: #f2f9f9;
+            --white: #ffffff;
+            --shadow-md: 0 8px 32px rgba(51,153,153,0.12);
+            --radius: 16px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            font-family: "Prompt", sans-serif;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 16px;
+        }
+
+        .page-header { text-align: center; margin-bottom: 30px; }
+        .page-header h1 { color: var(--primary-dark); font-size: 26px; margin-bottom: 6px; }
+        .page-header p { color: var(--text-muted); font-size: 14px; margin: 0; }
+        .page-header a { color: var(--primary-color); text-decoration: none; font-size: 13.5px; }
+        .page-header a:hover { text-decoration: underline; }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 32px;
+            width: 100%;
+            max-width: 520px;
+        }
+        .card.hidden { display: none; }
+
+        /* --- หน้าจอเข้าสู่ระบบ --- */
+        #loginScreen { max-width: 380px; text-align: center; }
+        #loginScreen i.fa-lock { font-size: 34px; color: var(--primary-color); margin-bottom: 12px; }
+        #loginScreen h2 { font-size: 19px; color: var(--text-color); margin: 0 0 20px 0; }
+
+        .field { margin-bottom: 20px; text-align: left; }
+        .field label { display: block; font-weight: 600; font-size: 14px; color: var(--text-color); margin-bottom: 6px; }
+        .field .hint { font-size: 12.5px; color: var(--text-muted); margin-top: 5px; line-height: 1.5; }
+        .field input[type="text"],
+        .field input[type="password"],
+        .field input[type="date"] {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #dceaea;
+            border-radius: 10px;
+            font-family: "Prompt", sans-serif;
+            font-size: 14.5px;
+            color: var(--text-color);
+        }
+        .field input:focus { outline: none; border-color: var(--primary-color); }
+
+        /* --- ตัวเลือกประเภทคำสั่ง --- */
+        .type-choice { display: flex; gap: 10px; }
+        .type-option { flex: 1; }
+        .type-option input { display: none; }
+        .type-option label {
+            display: block;
+            text-align: center;
+            padding: 12px 8px;
+            border: 1.5px solid #dceaea;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0;
+        }
+        .type-option input:checked + label {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .docnum-row { display: flex; align-items: center; gap: 8px; }
+        .docnum-row span { color: var(--text-muted); font-size: 14px; }
+        .docnum-row input { flex: 1; }
+
+        .file-drop {
+            border: 2px dashed #cfe6e6;
+            border-radius: 10px;
+            padding: 24px 14px;
+            text-align: center;
+            cursor: pointer;
+            background: #fafeff;
+            transition: all 0.2s;
+        }
+        .file-drop:hover { background: var(--primary-light); border-color: var(--primary-color); }
+        .file-drop i { font-size: 26px; color: var(--primary-color); margin-bottom: 8px; display: block; }
+        .file-drop span { font-size: 13.5px; color: var(--text-muted); }
+        .file-drop .filename { color: var(--primary-dark); font-weight: 600; margin-top: 6px; display: block; }
+        .file-drop input[type="file"] { display: none; }
+
+        .submit-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary-color);
+            color: white;
+            font-family: "Prompt", sans-serif;
+            font-size: 15.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .submit-btn:hover { background: var(--primary-dark); }
+        .submit-btn:disabled { background: #a9c8c8; cursor: not-allowed; }
+
+        .logout-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        .logout-link:hover { color: var(--primary-dark); text-decoration: underline; }
+
+        .status-msg {
+            margin-top: 16px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            display: none;
+            line-height: 1.6;
+        }
+        .status-msg.show { display: block; }
+        .status-msg.success { background: #e9fbef; color: #1d8a4a; border: 1px solid #bdeccb; }
+        .status-msg.error { background: #fdeeee; color: #c0392b; border: 1px solid #f5c6c6; }
+        .status-msg.loading { background: var(--primary-light); color: var(--primary-dark); border: 1px solid #cdeaea; }
+
+        .spinner {
+            width: 16px; height: 16px;
+            border: 2.5px solid rgba(255,255,255,0.4);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="page-header">
+        <h1><i class="fas fa-upload"></i> อัปโหลดคำสั่ง</h1>
+        <p>ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</p>
+        <a href="command.html"><i class="fas fa-arrow-left"></i> กลับไปหน้ารายการคำสั่ง</a>
+    </div>
+
+    <!-- หน้าจอที่ 1: เข้าสู่ระบบด้วยรหัสผ่าน -->
+    <div class="card" id="loginScreen">
+        <i class="fas fa-lock"></i>
+        <h2>กรอกรหัสผ่านเพื่อเข้าใช้งาน</h2>
+        <form id="loginForm">
+            <div class="field">
+                <input type="password" id="pin" placeholder="รหัสผ่าน" required>
+            </div>
+            <button type="submit" class="submit-btn"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</button>
+            <div class="status-msg" id="loginStatus"></div>
+        </form>
+    </div>
+
+    <!-- หน้าจอที่ 2: ฟอร์มกรอกข้อมูลคำสั่ง (แสดงหลังผ่านรหัสผ่านแล้ว) -->
+    <div class="card hidden" id="formScreen">
+        <form id="uploadForm">
+            <div class="field">
+                <label>ประเภทคำสั่ง</label>
+                <div class="type-choice">
+                    <div class="type-option">
+                        <input type="radio" name="docType" id="typeDept" value="กรมป่าไม้" checked>
+                        <label for="typeDept">คำสั่งกรมป่าไม้</label>
+                    </div>
+                    <div class="type-option">
+                        <input type="radio" name="docType" id="typeBureau" value="สำนักวิจัยและพัฒนาการป่าไม้">
+                        <label for="typeBureau">คำสั่งสำนักวิจัยและพัฒนาการป่าไม้</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="docNumber">เลขที่คำสั่ง</label>
+                <div class="docnum-row">
+                    <span>ที่</span>
+                    <input type="text" id="docNumber" placeholder="เช่น 122" required>
+                    <span>/</span>
+                    <input type="text" id="docYear" placeholder="เช่น 2569" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="docSubject">เรื่อง</label>
+                <input type="text" id="docSubject" placeholder="เช่น ให้พนักงานราชการไปปฏิบัติงาน..." required>
+            </div>
+
+            <div class="field">
+                <label for="docDate">วันที่ของคำสั่ง</label>
+                <input type="date" id="docDate" required>
+            </div>
+
+            <div class="field">
+                <label>ไฟล์ PDF</label>
+                <div class="file-drop" id="fileDrop">
+                    <i class="fas fa-file-pdf"></i>
+                    <span id="fileDropText">คลิกเพื่อเลือกไฟล์ PDF</span>
+                    <span class="filename" id="fileNameDisplay"></span>
+                    <input type="file" id="pdfFile" accept="application/pdf" required>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <i class="fas fa-cloud-upload-alt"></i> บันทึกคำสั่ง
+            </button>
+
+            <div class="status-msg" id="statusMsg"></div>
+            <span class="logout-link" id="logoutLink">ออกจากระบบ</span>
+        </form>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+        const SUPABASE_URL = 'https://rxqfmhrxoepjdsmmnqhk.supabase.co';
+        const SUPABASE_KEY_VALUE = "sb_publishable_lMMLp3mTrIiSm1Om-HdQxw_oOrHub8g";
+        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY_VALUE);
+
+        const UPLOAD_PIN = "5474";
+
+        const BUCKET_NAME = "command-pdfs";
+
+        const loginScreen = document.getElementById('loginScreen');
+        const formScreen = document.getElementById('formScreen');
+        const loginForm = document.getElementById('loginForm');
+        const loginStatus = document.getElementById('loginStatus');
+        const logoutLink = document.getElementById('logoutLink');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const pin = document.getElementById('pin').value.trim();
+            if (pin === UPLOAD_PIN) {
+                loginScreen.classList.add('hidden');
+                formScreen.classList.remove('hidden');
+                loginStatus.className = 'status-msg';
+            } else {
+                loginStatus.className = 'status-msg show error';
+                loginStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> รหัสผ่านไม่ถูกต้อง';
+            }
+        });
+
+        logoutLink.addEventListener('click', () => {
+            formScreen.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+            document.getElementById('pin').value = '';
+        });
+
+        const form = document.getElementById('uploadForm');
+        const fileDrop = document.getElementById('fileDrop');
+        const pdfFileInput = document.getElementById('pdfFile');
+        const fileDropText = document.getElementById('fileDropText');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMsg = document.getElementById('statusMsg');
+
+        document.getElementById('docDate').valueAsDate = new Date();
+
+        fileDrop.addEventListener('click', () => pdfFileInput.click());
+        pdfFileInput.addEventListener('change', () => {
+            if (pdfFileInput.files.length > 0) {
+                fileDropText.textContent = "เลือกไฟล์แล้ว:";
+                fileNameDisplay.textContent = pdfFileInput.files[0].name;
+            } else {
+                fileDropText.textContent = "คลิกเพื่อเลือกไฟล์ PDF";
+                fileNameDisplay.textContent = "";
+            }
+        });
+
+        function showStatus(type, message) {
+            statusMsg.className = `status-msg show ${type}`;
+            statusMsg.innerHTML = message;
+        }
+
+        function setLoading(isLoading) {
+            submitBtn.disabled = isLoading;
+            submitBtn.innerHTML = isLoading
+                ? `<span class="spinner"></span> กำลังอัปโหลด...`
+                : `<i class="fas fa-cloud-upload-alt"></i> บันทึกคำสั่ง`;
+        }
+
+        function slugifyFilename(name) {
+            const ext = name.split('.').pop();
+            const base = name.replace(/\.[^/.]+$/, "");
+            const safeBase = base.replace(/[^a-zA-Z0-9ก-๙_-]/g, "_").slice(0, 60);
+            const timestamp = Date.now();
+            return `${timestamp}_${safeBase}.${ext}`;
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            statusMsg.className = 'status-msg';
+
+            const docType = document.querySelector('input[name="docType"]:checked').value;
+            const docNumber = document.getElementById('docNumber').value.trim();
+            const docYear = document.getElementById('docYear').value.trim();
+            const docSubject = document.getElementById('docSubject').value.trim();
+            const docDate = document.getElementById('docDate').value;
+            const file = pdfFileInput.files[0];
+
+            if (!file) {
+                showStatus('error', '<i class="fas fa-exclamation-circle"></i> กรุณาเลือกไฟล์ PDF');
+                return;
+            }
+            if (file.type !== 'application/pdf') {
+                showStatus('error', '<i class="fas fa-exclamation-circle"></i> รองรับเฉพาะไฟล์ PDF เท่านั้น');
+                return;
+            }
+
+        
+            const fullTitle = `คำสั่ง${docType} ที่ ${docNumber}/${docYear} ${docSubject}`;
+
+            setLoading(true);
+            showStatus('loading', '<i class="fas fa-spinner fa-spin"></i> กำลังอัปโหลดไฟล์...');
+
+            try {
+                const storagePath = slugifyFilename(file.name);
+
+                const { error: uploadError } = await supabase
+                    .storage
+                    .from(BUCKET_NAME)
+                    .upload(storagePath, file, {
+                        cacheControl: '3600',
+                        upsert: false,
+                        contentType: 'application/pdf'
+                    });
+
+                if (uploadError) {
+                    throw new Error(`อัปโหลดไฟล์ไม่สำเร็จ: ${uploadError.message}`);
+                }
+
+                const { data: publicUrlData } = supabase
+                    .storage
+                    .from(BUCKET_NAME)
+                    .getPublicUrl(storagePath);
+
+                const fileUrl = publicUrlData.publicUrl;
+
+                const { error: insertError } = await supabase
+                    .from('command')
+                    .insert([{ title: fullTitle, date: docDate, filename: fileUrl }]);
+
+                if (insertError) {
+                    throw new Error(`บันทึกข้อมูลไม่สำเร็จ: ${insertError.message}`);
+                }
+
+                showStatus('success', '<i class="fas fa-check-circle"></i> บันทึกคำสั่งเรียบร้อยแล้ว! สามารถดูได้ที่หน้ารายการคำสั่ง');
+                form.reset();
+                document.getElementById('docDate').valueAsDate = new Date();
+                document.getElementById('typeDept').checked = true;
+                fileDropText.textContent = "คลิกเพื่อเลือกไฟล์ PDF";
+                fileNameDisplay.textContent = "";
+
+            } catch (err) {
+                showStatus('error', `<i class="fas fa-exclamation-circle"></i> ${err.message}`);
+            } finally {
+                setLoading(false);
+            }
+        });
+    </script>
+</body>
+</html>
