@@ -123,6 +123,27 @@
         color: var(--text-muted);
         opacity: 0.75;
     }
+
+    .announce-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: var(--color-primary-deep); color: #fff; border: 0; cursor: pointer;
+        font-size: 15px; font-weight: 600; padding: 13px 26px; border-radius: 50px;
+        margin: -8px 0 30px; animation: pulse 2s infinite;
+    }
+    .announce-btn:hover { background: var(--color-primary); }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(54,93,78,.45); } 70% { box-shadow: 0 0 0 14px rgba(54,93,78,0); } 100% { box-shadow: 0 0 0 0 rgba(54,93,78,0); } }
+
+    .modal { position: fixed; inset: 0; z-index: 10; background: rgba(30,45,38,.55); display: none; align-items: center; justify-content: center; padding: 16px; }
+    .modal.open { display: flex; }
+    .modal-box { background: #fff; border-radius: var(--radius-main); width: 100%; max-width: 760px; max-height: 94vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-premium); }
+    .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 20px 24px 12px; text-align: left; }
+    .modal-head h2 { font-size: 18px; color: var(--text-dark); line-height: 1.5; }
+    .modal-head small { color: var(--text-muted); font-size: 13px; }
+    .modal-close { border: 0; background: var(--color-mint-soft); color: var(--color-primary-deep); width: 36px; height: 36px; border-radius: 50%; font-size: 20px; cursor: pointer; flex-shrink: 0; }
+    .modal-body { padding: 0 24px; flex: 1; min-height: 0; }
+    .modal-body iframe { width: 100%; height: 55vh; border: 1px solid var(--glass-border); border-radius: 12px; }
+    .modal-foot { padding: 14px 24px 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .modal-foot a { text-decoration: none; background: var(--color-primary-deep); color: #fff; padding: 11px 24px; border-radius: 50px; font-size: 14px; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -142,6 +163,8 @@
             ขณะนี้กำลังปรับปรุงระบบ กรุณากลับมาใหม่อีกครั้งในภายหลัง
         </p>
 
+                <button class="announce-btn" onclick="openAnnounce()">📢 ประกาศผู้มีสิทธิ์เข้าสอบ (คลิกเพื่ออ่าน)</button>
+
         <div class="divider"></div>
 
         <div class="info-row">
@@ -156,5 +179,28 @@
         <footer>หากมีเหตุจำเป็นเร่งด่วน กรุณาติดต่อส่วนอำนวยการโดยตรง</footer>
     </div>
 
+
+    <div class="modal" id="announceModal" onclick="if(event.target===this)closeAnnounce()">
+        <div class="modal-box" role="dialog" aria-modal="true">
+            <div class="modal-head">
+                <div>
+                    <h2>📢 ประกาศด่วน: รายชื่อผู้มีสิทธิ์เข้ารับการประเมินความเหมาะสม ตำแหน่งพนักงานพิทักษ์ป่า ของสำนักวิจัยและพัฒนาการป่าไม้</h2>
+                    <small>รายชื่อผู้มีสิทธิ์เข้ารับการประเมินความเหมาะสมกับตำแหน่ง กำหนดวัน เวลา สถานที่ และระเบียบปฏิบัติเกี่ยวกับการประเมินความเหมาะสมกับตำแหน่งพนักงานพิทักษ์ป่า ของสำนักวิจัยและพัฒนาการป่าไม้</small>
+                </div>
+                <button class="modal-close" onclick="closeAnnounce()" aria-label="ปิด">×</button>
+            </div>
+            <div class="modal-body"><iframe id="announceFrame" title="ประกาศผู้มีสิทธิ์เข้าสอบ" loading="lazy"></iframe></div>
+            <div class="modal-foot">
+                <a href="https://drive.google.com/file/d/1i8NfuZW4Jb4GaNcvPih3R1MqVgHfF_MZ/view?usp=sharing" target="_blank" rel="noopener">เปิดประกาศในหน้าต่างใหม่</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        var m=document.getElementById('announceModal'), f=document.getElementById('announceFrame');
+        function openAnnounce(){ if(!f.src) f.src='https://drive.google.com/file/d/1i8NfuZW4Jb4GaNcvPih3R1MqVgHfF_MZ/preview'; m.classList.add('open'); }
+        function closeAnnounce(){ m.classList.remove('open'); }
+        document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeAnnounce(); });
+        window.addEventListener('load',function(){ setTimeout(openAnnounce,600); });
+    </script>
 </body>
 </html>
