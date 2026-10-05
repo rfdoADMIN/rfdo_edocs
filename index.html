@@ -179,13 +179,13 @@
 
                 <div class="announce-list">
             <button class="announce-btn" onclick="openAnnounce(0)">
-            <span class="ico">📋</span>
+            <span class="ico">📢</span>
                 <span><b>ประกาศกรมป่าไม้ บัญชีรายชื่อผู้ผ่านการเลือกสรร <br> พนักงานราชการทั่วไป ตำแหน่งพนักงานพิทักษ์ป่า</b><span class="t">ลงวันที่ 5 ตุลาคม 2569 · คลิกเพื่ออ่านประกาศ</span></span>
                 <span class="arrow">›</span>
             </button>
             <button class="announce-btn alt" onclick="openAnnounce(1)">
                 <span class="ico">📢</span>
-            <span><b>ประกาศรายชื่อผู้มีสิทธิ์เข้ารับการประเมิน <br> ความเหมาะสมกับตำแหน่ง</b><span class="t">คลิกเพื่ออ่านประกาศ</span></span>
+            <span><b>ประกาศกรมป่าไม้ รายชื่อผู้มีสิทธิ์เข้ารับการประเมิน <br> ความเหมาะสมกับตำแหน่ง</b><span class="t">คลิกเพื่ออ่านประกาศ</span></span>
             <span class="arrow">›</span>
         </button>
         </div>
@@ -232,7 +232,7 @@
              desc:'กำหนดวัน เวลา สถานที่ และระเบียบปฏิบัติเกี่ยวกับการประเมินความเหมาะสมกับตำแหน่งพนักงานพิทักษ์ป่า ของสำนักวิจัยและพัฒนาการป่าไม้'}
         ];
         var m=document.getElementById('announceModal'), f=document.getElementById('announceFrame'), cur=0;
-        var otherLabel=['📢 ดูประกาศรายชื่อผู้มีสิทธิ์เข้ารับการประเมิน ›','📋 ดูประกาศกรมป่าไม้ บัญชีรายชื่อผู้ผ่านการเลือกสรร ›'];
+        var otherLabel=['📢 ดูประกาศกรมป่าไม้ รายชื่อผู้มีสิทธิ์เข้ารับการประเมิน ›','📋 ดูประกาศกรมป่าไม้ บัญชีรายชื่อผู้ผ่านการเลือกสรร ›'];
         function openAnnounce(i){
             cur=i; var it=items[i];
             document.getElementById('mTag').textContent=it.tag;
