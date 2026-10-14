@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="icon" type="image/png" href="images/logorfdo.png">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         :root {
@@ -457,6 +456,7 @@
             .head-text { font-size: 24px; }
             .content-container { padding: 20px; }
         }
+            .container { width: 100%; } /* กันกรอบหดตอนไม่มีข้อมูล */
     </style>
 </head>
 <body>
@@ -560,11 +560,71 @@
     <footer>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</footer>
 
     <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'; 
 
-        const SUPABASE_URL = 'https://rxqfmhrxoepjdsmmnqhk.supabase.co';
-        const SUPABASE_KEY_VALUE = "sb_publishable_lMMLp3mTrIiSm1Om-HdQxw_oOrHub8g"; 
-        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY_VALUE); 
+        // ===== อ่านข้อมูลจาก Google Sheet (แทน Supabase) : ใช้ supabase.from(...).select().order().limit() ได้เหมือนเดิม =====
+    const SHEET_ID = '1eaSKMDAMupzPbB5jhbuiyVPAQGEPKIvOIVwrzYwMzPM';
+    const SHEET_TAB = {
+        announce: 'announce_rows', command: 'command_rows',
+        procurement_plan: 'procurement_plan_rows', procurement_draft: 'procurement_draft_rows',
+        procurement_announce: 'procurement_announce_rows', procurement_winner: 'procurement_winner_rows',
+        procurement_regulations: 'procurement_regulations_rows'
+    };
+    const _fy = y => y > 2400 ? y - 543 : y, _pd = n => String(n).padStart(2, '0');
+    function _cell(c) {
+        if (!c || c.v == null) return '';
+        if (typeof c.v !== 'string') return String(c.v);
+        const v = c.v.trim();
+        let m = v.match(/^Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?/);
+        if (m) return `${_fy(+m[1])}-${_pd(+m[2] + 1)}-${_pd(m[3])}T${_pd(m[4] || 0)}:${_pd(m[5] || 0)}:${_pd(m[6] || 0)}`;
+        m = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+        if (m) return `${_fy(+m[3])}-${_pd(m[2])}-${_pd(m[1])}T00:00:00`;
+        m = v.match(/^(\d{4})-(\d{2})-(\d{2})(.*)$/);
+        if (m && +m[1] > 2400) return `${+m[1] - 543}-${m[2]}-${m[3]}${m[4]}`;
+        return v;
+    }
+    function _jsonp(sheet) {
+        return new Promise((resolve, reject) => {
+            const cb = '__gviz_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+            const sc = document.createElement('script');
+            const done = () => { delete window[cb]; sc.remove(); };
+            window[cb] = d => { done(); resolve(d); };
+            sc.onerror = () => { done(); reject(new Error('เชื่อมต่อ Google Sheet ไม่ได้')); };
+            sc.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?headers=1&sheet=${encodeURIComponent(sheet)}&tqx=` + encodeURIComponent('out:json;responseHandler:' + cb);
+            document.head.appendChild(sc);
+        });
+    }
+    const _tabCache = {};
+    async function _loadTab(table) {
+        const tab = SHEET_TAB[table] || (table + '_rows');
+        if (_tabCache[tab]) return _tabCache[tab];
+        const json = await _jsonp(tab);
+        if (json.status === 'error') throw new Error('อ่านแท็บ "' + tab + '" ไม่ได้ — ตรวจสอบชื่อแท็บและการแชร์ Sheet');
+        const labels = json.table.cols.map(c => (c.label || '').trim().toLowerCase());
+        return _tabCache[tab] = json.table.rows.map((r, idx) => {
+            const o = { _i: idx };
+            labels.forEach((l, i) => { if (l) o[l] = _cell((r.c || [])[i]); });
+            const L = o.filename || o.link || o.url || o['ลิงก์'] || '';
+            const D = o.date || o.created_at || o.timestamp || o['วันที่'] || '';
+            if (!o.title && o['ชื่อเรื่อง']) o.title = o['ชื่อเรื่อง'];
+            o.filename = L; o.link = o.link || L; o.url = o.url || L; o.file_url = o.file_url || L;
+            o.date = D; o.created_at = o.created_at || D;
+            return o;
+        }).filter(o => o.title || o.description);
+    }
+    const supabase = {
+        from(table) {
+            const q = { col: 'date', asc: false, lim: null };
+            q.select = () => q;
+            q.order = (c, o) => { q.col = c; q.asc = !!(o && o.ascending); return q; };
+            q.limit = n => { q.lim = n; return q; };
+            q.then = (res, rej) => _loadTab(table).then(rows => {
+                const key = r => { const t = new Date(r[q.col] || r.date || r.created_at).getTime(); return isNaN(t) ? -1e15 + r._i : t; };
+                const out = [...rows].sort((a, b) => q.asc ? key(a) - key(b) : key(b) - key(a));
+                return { data: q.lim ? out.slice(0, q.lim) : out, error: null };
+            }).catch(e => { console.error('Sheet error:', e); return { data: null, error: e }; }).then(res, rej);
+            return q;
+        }
+    }; 
         
         const accordionContainer = document.getElementById('accordionContainer');
         const thaiMonths = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
