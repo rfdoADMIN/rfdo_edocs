@@ -1,251 +1,1300 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ปิดปรับปรุงระบบ | เว็บไซต์ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-    :root {
-        --bg-canvas: #f4faf7;
-        --glass-card: #ffffff;
-        --glass-border: #e3ede7;
-        --color-primary: #4f7a68;
-        --color-primary-deep: #365d4e;
-        --color-mint: #bfe3d0;
-        --color-mint-soft: #eaf6ef;
-        --text-dark: #33413b;
-        --text-muted: #7c8b84;
-        --shadow-premium: 0 12px 40px rgba(79, 122, 104, 0.08);
-        --radius-main: 24px;
-    }
-    * { box-sizing: border-box; font-family: 'Sarabun', sans-serif; margin: 0; padding: 0; }
-    body {
-        background: var(--bg-canvas);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-        overflow-x: hidden;
-        position: relative;
-    }
-    body::before, body::after {
-        content: '';
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(79, 122, 104, 0.06);
-    }
-    body::before { width: 420px; height: 420px; top: -160px; right: -140px; }
-    body::after { width: 320px; height: 320px; bottom: -140px; left: -100px; background: rgba(191, 227, 208, 0.25); }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</title>
+    <link rel="preconnect" href="https://docs.google.com" crossorigin>
+    <link rel="preconnect" href="https://drive.google.com">
+    <link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <style>
+        :root {
+            --primary-color: #339999;
+            --primary-dark: #206b6b;
+            --primary-light: #e6f7f7;
+            --primary-mid: #2a8585;
+            --text-color: #1a2a2a;
+            --text-muted: #5a7070;
+            --bg-color: #f2f9f9;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 12px rgba(51,153,153,0.08);
+            --shadow-md: 0 8px 32px rgba(51,153,153,0.12);
+            --shadow-lg: 0 20px 60px rgba(51,153,153,0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --danger-gradient: linear-gradient(135deg, #ff4757, #ff6b81);
+            --glass-bg: rgba(255,255,255,0.72);
+            --glass-border: rgba(255,255,255,0.9);
+        }
 
-    .card {
-        position: relative;
-        z-index: 1;
-        background: var(--glass-card);
-        border: 1px solid var(--glass-border);
-        border-radius: var(--radius-main);
-        box-shadow: var(--shadow-premium);
-        max-width: 520px;
-        width: 100%;
-        padding: 52px 44px 44px;
-        text-align: center;
-    }
+        *, *::before, *::after { box-sizing: border-box; }
 
-    .icon-wrap {
-        width: 92px; height: 92px;
-        margin: 0 auto 26px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #eaf6ef 0%, var(--color-mint) 100%);
-        display: flex; align-items: center; justify-content: center;
-        position: relative;
-    }
-    .icon-wrap svg { width: 44px; height: 44px; animation: spin 3.5s linear infinite; transform-origin: center; }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: "Prompt", sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    .badge {
-        display: inline-block;
-        background: var(--color-mint-soft);
-        color: var(--color-primary-deep);
-        border: 1px solid var(--badge-border, #bfe1d3);
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.3px;
-        padding: 6px 16px;
-        border-radius: 50px;
-        margin-bottom: 18px;
-    }
+        img {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -webkit-user-drag: none;
+        }
 
-    h1 {
-        font-size: 22px;
-        font-weight: 700;
-        color: var(--text-dark);
-        margin-bottom: 10px;
-        letter-spacing: -0.2px;
-    }
-    p.sub {
-        font-size: 14.5px;
-        color: var(--text-muted);
-        font-weight: 400;
-        line-height: 1.7;
-        margin-bottom: 30px;
-    }
+        a, button, .menu-item, .pdf-link, .view-all-link { cursor: pointer; }
 
-    .divider { height: 1px; background: var(--glass-border); margin: 0 0 26px; }
+        .head-section {
+            position: relative;
+            background: url('images/head.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 5%;
+            min-height: 250px;
+            gap: 16px;
+            color: var(--white);
+            overflow: hidden;
+        }
+ 
+        .head-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10,35,35,0.4);
+            pointer-events: none;
+        }
+ 
+        .head-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, transparent 0%, var(--bg-color) 100%);
+            pointer-events: none;
+        }
+ 
+        .head-section img#logo {
+            width: 100px;
+            height: auto;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+ 
+        .head-text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+ 
+        .head-text {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+ 
+        .sub-text {
+            font-size: 20px;
+            font-weight: 400;
+            opacity: 0.9;
+        }
 
-    .info-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        font-size: 13px;
-        color: var(--text-muted);
-        margin-bottom: 8px;
-    }
-    .info-row strong { color: var(--text-dark); font-weight: 600; }
+        nav {
+            position: sticky;
+            top: 12px;
+            z-index: 1000;
+            padding: 0 20px;
+            margin-top: -24px;
+        }
 
-    .dots { display: inline-flex; gap: 5px; margin-left: 4px; }
-    .dots span {
-        width: 5px; height: 5px; border-radius: 50%;
-        background: var(--color-primary);
-        opacity: 0.3;
-        animation: blink 1.4s infinite;
-    }
-    .dots span:nth-child(2) { animation-delay: 0.2s; }
-    .dots span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes blink { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            list-style: none;
+            margin: 0 auto;
+            padding: 8px 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            max-width: 1570px;
+            background: #339999;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 50px;
+            box-shadow: 0 8px 32px rgba(32,107,107,0.35), 0 1px 0 rgba(255,255,255,0.15) inset;
+            border: 1px solid rgba(255,255,255,0.18);
+        }
 
-    footer {
-        margin-top: 30px;
-        font-size: 12px;
-        color: var(--text-muted);
-        opacity: 0.75;
-    }
+        nav ul li { position: relative; }
 
-    .announce-btn {
-        display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
-        background: linear-gradient(135deg, var(--color-primary-deep), var(--color-primary));
-        color: #fff; border: 0; cursor: pointer; padding: 14px 18px; border-radius: 18px;
-        margin: 0; animation: pulse 2.2s infinite; transition: transform .15s;
-    }
-    .announce-list { display: flex; flex-direction: column; gap: 10px; margin: -6px 0 28px; }
-    .announce-btn.alt { background: var(--color-mint-soft); color: var(--color-primary-deep); border: 1px solid var(--color-mint); animation: none; }
-    .announce-btn.alt .ico { background: #fff; }
-    .announce-btn.alt span.t { background: #fff; }
-    .announce-btn:hover { transform: translateY(-2px); }
-    .announce-btn .ico { flex: 0 0 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,.18); display: flex; align-items: center; justify-content: center; font-size: 20px; }
-    .announce-btn b { display: block; font-size: 15px; font-weight: 600; line-height: 1.4; }
-    .announce-btn span.t { display: block; font-size: 12px; opacity: .85; margin-top: 2px; }
-    .announce-btn .arrow { margin-left: auto; font-size: 20px; opacity: .85; }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(54,93,78,.4); } 70% { box-shadow: 0 0 0 14px rgba(54,93,78,0); } 100% { box-shadow: 0 0 0 0 rgba(54,93,78,0); } }
+        nav ul li a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.92);
+            font-size: 14.5px;
+            font-weight: 500;
+            padding: 7px 14px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            letter-spacing: 0.1px;
+        }
 
-    .modal { position: fixed; inset: 0; z-index: 10; background: rgba(30,45,38,.6); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; padding: 14px; }
-    .modal.open { display: flex; }
-    .modal-box { background: #fff; border-radius: var(--radius-main); width: 100%; max-width: 860px; max-height: 94vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px rgba(30,45,38,.3); animation: pop .25s ease; }
-    @keyframes pop { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
-    .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 20px 22px 16px; text-align: left; background: linear-gradient(135deg, var(--color-mint-soft), #fff); border-bottom: 1px solid var(--glass-border); }
-    .tag { display: inline-block; background: var(--color-primary-deep); color: #fff; font-size: 11px; font-weight: 600; padding: 3px 12px; border-radius: 50px; margin-bottom: 8px; }
-    .modal-head h2 { font-size: 17px; color: var(--text-dark); line-height: 1.5; }
-    .modal-head small { display: block; color: var(--text-muted); font-size: 13px; margin-top: 4px; line-height: 1.5; }
-    .modal-close { border: 0; background: #fff; color: var(--color-primary-deep); width: 36px; height: 36px; border-radius: 50%; font-size: 22px; cursor: pointer; flex-shrink: 0; box-shadow: 0 2px 8px rgba(79,122,104,.15); }
-    .modal-body { padding: 14px 22px 0; flex: 1; min-height: 0; }
-    .modal-body iframe { width: 100%; height: 56vh; border: 1px solid var(--glass-border); border-radius: 14px; background: var(--color-mint-soft); }
-    .modal-foot { padding: 14px 22px 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-    .modal-foot a { text-decoration: none; background: var(--color-primary-deep); color: #fff; padding: 11px 26px; border-radius: 50px; font-size: 14px; font-weight: 600; }
-    .other-btn { cursor: pointer; background: var(--color-mint-soft); color: var(--color-primary-deep); border: 1px solid var(--color-mint); padding: 10px 22px; border-radius: 50px; font-size: 14px; font-weight: 600; }
-    .other-btn:hover { background: var(--color-mint); }
-    .modal-foot a:hover { background: var(--color-primary); }
-    @media (max-width: 480px) { .card { padding: 40px 24px 32px; } .modal-body iframe { height: 50vh; } }
-</style>
+        nav ul li a:hover {
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+        }
+
+        .home-icon {
+            background: rgba(255,255,255,0.15) !important;
+            padding: 7px 11px !important;
+        }
+
+        .home-icon svg {
+            fill: white;
+            width: 20px;
+            height: 20px;
+        }
+        
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: var(--white); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); min-width: 270px; padding: 8px 0; z-index: 1001; opacity: 0; transition: all 0.2s; border: 1px solid rgba(0,0,0,0.05); margin-top: 10px; }
+        .dropdown-menu::before { content: ""; position: absolute; top: -10px; left: 0; width: 100%; height: 10px; background: transparent; }
+        .dropdown-menu li a { color: var(--text-color); padding: 12px 20px; border-radius: 0; display: flex; justify-content: space-between; font-size: 16px; font-weight: 500; }
+        .dropdown-menu li a:hover { background: var(--primary-light); color: var(--primary-dark); padding-left: 25px; }
+        
+        .submenu { display: none; position: absolute; left: 100%; top: -5px; margin-left: 10px; background: var(--white); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); min-width: 290px; padding: 8px 0; border: 1px solid rgba(0,0,0,0.05); }
+        .submenu::after { content: ""; position: absolute; top: 0; left: -15px; width: 20px; height: 100%; background: transparent; }
+        
+        @media (min-width: 769px) {
+            .dropdown:hover > .dropdown-menu { display: block; opacity: 1; animation: fadeIn 0.2s ease-out forwards; }
+            .nested-dropdown:hover > .submenu { display: block; animation: fadeIn 0.2s ease-out forwards; }
+        }
+        
+        .container { max-width: 1600px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: 1fr 280px; gap: 60px; align-items: start; }
+        .section-title { font-size: 26px; font-weight: 700; color: var(--primary-dark); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .section-title::before { content: ''; display: block; width: 6px; height: 26px; background: var(--primary-color); border-radius: 4px; }
+        
+        .main-banner-slider { position: relative; width: 100%; max-width: 1200px; height: 420px; margin: 0 auto 40px auto; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); }
+        .banner-track { display: flex; transition: transform 0.6s ease-in-out; height: 100%; }
+        .banner-slide { min-width: 100%; height: 100%; }
+        .banner-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+
+        .slideshow-container { position: relative; max-width: 100%; height: 590px; overflow: hidden; margin: auto; background: #0f1a1a; border-radius: var(--radius); box-shadow: var(--shadow-md); }
+        .slide-track { display: flex; height: 100%; transition: transform 0.5s ease-out; }
+        .slide-item { min-width: 33.333%; height: 100%; box-sizing: border-box; position: relative; }
+        .slide-item img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; border-right: 2px solid #0f1a1a; background: #16282a; }
+        .slide-empty { color: rgba(255,255,255,0.7); padding: 30px; width: 100%; text-align: center; align-self: center; }
+        
+        .prev, .next { position: absolute; top: 50%; transform: translateY(-50%); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; color: white; background: rgba(0,0,0,0.5); border-radius: 50%; cursor: pointer; z-index: 100; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.2); }
+        .prev:hover, .next:hover { background: var(--primary-color); scale: 1.1; }
+        .prev { left: 15px; } .next { right: 15px; }
+        .dots { text-align: center; margin: 15px 0 40px; }
+        .dot { height: 8px; width: 8px; margin: 0 5px; background-color: #ccc; border-radius: 50%; display: inline-block; transition: 0.3s; cursor: pointer; }
+        .dot.active { background-color: var(--primary-color); width: 24px; border-radius: 10px; }
+        
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 50px; border: 4px solid var(--white); }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .procurement-wrapper { background: var(--white); padding: 25px; border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 50px; }
+        .procurement-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .tab-btn { background: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); padding: 8px 16px; border-radius: 20px; font-family: "Prompt", sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+        .tab-btn.active { background: var(--primary-color); color: white; box-shadow: 0 2px 6px rgba(51, 153, 153, 0.3); }
+        .doc-table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+        .doc-table td { padding: 18px 12px; border-bottom: 1px solid #f1f1f1; text-align: left; vertical-align: middle; font-size: 16px; }
+        .doc-table td:last-child { width: 20%; color: #888; font-size: 14px; text-align: right; }
+        .title-link { color: var(--text-color); text-decoration: none; transition: 0.2s; font-weight: 400; line-height: 1.5; }
+        .title-link:hover { color: var(--primary-color); text-decoration: underline; }
+        .view-all-container { text-align: right; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
+        .view-all-link { display: inline-flex; align-items: center; gap: 5px; color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px; transition: 0.3s; }
+        .view-all-link:hover { color: var(--primary-color); transform: translateX(3px); }
+
+        .new-badge { display: inline-block; background: var(--danger-gradient); color: white; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 5px; margin-right: 10px; vertical-align: middle; box-shadow: 0 2px 5px rgba(255, 71, 87, 0.3); text-transform: uppercase; letter-spacing: 0.5px; animation: pulse 2s infinite; }
+        .sidebar { position: sticky; top: 90px; display: flex; flex-direction: column; gap: 20px; }
+        .sidebar-card { background: var(--white); padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow-md); border-top: 5px solid var(--primary-color); }
+        .director-info { text-align: center; }
+        .director-info img { width: 150px; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
+        .director-info h3 { color: var(--primary-dark); font-size: 18px; margin: 10px 0 5px; }
+        .onepage-link { display: inline-flex; align-items: center; gap: 4px; margin-left: 4px; padding: 2px 10px; border: 1px solid var(--primary-color); border-radius: 20px; color: var(--primary-color); font-size: 12px; font-weight: 400; text-decoration: none; white-space: nowrap; transition: .2s; }
+        .onepage-link:hover { background: var(--primary-color); color: var(--white); }
+        .news-header { color: var(--primary-dark); font-size: 18px; margin: 0 0 15px 0; border-bottom: 1px solid #eee; padding-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .news-list { list-style: none; padding: 0; margin: 0; }
+        .news-list li { padding: 14px 0; border-bottom: 1px dashed #ddd; display: flex; flex-direction: column; gap: 8px; }
+        .news-link { text-decoration: none; color: #444; transition: 0.2s; line-height: 1.4; font-size: 15px; font-weight: 500; }
+        .news-link:hover { color: var(--primary-color); }
+        .news-date { font-size: 12px; color: #999; display: flex; align-items: center; gap: 5px; }
+        .menu-icons { display: flex; gap: 16px; flex-wrap: wrap; margin: 0; justify-content: center; }
+        .menu-icons .menu-item { width: 100%; max-width: 282px; height: auto; border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 6px 18px rgba(0,0,0,0.12); display: block; background: white; margin-bottom: 10px; }
+        .menu-icons .menu-item img { width: 100%; height: auto; display: block; }
+        .sidebar-link-item { display: block; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.3s ease; margin-bottom: 10px; }
+        .sidebar-link-item img { width: 100%; height: auto; display: block; }
+
+        .modal { display: none; position: fixed; z-index: 2000; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); backdrop-filter: blur(5px); }
+        .modal-content-wrapper { position: relative; margin: auto; display: block; max-width: 90%; max-height: 85vh; width: fit-content; }
+        .modal-content { display: block; max-width: 100%; max-height: 85vh; border-radius: 8px; }
+        .protection-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background: rgba(0,0,0,0); cursor: default; }
+        .close { position: absolute; top: -40px; right: 0; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; z-index: 20; }
+
+
+        .popup-overlay {
+            display: flex; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease;
+            will-change: opacity, visibility;
+        }
+        .popup-overlay.show { opacity: 1; visibility: visible; }
+        .popup-box {
+            background-color: #f8fcfc; border-radius: 20px; width: 90%; max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4); overflow: hidden;
+            position: relative; transform: scale(0.95) translateY(20px); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+        .popup-overlay.show .popup-box { transform: scale(1) translateY(0); }
+        
+        .popup-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            padding: 30px 20px 20px; text-align: center; color: white; position: relative;
+        }
+        .close-popup {
+            position: absolute; top: 15px; right: 15px; width: 32px; height: 32px;
+            background: rgba(255, 255, 255, 0.2); border: none; border-radius: 50%;
+            color: white; font-size: 16px; cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center; z-index: 10;
+        }
+        .close-popup:hover { background: #ff4757; transform: rotate(90deg); }
+        .popup-header-title { font-size: 24px; margin: 0 0 5px 0; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .popup-header-title i { font-size: 32px; opacity: 0.9; }
+        .popup-header-subtitle { font-size: 14px; margin: 0; opacity: 0.85; font-weight: 300; }
+        
+        .popup-content { padding: 25px; }
+        .popup-news-list { list-style: none; padding: 0; margin: 0; }
+        .popup-news-list li {
+            background: white; padding: 18px; margin-bottom: 12px; border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease; position: relative;
+        }
+        .popup-news-list li:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(51, 153, 153, 0.15); border-color: var(--primary-light); }
+        .popup-news-list li:last-child { margin-bottom: 0; }
+        .popup-news-link { text-decoration: none; color: var(--text-color); font-size: 16px; font-weight: 500; display: block; line-height: 1.5; margin-bottom: 10px; transition: color 0.2s; }
+        .popup-news-link:hover { color: var(--primary-color); }
+        .popup-news-meta { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: #888; border-top: 1px dashed #eee; padding-top: 10px; }
+        .popup-news-list .new-badge { font-size: 10px; padding: 2px 8px; margin: 0; animation: pulse 2s infinite; }
+
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.9; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+
+        .main-footer {
+            background: linear-gradient(135deg, #339999, #2f5858);
+            color: var(--white);
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .footer-col h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+            color: #ffffff;
+        }
+        .footer-col p {
+            margin: 0;
+            font-size: 15px;
+            color: rgba(255,255,255,0.85);
+        }
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .footer-contact li {
+            color: rgba(255,255,255,0.85);
+            font-size: 14.5px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.5;
+        }
+        .footer-contact li a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-contact li a:hover {
+            color: #ffffff;
+        }
+        .footer-contact li i {
+            color: #ffffff;
+            width: 16px;
+            margin-top: 4px;
+        }
+
+        .hamburger-btn {
+            display: none;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-family: "Prompt", sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 30px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(51,153,153,0.2);
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 1200px) { .main-banner-slider { height: auto; aspect-ratio: 1200 / 420; } }
+        @media (max-width: 992px) { .container { grid-template-columns: 1fr; } .sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; } .slide-item { min-width: 50%; } }
+        
+        @media (max-width: 768px) {
+            .hamburger-btn { display: flex; }
+            nav { padding: 0 15px; top: 10px; margin-top: -15px; }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                border-radius: 14px;
+                padding: 8px 0;
+                margin-top: 10px;
+                max-height: 75vh;
+                overflow-y: auto;
+                background: var(--white);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+                border: 1px solid rgba(0,0,0,0.08);
+            }
+            nav ul.active { display: flex; }
+            nav ul li { border-bottom: 1px solid #edf4f4; width: 100%; }
+            nav ul li:last-child { border-bottom: none; }
+            nav ul li a { padding: 12px 20px; border-radius: 0; justify-content: space-between; color: var(--text-color); font-size: 15px; font-weight: 500; display: flex; align-items: center; width: 100%; }
+            nav ul li a:hover { background: #f4fbfb; color: var(--primary-mid); }
+            
+            .home-icon { background: #f0f7f7 !important; margin: 8px 20px; justify-content: center !important; border-radius: 8px !important; width: auto !important; }
+            .home-icon svg { fill: var(--primary-dark) !important; }
+            
+            .dropdown-menu, .submenu { position: static !important; opacity: 1 !important; display: none; box-shadow: none !important; border: none !important; background: #f7fbfb !important; margin-top: 0 !important; width: 100% !important; border-radius: 0 !important; padding: 0 !important; transition: none !important; }
+            .dropdown-menu.open, .submenu.open { display: block !important; }
+            .dropdown-menu li { border-bottom: 1px solid #eaf3f3; }
+            .dropdown-menu li:last-child { border-bottom: none; }
+            .dropdown-menu li a { color: #334444; padding: 11px 20px 11px 35px; font-size: 14.5px; font-weight: 400; }
+            .dropdown-menu li a:hover { background: #eef7f7; padding-left: 40px; color: var(--primary-dark); }
+            
+            .submenu { background: #edf6f6 !important; }
+            .submenu li { border-bottom: 1px solid #e1eeee; }
+            .submenu li:last-child { border-bottom: none; }
+            .submenu li a { color: #445555; padding: 10px 20px 10px 50px; font-size: 14px; }
+            .submenu li a:hover { background: #e1f0f0; padding-left: 55px; }
+
+  
+            .footer-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+                text-align: center;
+            }
+            .footer-grid .footer-col:nth-child(1) {
+                order: 2; 
+                border-top: 1px solid rgba(255,255,255,0.1);
+                padding-top: 20px;
+                width: 100%;
+            }
+            .footer-grid .footer-col:nth-child(2) {
+                order: 1; 
+            }
+            .footer-contact li {
+                justify-content: center;
+                text-align: center;
+            }
+            .main-footer { padding: 35px 15px 25px 15px; margin-top: 40px; }
+        }
+
+
+        @media (max-width: 600px) { 
+            .head-text { font-size: 26px; } 
+            .sidebar { grid-template-columns: 1fr; } 
+            .slide-item { min-width: 100%; } 
+            .doc-table td { padding: 12px 8px; font-size: 14px; } 
+            .doc-table td:last-child { display: none; } 
+
+            .container { padding: 20px 12px; gap: 25px; }
+            .head-section { padding: 35px 12px; min-height: 180px; gap: 10px; }
+            .procurement-wrapper { padding: 15px 10px; margin-bottom: 25px; }
+            .sidebar-card { padding: 15px 10px; }
+            .section-title { margin-bottom: 12px; font-size: 20px; }
+            
+            .slideshow-container { 
+                height: auto !important; 
+                aspect-ratio: 4 / 3 !important; 
+                margin-bottom: 20px; 
+            }
+            .slide-item img {
+                object-fit: contain !important;
+                background: #0d1414;
+                border-right: none;
+            }
+            
+            .prev, .next {
+                width: 38px;
+                height: 38px;
+                background: rgba(0,0,0,0.6);
+            }
+            .prev { left: 8px; } .next { right: 8px; }
+
+            .dots { 
+                display: none !important; 
+            }
+            
+            .tab-btn { padding: 6px 12px; font-size: 13px; }
+            .procurement-tabs { gap: 6px; padding-bottom: 10px; }
+
+            .popup-box { width: 92%; max-width: 420px; border-radius: 16px; }
+            .popup-header { padding: 25px 15px 15px; }
+            .popup-header-title { font-size: 20px; }
+            .popup-content { padding: 15px; }
+            .popup-news-list li { padding: 14px 12px; margin-bottom: 10px; }
+            .popup-news-link { font-size: 14px; margin-bottom: 6px; }
+            .close-popup { top: 12px; right: 12px; width: 36px; height: 36px; font-size: 18px; }
+        }
+    
+        :root {
+            --bg-color: #eef7f6;
+            --radius: 24px;
+            --radius-sm: 16px;
+            --shadow-sm: 0 4px 16px rgba(32,107,107,0.07);
+            --shadow-md: 0 10px 30px rgba(32,107,107,0.10);
+            --shadow-lg: 0 24px 60px rgba(32,107,107,0.16);
+        }
+        body { background: linear-gradient(180deg, #e3f3f1 0%, #f4faf9 380px, #f4faf9 100%); }
+        .container { width: 100%; }
+        .head-section { border-radius: 0 0 36px 36px; }
+        nav ul { border-radius: 40px; box-shadow: 0 12px 32px rgba(32,107,107,0.22); }
+        .dropdown-menu, .submenu { border-radius: 18px; box-shadow: 0 16px 40px rgba(32,107,107,0.18); border: none; padding: 10px; }
+        .dropdown-menu li a, .submenu li a { border-radius: 12px; }
+        .section-title { font-size: 22px; background: var(--white); padding: 10px 20px 10px 14px; border-radius: 40px; box-shadow: var(--shadow-sm); width: fit-content; max-width: 100%; margin-bottom: 18px; }
+        .section-title::before { width: 12px; height: 12px; border-radius: 50%; background: var(--primary-color); box-shadow: 0 0 0 5px var(--primary-light); }
+        .procurement-wrapper, .sidebar-card { border: none; border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 24px; }
+        .sidebar-card { border-top: none; }
+        .slideshow-container, .main-banner-slider, .video-wrapper { border-radius: var(--radius); box-shadow: var(--shadow-md); border: 6px solid var(--white); }
+        .slide-item img, .banner-slide img { border-radius: 16px; }
+        .doc-table { border-collapse: separate; border-spacing: 0 10px; margin-top: -10px; }
+        .doc-table td { background: #f4faf9; border-bottom: none; padding: 16px 18px; transition: background .2s; }
+        .doc-table td:first-child { border-radius: 16px 0 0 16px; }
+        .doc-table td:last-child { border-radius: 0 16px 16px 0; }
+        .doc-table tr:hover td { background: var(--primary-light); }
+        .new-badge { border-radius: 20px; padding: 2px 12px; }
+        .tab-btn { border: none; background: var(--primary-light); color: var(--primary-dark); padding: 9px 20px; border-radius: 30px; }
+        .tab-btn:hover { background: #d2efee; }
+        .tab-btn.active { background: var(--primary-color); color: var(--white); box-shadow: 0 6px 14px rgba(51,153,153,0.35); }
+        .view-all-container { border-top: none; text-align: center; margin-top: 8px; padding-top: 0; }
+        .view-all-link { background: var(--primary-light); color: var(--primary-dark); padding: 8px 20px; border-radius: 30px; }
+        .view-all-link:hover { background: var(--primary-color); color: var(--white); }
+        .news-list li { border-bottom: none; background: #f4faf9; border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; }
+        .menu-icons .menu-item, .sidebar-link-item { border-radius: 18px; }
+        .popup-box { border-radius: 28px; }
+        .main-footer { border-radius: 36px 36px 0 0; }
+        @media (max-width: 600px) {
+            .section-title { font-size: 18px; }
+            .procurement-wrapper, .sidebar-card { padding: 16px 12px; }
+            .doc-table td { padding: 13px 12px; }
+            .head-section { border-radius: 0 0 24px 24px; }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="card">
-        <div class="icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
-                    stroke="#365d4e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+<div class="head-section">
+    <img id="logo" src="images/logo.png" alt="logo" />
+    <div class="head-text-container">
+        <div class="head-text">ส่วนอำนวยการ</div>
+        <div class="sub-text">สำนักวิจัยและพัฒนาการป่าไม้</div>
+    </div>
+</div>
+
+<nav>
+    <button class="hamburger-btn" onclick="document.getElementById('nav-menu').classList.toggle('active')">
+        <i class="fas fa-bars"></i> เมนูเว็บไซต์
+    </button>
+    <ul id="nav-menu">
+        <li><a href="#" class="home-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10.5z"/></svg></a></li>
+        <li class="dropdown">
+            <a href="#">เกี่ยวกับเรา ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="Structure.html">โครงสร้างส่วนอำนวยการ</a></li> 
+                <li class="nested-dropdown">
+                    <a href="#">ฝ่ายภายในส่วนอำนวยการ ▸</a>
+                    <ul class="submenu">
+                        <li><a href="Adminrfdo.html">ฝ่ายธุรการ</a></li> 
+                        <li><a href="HRrfdo.html">ฝ่ายการเจ้าหน้าที่</a></li>
+                        <li><a href="FArfdo.html">ฝ่ายการเงิน และบัญชี</a></li>
+                        <li><a href="PDrfdo.html">ฝ่ายการพัสดุ</a></li>
+                        <li><a href="Planrfdo.html">ฝ่ายแผนและติดตามประเมินผล</a></li>
+                        <li><a href="Researchrfdo.html">ฝ่ายพัฒนาและประสานงานวิจัยป่าไม้</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#">บริการสำหรับเจ้าหน้าที่ ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank">ระบบสารบรรณอิเล็กทรอนิกส์</a></li>
+                <li><a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank">ระบบจองห้องประชุม</a></li>
+                <li><a href="https://www.forest.go.th/product/th/zoom/" target="_blank">ระบบจองห้องประชุมออนไลน์</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#">คำสั่ง/ประกาศ ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="command.html">คำสั่ง</a></li>
+                <li><a href="announce.html">ประกาศ</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#">ข่าวสาร ▾</a>
+            <ul class="dropdown-menu">
+                <li class="nested-dropdown">
+                    <a href="#">จัดซื้อจัดจ้าง ▸</a>
+                    <ul class="submenu">
+                        <li><a href="procurement_plan.html">แผนการจัดซื้อจัดจ้าง</a></li>
+                        <li><a href="procurement_draft.html">ประกาศร่างขอบเขตของงานฯ</a></li>
+                        <li><a href="procurement_announce.html">ประกาศจัดซื้อจัดจ้าง</a></li>
+                        <li><a href="procurement_winner.html">ประกาศผู้ชนะการเสนอราคา</a></li>
+                    </ul>
+                </li>
+                <li><a href="Plan_news.html">งานแผนและงบประมาณ</a></li>
+                <li class="nested-dropdown">
+                    <a href="#">ระบบหนังสือเวียนกรมป่าไม้ ▸</a>
+                    <ul class="submenu">
+                        <li><a href="https://edoc.forest.go.th/doccir/docindex.html" target="_blank">หนังสือเวียนกรมป่าไม้</a></li>
+                        <li><a href="edocs.html">หนังสือเวียน สวพ.</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#">ระเบียบ ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="procurement_regulations.html">ระเบียบเกี่ยวกับการพัสดุ</a></li>
+                <li><a href="official_co.html">ระเบียบการจัดทำหนังสือราชการ</a></li>
+            </ul>
+        </li>
+        <li><a href="form.html" target="_blank">แบบฟอร์ม</a></li>
+        <li><a href="contact.html">ติดต่อ</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <div>
+        <div class="main-banner-slider">
+            <div class="banner-track"></div>
         </div>
 
-        <span class="badge">กำลังปิดปรับปรุงระบบ</span>
+        <div class="section-title">ข่าวประชาสัมพันธ์ <a href="https://drive.google.com/drive/folders/1iwss2-qM43lrpYtKhIARZY3_lwBeSjdo?usp=sharing" target="_blank" rel="noopener" class="onepage-link" title="ดูวันเพจเพิ่มเติม (Google Drive)">ดูทั้งหมด <i class="fas fa-arrow-up-right-from-square" style="font-size:10px;"></i></a></div>
+        <div class="slideshow-container" id="news-container">
+            <div class="slide-track" id="news-track"></div>
+            <div class="prev" id="btn-news-prev"><i class="fas fa-chevron-left"></i></div>
+            <div class="next" id="btn-news-next"><i class="fas fa-chevron-right"></i></div>
+        </div>
+        <div class="dots" id="news-dots"></div>
 
-        <h1>เว็บไซต์ส่วนอำนวยการ<br>สำนักวิจัยและพัฒนาการป่าไม้<br>อยู่ระหว่างปรับปรุงชั่วคราว</h1>
-        <p class="sub">
-            ขณะนี้กำลังปรับปรุงระบบ กรุณากลับมาใหม่อีกครั้งในภายหลัง
-        </p>
+        <!-- แนวทาง: ดึงจาก Google Sheet แท็บ "guideline" (คอลัมน์ title | link | date) -->
+        <div class="section-title">แนวทาง</div>
+        <div class="slideshow-container" id="guideline-container">
+            <div class="slide-track" id="guideline-track"></div>
+            <div class="prev" id="btn-guideline-prev"><i class="fas fa-chevron-left"></i></div>
+            <div class="next" id="btn-guideline-next"><i class="fas fa-chevron-right"></i></div>
+        </div>
+        <div class="dots" id="guideline-dots"></div>
 
-                <div class="announce-list">
-            <button class="announce-btn" onclick="openAnnounce(0)">
-            <span class="ico">📢</span>
-                <span><b>ประกาศกรมป่าไม้ บัญชีรายชื่อผู้ผ่านการเลือกสรร <br> พนักงานราชการทั่วไป ตำแหน่งพนักงานพิทักษ์ป่า</b><span class="t">ลงวันที่ 5 ตุลาคม 2569 · คลิกเพื่ออ่านประกาศ</span></span>
-                <span class="arrow">›</span>
-            </button>
-            <button class="announce-btn alt" onclick="openAnnounce(1)">
-                <span class="ico">📢</span>
-            <span><b>ประกาศกรมป่าไม้ รายชื่อผู้มีสิทธิ์เข้ารับการประเมิน <br> ความเหมาะสมกับตำแหน่ง</b><span class="t">คลิกเพื่ออ่านประกาศ</span></span>
-            <span class="arrow">›</span>
-        </button>
+        <div class="section-title">สื่อวีดิทัศน์</div>
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/1zfnwjcOi04" title="YouTube video player" loading="lazy" allowfullscreen></iframe>
         </div>
 
-        <div class="divider"></div>
-
-        <div class="info-row">
-            <span>สถานะ:</span>
-            <strong>กำลังดำเนินการ</strong>
-            <span class="dots"><span></span><span></span><span></span></span>
-        </div>
-        <div class="info-row">
-            <span>ส่วนอำนวยการ · สำนักวิจัยและพัฒนาการป่าไม้ </span>
+        <div class="section-title">ประกาศจากสำนักวิจัยและพัฒนาการป่าไม้</div>
+        <div class="procurement-wrapper">
+            <div id="loading-announce-main" style="text-align: center; color: var(--text-muted); display: none;"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</div>
+            <div id="announce-main-container"></div>
         </div>
 
-        <footer>หากมีเหตุจำเป็นเร่งด่วน กรุณาติดต่อส่วนอำนวยการโดยตรง <br> โทรศัพท์ 0 2561 4292 - 3 ต่อ 5474</footer>
+        <div class="section-title">ข่าวสารงานแผนและงบประมาณ</div>
+        <div class="procurement-wrapper">
+            <div id="loading-budget" style="text-align: center; color: var(--text-muted); display: none;"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</div>
+            <div id="budget-table-container"></div>
+            <div class="view-all-container">
+                <a href="Plan_news.html" class="view-all-link">อ่านทั้งหมด <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="section-title">ข่าวสารการจัดซื้อจัดจ้าง</div>
+        <div class="procurement-wrapper">
+            <div class="procurement-tabs">
+                <button class="tab-btn active" id="btn-plan" onclick="window.loadTable('plan')">แผนการจัดซื้อฯ</button>
+                <button class="tab-btn" id="btn-draft" onclick="window.loadTable('draft')">ประกาศร่างขอบเขตงาน (TOR)</button>
+                <button class="tab-btn" id="btn-announce" onclick="window.loadTable('announce')">ประกาศจัดซื้อฯ</button>
+                <button class="tab-btn" id="btn-winner" onclick="window.loadTable('winner')">ประกาศผู้ชนะ</button>
+            </div>
+            <div id="loading-procurement" style="text-align: center; color: var(--text-muted); display: none;"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</div>
+            <div id="procurement-table-container"></div>
+        </div>
     </div>
 
-
-    <div class="modal" id="announceModal" onclick="if(event.target===this)closeAnnounce()">
-        <div class="modal-box" role="dialog" aria-modal="true">
-            <div class="modal-head">
-                <div>
-                    <span class="tag" id="mTag">📢 ประกาศ</span>
-                    <h2 id="mTitle"></h2>
-                    <small id="mDesc"></small>
-                </div>
-                <button class="modal-close" onclick="closeAnnounce()" aria-label="ปิด">×</button>
-            </div>
-            <div class="modal-body"><iframe id="announceFrame" title="ประกาศผู้มีสิทธิ์เข้าสอบ" loading="lazy"></iframe></div>
-            <div class="modal-foot">
-                <button class="other-btn" id="mOther" onclick="openAnnounce(1-cur)"></button>
-                <a id="mLink" href="#" target="_blank" rel="noopener">เปิดประกาศในหน้าต่างใหม่</a>
+    <aside class="sidebar">
+        <div class="sidebar-card director-info">
+            <img src="images/director_gamrai.png">
+            <h3>นางกำไร ประมาณ</h3>
+            <p>ผู้อำนวยการส่วนอำนวยการ</p>
+        </div>
+        <div class="sidebar-card">
+            <h3 class="news-header"><i class="fas fa-bullhorn" style="margin-right: 8px;"></i> ข่าวประชาสัมพันธ์ล่าสุด</h3>
+            <ul class="news-list" id="newsList"></ul>
+        </div>
+        
+        <div class="sidebar-card">
+            <h3 class="news-header"><i class="fas fa-link" style="margin-right: 8px;"></i> เมนูลัด</h3>
+            <div class="menu-icons">
+                <a href="https://itservice.forest.go.th/meeting/pages/?menu=home" target="_blank" class="menu-item"><img src="images/menu1.png"></a>
+                <a href="https://www.forest.go.th/product/th/zoom/" target="_blank" class="menu-item"><img src="images/menu5.png"></a>
+                <a href="https://edoc.forest.go.th/SARABAN/login.html" target="_blank" class="menu-item"><img src="images/menu3.png"></a>
+                <a href="form.html" target="_blank" class="menu-item"><img src="images/menu6.png"></a>
             </div>
         </div>
+
+        <div class="sidebar-links">
+            <a href="https://www.forest.go.th/" target="_blank" class="sidebar-link-item"><img src="images/RFD.png"></a>
+            <a href="https://www.forest.go.th/research/" target="_blank" class="sidebar-link-item"><img src="images/rfdo.png"></a>
+            <a href="https://www.gprocurement.go.th" target="_blank" class="sidebar-link-item"><img src="images/egp.png"></a>
+        </div>
+    </aside>
+</div>
+
+<div id="modal" class="modal">
+    <div class="modal-content-wrapper">
+        <span class="close">&times;</span>
+        <div class="protection-overlay"></div> <img class="modal-content" id="modal-img">
     </div>
-    <script>
-        var items=[
-            {id:'1d4OEj3BNriZJ5pyXlEiLCiQMr4xu8xfR', tag:'📢 ประกาศกรมป่าไม้',
-             title:'ประกาศกรมป่าไม้ เรื่อง บัญชีรายชื่อผู้ผ่านการเลือกสรรเพื่อจัดจ้างเป็นพนักงานราชการทั่วไป ตำแหน่งพนักงานพิทักษ์ป่า ของสำนักวิจัยและพัฒนาการป่าไม้',
-             desc:'ลงวันที่ 5 ตุลาคม 2569'},
-            {id:'1i8NfuZW4Jb4GaNcvPih3R1MqVgHfF_MZ', tag:'📢 ประกาศกรมป่าไม้',
-             title:'ประกาศกรมป่าไม้ เรื่อง รายชื่อผู้มีสิทธิ์เข้ารับการประเมินความเหมาะสมกับตำแหน่ง',
-             desc:'กำหนดวัน เวลา สถานที่ และระเบียบปฏิบัติเกี่ยวกับการประเมินความเหมาะสมกับตำแหน่งพนักงานพิทักษ์ป่า ของสำนักวิจัยและพัฒนาการป่าไม้'}
-        ];
-        var m=document.getElementById('announceModal'), f=document.getElementById('announceFrame'), cur=0;
-        var otherLabel=['📢 ดูประกาศกรมป่าไม้ รายชื่อผู้มีสิทธิ์เข้ารับการประเมิน ›','📋 ดูประกาศกรมป่าไม้ บัญชีรายชื่อผู้ผ่านการเลือกสรร ›'];
-        function openAnnounce(i){
-            cur=i; var it=items[i];
-            document.getElementById('mTag').textContent=it.tag;
-            document.getElementById('mTitle').textContent=it.title;
-            document.getElementById('mDesc').textContent=it.desc;
-            document.getElementById('mLink').href='https://drive.google.com/file/d/'+it.id+'/view?usp=sharing';
-            document.getElementById('mOther').textContent=otherLabel[i];
-            f.src='https://drive.google.com/file/d/'+it.id+'/preview';
-            m.classList.add('open');
+</div>
+
+<div id="welcome-popup" class="popup-overlay">
+    <div class="popup-box">
+        <button class="close-popup" title="ปิดหน้าต่าง"><i class="fas fa-times"></i></button>
+        <div class="popup-header">
+            <h2 class="popup-header-title">
+                <i class="fas fa-newspaper"></i>
+                ข่าวประชาสัมพันธ์ล่าสุด
+            </h2>
+            <p class="popup-header-subtitle">อัปเดตข่าวสารล่าสุดจากส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</p>
+        </div>
+        <div class="popup-content">
+            <div id="popup-loading" style="text-align: center; color: #666; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</div>
+            <ul class="popup-news-list" id="popup-news-list"></ul>
+        </div>
+    </div>
+</div>
+
+<footer class="main-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h3>© 2025 ส่วนอำนวยการ สำนักวิจัยและพัฒนาการป่าไม้</h3>
+            <p style="font-size: 14px; color: rgba(255, 255, 255, 0.39); margin-top: 5px;">"No Gift Policy ทส. โปร่งใสและเป็นธรรม"</p>
+        </div>
+        <div class="footer-col">
+            <h3 style="font-size: 16px; border-bottom: 1px solid rgb(255, 255, 255); padding-bottom: 8px; margin-bottom: 12px;">ช่องทางการติดต่อ</h3>
+            <ul class="footer-contact">
+                <li><i class="fas fa-map-marker-alt"></i> 61 ถนนพหลโยธิน แขวงลาดยาว เขตจตุจักร กรุงเทพมหานคร 10900</li>
+                <li><i class="fas fa-phone-alt"></i> โทรศัพท์ 0 2561 4292 - 3 ต่อ 5474</li>
+                <li><i class="fas fa-envelope"></i> adm.frdo5474@forest.go.th </li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('contextmenu', function(e) {
+        if (e.target.tagName === 'IMG' || e.target.classList.contains('protection-overlay')) {
+            e.preventDefault();
         }
-        function closeAnnounce(){ m.classList.remove('open'); }
-        document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeAnnounce(); });
-        window.addEventListener('load',function(){ setTimeout(function(){ openAnnounce(0); },600); });
-    </script>
+    }, false);
+
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+        }
+    }, false);
+
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modal-img");
+    
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('zoomable')) {
+            const thumbSrc = e.target.currentSrc || e.target.src;
+            modalImg.onerror = () => { modalImg.onerror = null; modalImg.src = thumbSrc; };
+            modalImg.src = e.target.dataset.full || thumbSrc;
+            modal.style.display = "block";
+        }
+    });
+
+    document.querySelector(".close").onclick = () => modal.style.display = "none";
+    
+    window.onclick = (event) => {
+        if (event.target == modal || event.target.classList.contains('protection-overlay')) {
+            modal.style.display = "none";
+        }
+    };
+
+    document.querySelectorAll('nav ul li.dropdown > a, nav ul li.nested-dropdown > a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                const submenu = this.nextElementSibling;
+                if (submenu) {
+                    const isOpen = submenu.classList.contains('open');
+                    if (isOpen) {
+                        submenu.classList.remove('open');
+                        submenu.querySelectorAll('.submenu, .dropdown-menu').forEach(inner => inner.classList.remove('open'));
+                    } else {
+                        submenu.classList.add('open');
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+<script type="module">
+
+    function formatThaiDate(dateString) {
+        if (!dateString) return "-";
+        const date = new Date(dateString);
+        const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+        const year = date.getFullYear() + 543; 
+        return `${date.getDate()} ${months[date.getMonth()]} ${year.toString().slice(-2)}`; 
+    }
+
+    function isNew(dateString) {
+        if (!dateString) return false;
+        const itemDate = new Date(dateString);
+        const diffDays = Math.ceil(Math.abs(new Date() - itemDate) / (1000 * 60 * 60 * 24)); 
+        return diffDays <= 7;
+    }
+
+    async function loadNews() {
+        const { data, error } = await window.sheetSelect('news_rows', 'created_at', 5);
+        if(error) return;
+        const newsList = document.getElementById('newsList');
+        newsList.innerHTML = '';
+        data.forEach(item => {
+            const li = document.createElement('li');
+            const dateStr = formatThaiDate(item.created_at);
+            const badge = isNew(item.created_at) ? '<span class="new-badge">NEW</span>' : '';
+            li.innerHTML = `
+                <div>${badge}<a href="${item.link || '#'}" target="_blank" class="news-link">${item.title}</a></div>
+                <span class="news-date"><i class="far fa-calendar-alt"></i> ${dateStr}</span>
+            `;
+            newsList.appendChild(li);
+        });
+    }
+
+    async function loadAnnounceMain() {
+        const container = document.getElementById('announce-main-container');
+        const loading = document.getElementById('loading-announce-main');
+        loading.style.display = 'block';
+        const { data, error } = await window.sheetSelect('announce_rows', 'date', 5);
+        loading.style.display = 'none';
+        if (error || !data || data.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">ไม่มีข้อมูล</div>'; return; }
+        let html = `<table class="doc-table"><tbody>`;
+        data.forEach(item => {
+            const date = item.date || item.created_at;
+            const badge = isNew(date) ? '<span class="new-badge">NEW</span>' : '';
+            html += `<tr><td>${badge}<a href="${item.filename || '#'}" target="_blank" class="title-link">${item.title}</a></td><td>${formatThaiDate(date)}</td></tr>`;
+        });
+        html += `</tbody></table><div class="view-all-container"><a href="announce.html" class="view-all-link">อ่านทั้งหมด <i class="fas fa-arrow-right"></i></a></div>`;
+        container.innerHTML = html;
+    }
+
+    async function loadDocuments() {
+        const container = document.getElementById('docs-table-container');
+        const loading = document.getElementById('loading-docs');
+        if (!loading || !container) return; 
+        loading.style.display = 'block';
+
+        const { data, error } = await window.sheetSelect('edocs_rows', 'date', 5);
+        loading.style.display = 'none';
+        if (error || !data || data.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">ไม่มีข้อมูล</div>'; return; }
+
+        let html = `<table class="doc-table"><tbody>`;
+        data.forEach(item => {
+            const date = item.date;
+            const badge = isNew(date) ? '<span class="new-badge">NEW</span>' : '';
+            const levelText = item.level ? `<span style="color:#d63031; font-size:13px; font-weight:600;">[${item.level}]</span> ` : '';
+            const docNo = item.doc_number ? `ที่ ${item.doc_number} : ` : '';
+            html += `<tr><td>${badge}${levelText}<a href="${item.filename || '#'}" target="_blank" class="title-link">${docNo}${item.title}</a></td><td>${formatThaiDate(date)}</td></tr>`;
+        });
+        html += `</tbody></table><div class="view-all-container"><a href="edocs.html" class="view-all-link">อ่านทั้งหมด <i class="fas fa-arrow-right"></i></a></div>`;
+        container.innerHTML = html;
+    }
+
+    const categories = { 'plan': { tableName: 'procurement_plan_rows', link: 'procurement_plan.html' }, 'draft': { tableName: 'procurement_draft_rows', link: 'procurement_draft.html' }, 'announce': { tableName: 'procurement_announce_rows', link: 'procurement_announce.html' }, 'winner': { tableName: 'procurement_winner_rows', link: 'procurement_winner.html' } };
+    window.loadTable = async function(categoryKey) {
+        document.querySelectorAll('#btn-plan, #btn-draft, #btn-announce, #btn-winner').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`btn-${categoryKey}`).classList.add('active');
+        const container = document.getElementById('procurement-table-container');
+        const loading = document.getElementById('loading-procurement');
+        container.innerHTML = '';
+        loading.style.display = 'block';
+        const { data, error } = await window.sheetSelect(categories[categoryKey].tableName, 'date', 5);
+        loading.style.display = 'none';
+        if (error || !data || data.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">ไม่มีข้อมูล</div>'; return; }
+        let html = `<table class="doc-table"><tbody>`;
+        data.forEach(item => {
+            const date = item.date || item.created_at;
+            const badge = isNew(date) ? '<span class="new-badge">NEW</span>' : '';
+            html += `<tr><td>${badge}<a href="${item.filename || '#'}" target="_blank" class="title-link">${item.description || item.title}</a></td><td>${formatThaiDate(date)}</td></tr>`;
+        });
+        html += `</tbody></table><div class="view-all-container"><a href="${categories[categoryKey].link}" class="view-all-link">อ่านทั้งหมด <i class="fas fa-arrow-right"></i></a></div>`;
+        container.innerHTML = html;
+    }
+
+    async function loadWelcomePopup() {
+        if (window.welcomePopupInitialized) return;
+        window.welcomePopupInitialized = true;
+
+        const popupList = document.getElementById('popup-news-list');
+        const loading = document.getElementById('popup-loading');
+        
+        try {
+            const { data, error } = await window.sheetSelect('news_rows', 'created_at', 3);
+            if(loading) loading.style.display = 'none';
+            if(error || !data || data.length === 0) {
+                if(popupList) popupList.innerHTML = '<li style="text-align:center; padding:20px; color:#999;">ไม่มีข่าวประชาสัมพันธ์ใหม่</li>';
+            } else {
+                if(popupList) {
+                    popupList.innerHTML = '';
+                    data.forEach(item => {
+                        const li = document.createElement('li');
+                        const dateStr = formatThaiDate(item.created_at);
+                        const badge = isNew(item.created_at) ? '<span class="new-badge">NEW</span>' : '';
+                        li.innerHTML = `
+                            <a href="${item.link || '#'}" target="_blank" class="popup-news-link">${item.title}</a>
+                            <div class="popup-news-meta">
+                                <span><i class="far fa-calendar-alt"></i> ${dateStr}</span>
+                                ${badge}
+                            </div>
+                        `;
+                        popupList.appendChild(li);
+                    });
+                }
+            }
+        } catch(err) {
+            if(loading) loading.style.display = 'none';
+            if(popupList) popupList.innerHTML = '<li style="text-align:center; padding:20px; color:#999;">ไม่สามารถโหลดข้อมูลข่าวสารได้</li>';
+        }
+
+        setTimeout(() => {
+            const elPopup = document.getElementById('welcome-popup');
+            if(elPopup) elPopup.classList.add('show');
+        }, 600); 
+    }
+
+    const popupOverlay = document.getElementById('welcome-popup');
+    document.querySelector('.close-popup').addEventListener('click', () => {
+        popupOverlay.classList.remove('show');
+    });
+    
+    popupOverlay.addEventListener('click', (e) => {
+        if (e.target === popupOverlay) popupOverlay.classList.remove('show');
+    });
+
+    loadNews();
+    loadAnnounceMain();
+    loadDocuments();
+    loadTable('plan');
+    loadWelcomePopup();
+</script>
+
+
+<script>
+    const SHEET_ID = '1eaSKMDAMupzPbB5jhbuiyVPAQGEPKIvOIVwrzYwMzPM';
+    const BUDGET_SHEET_NAME = 'plan_news';
+
+    const THAI_MONTHS = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const safeLink = u => (!u || /^\s*(javascript|data):/i.test(u)) ? '#' : esc(u.trim());
+    const fixYear = y => y > 2400 ? y - 543 : y;
+    const pad = n => String(n).padStart(2, '0');
+
+    let MDY = false;   // true = แท็บนี้เก็บวันที่แบบ เดือน/วัน/ปี (เช่น 9/30/2026)
+    function cellValue(c) {
+        if (!c || c.v == null) return '';
+        if (typeof c.v !== 'string') return String(c.v);
+        const v = c.v.trim();
+        let m = v.match(/^Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?/);
+        if (m) return `${fixYear(+m[1])}-${pad(+m[2] + 1)}-${pad(m[3])}T${pad(m[4] || 0)}:${pad(m[5] || 0)}:${pad(m[6] || 0)}`;
+        m = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
+        if (m) {
+            const a = +m[1], b = +m[2];
+            const mdy = a > 12 ? false : b > 12 ? true : MDY;  
+            const day = mdy ? b : a, mon = mdy ? a : b;
+            return `${fixYear(+m[3])}-${pad(mon)}-${pad(day)}T${pad(m[4] || 0)}:${pad(m[5] || 0)}:${pad(m[6] || 0)}`;
+        }
+        m = v.match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}:\d{2}:\d{2})(?:\.\d+)?([+-]\d{2})(?::?(\d{2}))?$/);
+        if (m) return `${fixYear(+m[1].slice(0, 4))}${m[1].slice(4)}T${m[2]}${m[3]}:${m[4] || '00'}`;
+        m = v.match(/^(\d{4})-(\d{2})-(\d{2})(.*)$/);
+        if (m && +m[1] > 2400) return `${+m[1] - 543}-${m[2]}-${m[3]}${m[4]}`;
+        return v;
+    }
+
+    function gvizJsonp(sheet) {
+        return new Promise((resolve, reject) => {
+            const cb = '__gviz_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+            const sc = document.createElement('script');
+            const cleanup = () => { delete window[cb]; sc.remove(); };
+            window[cb] = d => { cleanup(); resolve(d); };
+            sc.onerror = () => { cleanup(); reject(new Error('NETWORK')); };
+            sc.onload = () => { if (window[cb]) { cleanup(); reject(new Error('NETWORK')); } };
+            sc.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?headers=1&sheet=${encodeURIComponent(sheet)}&tqx=` +
+                     encodeURIComponent('out:json;responseHandler:' + cb);
+            document.head.appendChild(sc);
+        });
+    }
+
+    const sheetCache = {};
+    async function loadSheet(name) {
+        if (sheetCache[name]) return sheetCache[name];
+        if (!SHEET_ID || SHEET_ID.startsWith('วาง')) throw new Error('NOID');
+        const json = await gvizJsonp(name);
+        if (json.status === 'error') throw new Error('SHEET:' + ((json.errors && json.errors[0] && (json.errors[0].detailed_message || json.errors[0].message)) || 'unknown'));
+        const labels = json.table.cols.map(c => (c.label || '').trim().toLowerCase());
+        let aGt = false, bGt = false;
+        json.table.rows.forEach(r => (r.c || []).forEach(c => {
+            const mm = c && typeof c.v === 'string' && c.v.trim().match(/^(\d{1,2})\/(\d{1,2})\/\d{4}/);
+            if (mm) { if (+mm[1] > 12) aGt = true; if (+mm[2] > 12) bGt = true; }
+        }));
+        MDY = bGt && !aGt;
+        return sheetCache[name] = json.table.rows
+            .map(r => { const o = {}; labels.forEach((l, i) => { if (l) o[l] = cellValue((r.c || [])[i]); }); return o; })
+            .map((o, idx) => {
+                o._row = idx;  
+                const L = o.filename || o.link || o.url || o['ลิงก์'] || '';
+                const D = o.date || o.created_at || o.timestamp || o['วันที่'] || '';
+                if (!o.title && o['ชื่อเรื่อง']) o.title = o['ชื่อเรื่อง'];
+                o.filename = o.filename || L; o.link = o.link || L; o.url = o.url || L;
+                o.date = o.date || D; o.created_at = o.created_at || D;
+                return o;
+            });
+    }
+
+    window.sheetSelect = async function(name, orderCol, limit, keepAll) {
+        try {
+            const t = r => Math.max(0, ...[r[orderCol], r.date, r.created_at].map(v => { const d = v ? new Date(v) : null; return d && !isNaN(d) ? d.getTime() : 0; }));
+            const rows = [...(await loadSheet(name))]
+                .filter(o => keepAll ? (o.link || o.filename || o.url) : (o.title || o.description))
+                .sort((a, b) => t(b) - t(a));
+            return { data: limit ? rows.slice(0, limit) : rows, error: null };
+        } catch (e) { console.error('Sheet error (' + name + '):', e); return { data: null, error: e }; }
+    };
+
+    function thaiDate(s) {
+        const d = s ? new Date(s) : null;
+        return (d && !isNaN(d)) ? `${d.getDate()} ${THAI_MONTHS[d.getMonth()]} ${String(d.getFullYear() + 543).slice(-2)}` : '-';
+    }
+    function isNewDate(s) {
+        const d = s ? new Date(s) : null;
+        return d && !isNaN(d) && (Date.now() - d.getTime()) <= 7 * 86400000;
+    }
+    function budgetRowHtml(x) {
+        const dt = x.date || x.created_at;
+        const badge = isNewDate(dt) ? '<span class="new-badge">NEW</span>' : '';
+        return `<tr><td>${badge}<a href="${safeLink(x.filename || x.link)}" target="_blank" rel="noopener" class="title-link">${esc(x.title)}</a></td><td>${thaiDate(dt)}</td></tr>`;
+    }
+    const EMPTY = '<div style="text-align:center; padding:20px; color:#999;">ไม่มีข้อมูล</div>';
+    function failHtml(e) {
+        const m = String(e && e.message || e);
+        let t = 'ไม่สามารถเชื่อมต่อ Google Sheet ได้ — ตรวจสอบว่า Sheet ID ถูกต้อง และแชร์เป็น "ทุกคนที่มีลิงก์ดูได้"';
+        if (m === 'NOID') t = 'ยังไม่ได้ใส่ Sheet ID (แก้ค่า SHEET_ID ในไฟล์)';
+        else if (m.startsWith('SHEET:')) t = 'อ่านแท็บ "' + BUDGET_SHEET_NAME + '" ไม่ได้ — ตรวจสอบชื่อแท็บ (' + m.slice(6) + ')';
+        return '<div style="text-align:center; padding:20px; color:#999;">' + esc(t) + '</div>';
+    }
+
+    window.loadBudget = async function() {
+        const box = document.getElementById('budget-table-container');
+        const loading = document.getElementById('loading-budget');
+        box.innerHTML = ''; loading.style.display = 'block';
+        const { data, error } = await sheetSelect(BUDGET_SHEET_NAME, 'date', 5);
+        loading.style.display = 'none';
+        if (error) { box.innerHTML = failHtml(error); return; }
+        if (!data.length) { box.innerHTML = EMPTY; return; }
+        box.innerHTML = `<table class="doc-table"><tbody>${data.map(budgetRowHtml).join('')}</tbody></table>`;
+    };
+    loadBudget();
+</script>
+
+<script>
+(function () {
+    const THUMB_W = 600;     // ความกว้างรูปในสไลด์ (px) 
+    const FULL_W  = 1600;    // ความกว้างรูปตอนกดซูม
+    const CACHE_PREFIX = 'slides_v1_';
+
+    const SECTIONS = [
+        { sheet: 'onepage',   limit: 10, track: 'news-track',      dots: 'news-dots',      prev: 'btn-news-prev',      next: 'btn-news-next',      delay: 5000 },
+        { sheet: 'guideline', limit: 10, track: 'guideline-track', dots: 'guideline-dots', prev: 'btn-guideline-prev', next: 'btn-guideline-next', delay: 6000 }
+    ];
+
+    const $ = id => document.getElementById(id);
+    const visibleCount = () => { const w = window.innerWidth; return w <= 600 ? 1 : w <= 992 ? 2 : 3; };
+
+    function driveId(url) {
+        if (!url) return '';
+        const m = String(url).match(/\/d\/([\w-]{10,})/) || String(url).match(/[?&]id=([\w-]{10,})/);
+        return m ? m[1] : '';
+    }
+    const driveThumb = (id, w) => `https://drive.google.com/thumbnail?id=${id}&sz=w${w}`;
+    const driveAlt   = (id, w) => `https://lh3.googleusercontent.com/d/${id}=w${w}`;
+    const plainSrc   = u => (!u || /^\s*(javascript|data):/i.test(u)) ? '' : esc(String(u).trim());
+
+    function slideHtml(r, i) {
+        const id = driveId(r.l);
+        const thumb = id ? driveThumb(id, THUMB_W) : plainSrc(r.l);
+        const full  = id ? driveThumb(id, FULL_W)  : plainSrc(r.l);
+        if (!thumb) return '';
+        const lazy = i < 3 ? '' : ' loading="lazy"';
+        return `<div class="slide-item"><img class="zoomable" src="${thumb}" data-full="${full}" data-id="${id}" alt="${esc(r.t || '')}"${lazy} decoding="async" draggable="false"></div>`;
+    }
+
+    document.addEventListener('error', e => {
+        const img = e.target;
+        if (img && img.tagName === 'IMG' && img.dataset && img.dataset.id && !img.dataset.fb) {
+            img.dataset.fb = '1';
+            img.src = driveAlt(img.dataset.id, +img.dataset.w || THUMB_W);
+            img.dataset.full = driveAlt(img.dataset.id, FULL_W);
+        }
+    }, true);
+
+    function createSlider(cfg) {
+        const track = $(cfg.track), box = track.parentElement, dotsEl = $(cfg.dots);
+        const prev = $(cfg.prev), next = $(cfg.next);
+        const items = Array.from(track.querySelectorAll('.slide-item'));
+        const n = items.length;
+        const vis = visibleCount();
+        const pct = 100 / vis;
+
+        if (n <= vis) {
+            items.forEach(el => el.style.minWidth = pct + '%');
+            track.style.transition = 'none';
+            track.style.transform = 'none';
+            dotsEl.innerHTML = '';
+            prev.style.display = next.style.display = 'none';
+            return { vis: vis, destroy() { prev.style.display = next.style.display = ''; } };
+        }
+
+        let cur = vis, busy = false, timer = null;
+
+        items.slice(-vis).map(el => el.cloneNode(true)).reverse().forEach(c => track.insertBefore(c, track.firstChild));
+        items.slice(0, vis).map(el => el.cloneNode(true)).forEach(c => track.appendChild(c));
+        track.querySelectorAll('.slide-item').forEach(el => el.style.minWidth = pct + '%');
+
+        const setX = () => { track.style.transform = `translateX(-${cur * pct}%)`; };
+        track.style.transition = 'none';
+        setX();
+
+        function updateDots() {
+            const ds = dotsEl.querySelectorAll('.dot');
+            ds.forEach(d => d.classList.remove('active'));
+            let a = (cur - vis) % n; if (a < 0) a += n;
+            if (ds[a]) ds[a].classList.add('active');
+        }
+        function move(step) {
+            if (busy) return;
+            busy = true;
+            cur += step;
+            track.style.transition = 'transform 0.5s ease-out';
+            setX();
+            updateDots();
+        }
+        function onEnd(e) {
+            if (e.target !== track) return;
+            busy = false;
+            if (cur <= 0) { track.style.transition = 'none'; cur = n; setX(); }
+            else if (cur >= n + vis) { track.style.transition = 'none'; cur = vis; setX(); }
+        }
+        track.addEventListener('transitionend', onEnd);
+
+        dotsEl.innerHTML = '';
+        for (let i = 0; i < n; i++) {
+            const d = document.createElement('span');
+            d.className = 'dot' + (i === 0 ? ' active' : '');
+            d.addEventListener('click', () => {
+                if (busy) return;
+                cur = i + vis;
+                track.style.transition = 'transform 0.5s ease-out';
+                setX();
+                updateDots();
+            });
+            dotsEl.appendChild(d);
+        }
+
+        prev.onclick = () => move(-1);
+        next.onclick = () => move(1);
+
+        const start = () => { if (n > 1 && !timer) timer = setInterval(() => move(1), cfg.delay); };
+        const stop  = () => { clearInterval(timer); timer = null; };
+        box.addEventListener('mouseenter', stop);
+        box.addEventListener('mouseleave', start);
+        start();
+
+        return {
+            vis: visibleCount(),
+            destroy() {
+                stop();
+                track.removeEventListener('transitionend', onEnd);
+                box.removeEventListener('mouseenter', stop);
+                box.removeEventListener('mouseleave', start);
+                prev.onclick = next.onclick = null;
+            }
+        };
+    }
+
+    function readCache(sheet) {
+        try { return JSON.parse(localStorage.getItem(CACHE_PREFIX + sheet)) || null; } catch (e) { return null; }
+    }
+    function writeCache(sheet, rows) {
+        try { localStorage.setItem(CACHE_PREFIX + sheet, JSON.stringify(rows)); } catch (e) {}
+    }
+
+    function render(sec, rows, force) {
+        const key = JSON.stringify(rows);
+        if (!force && key === sec.key) return;      // ข้อมูลเหมือนเดิม ไม่ต้องสร้างใหม่ (กันภาพกระพริบ)
+        sec.key = key;
+        sec.rows = rows;
+        if (sec.slider) { sec.slider.destroy(); sec.slider = null; }
+        const track = $(sec.track);
+        if (!rows.length) {
+            track.style.transition = 'none';
+            track.style.transform = 'none';
+            track.innerHTML = '<div class="slide-empty">ไม่มีข้อมูล</div>';
+            $(sec.dots).innerHTML = '';
+            return;
+        }
+        track.innerHTML = rows.map(slideHtml).join('');
+        sec.slider = createSlider(sec);
+    }
+
+    async function loadSection(sec) {
+        const cached = readCache(sec.sheet);
+        if (cached && cached.length) render(sec, cached);     // 1) โชว์ของเก่าจากแคชทันที
+
+        const res = await window.sheetSelect(sec.sheet, 'date', 0, true);   // 2) แล้วค่อยดึงของใหม่
+        const error = res.error;
+        const sortKey = r => { const d = r.date ? new Date(r.date) : null; return (d && !isNaN(d) && d.getFullYear() >= 2000) ? d.getTime() : 1e14 + r._row; };
+        const data = res.data ? [...res.data].sort((a, b) => sortKey(b) - sortKey(a)).slice(0, sec.limit) : null;
+        if (error || !data) {
+            if (!(cached && cached.length)) {
+                $(sec.track).innerHTML = '<div class="slide-empty">ไม่สามารถโหลดข้อมูลได้</div>';
+            }
+            return;
+        }
+        const rows = data
+            .map(r => ({ t: r.title || '', l: r.link || r.filename || r.url || '' }))
+            .filter(r => r.l);
+        writeCache(sec.sheet, rows);
+        render(sec, rows);
+    }
+
+    let rz;
+    window.addEventListener('resize', () => {
+        clearTimeout(rz);
+        rz = setTimeout(() => {
+            SECTIONS.forEach(sec => {
+                if (sec.rows && sec.rows.length && sec.slider && sec.slider.vis !== visibleCount()) render(sec, sec.rows, true);
+            });
+        }, 250);
+    });
+
+    const BANNER = { sheet: 'banner', limit: 8, delay: 5000, w: 1200 };
+    const bannerState = { key: '', timer: null };
+
+    function renderBanner(rows, msg) {
+        const key = JSON.stringify(rows) + (msg || '');
+        if (key === bannerState.key) return;          // ข้อมูลเหมือนเดิม ไม่ต้องสร้างใหม่
+        bannerState.key = key;
+        clearInterval(bannerState.timer);
+        bannerState.timer = null;
+        const track = document.querySelector('.banner-track');
+        track.style.transition = 'none';
+        track.style.transform = 'none';
+        if (!rows.length) {
+            track.innerHTML = '<div style="width:100%;text-align:center;align-self:center;color:#999;">' + esc(msg || 'ไม่มีข้อมูล') + '</div>';
+            return;
+        }
+        track.innerHTML = rows.map((r, i) => {
+            const id = driveId(r.l);
+            const src = id ? driveThumb(id, BANNER.w) : plainSrc(r.l);
+            if (!src) return '';
+            return `<div class="banner-slide"><img src="${src}" data-id="${id}" data-w="${BANNER.w}" alt="${esc(r.t || '')}"${i ? ' loading="lazy"' : ''} decoding="async" draggable="false"></div>`;
+        }).join('');
+        if (rows.length > 1) {
+            let idx = 0;
+            bannerState.timer = setInterval(() => {
+                idx = (idx + 1) % rows.length;
+                track.style.transition = '';
+                track.style.transform = `translateX(-${idx * 100}%)`;
+            }, BANNER.delay);
+        }
+    }
+
+    async function loadBanner() {
+        const cached = readCache(BANNER.sheet);
+        if (cached && cached.length) renderBanner(cached);
+        const res = await window.sheetSelect(BANNER.sheet, 'date', 0, true);
+        if (res.error || !res.data) {
+            if (!(cached && cached.length)) renderBanner([], 'ไม่สามารถโหลดข้อมูลได้');
+            return;
+        }
+        const rows = [...res.data]
+            .sort((a, b) => a._row - b._row)
+            .slice(0, BANNER.limit)
+            .map(r => ({ t: r.title || '', l: r.link || r.filename || r.url || '' }))
+            .filter(r => r.l);
+        writeCache(BANNER.sheet, rows);
+        renderBanner(rows);
+    }
+
+    loadBanner();
+    SECTIONS.forEach(loadSection);
+})();
+</script>
+
 </body>
 </html>
