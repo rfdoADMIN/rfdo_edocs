@@ -531,6 +531,50 @@
             .doc-table td { padding: 13px 12px; }
             .head-section { border-radius: 0 0 24px 24px; }
         }
+
+        /* คลังสื่อวีดิทัศน์: ตัวเล่นด้านบน รายการคลิปพับได้ด้านล่าง */
+        .training-video-section { margin-bottom: 50px; }
+        .training-video-player { margin-bottom: 0; background: #101b1d; }
+        .training-video-player video, .training-video-player iframe { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #101b1d; }
+        .training-video-player [hidden] { display: none !important; }
+        .training-video-info { padding: 17px 5px 18px; }
+        .training-video-label { color: var(--primary-mid); font-size: 13px; font-weight: 600; }
+        .training-video-info h3 { font-size: 18px; line-height: 1.65; color: var(--primary-dark); margin: 6px 0 0; font-weight: 600; }
+        .training-video-library { background: #fff; border-radius: 17px; box-shadow: var(--shadow-sm); overflow: hidden; border: 1px solid #e2f1ee; }
+        .training-video-library summary { padding: 15px 19px; display: flex; justify-content: space-between; gap: 12px; align-items: center; cursor: pointer; color: var(--primary-dark); font-weight: 600; list-style: none; user-select: none; }
+        .training-video-library summary::-webkit-details-marker { display: none; }
+        .training-video-library summary:hover { background: #f2faf8; }
+        .training-video-library summary > span { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .training-video-count { font-size: 12px; color: var(--text-muted); background: #eaf5f2; padding: 3px 9px; border-radius: 20px; font-weight: 400; }
+        .training-chevron { transition: transform .22s; }
+        .training-video-library[open] .training-chevron { transform: rotate(180deg); }
+        .training-video-list { padding: 10px 14px 14px; border-top: 1px solid #eef5f3; display: grid; gap: 9px; }
+        .training-video-choice { border: 1px solid #e3eeeb; background: #fbfdfc; border-radius: 13px; padding: 10px; display: flex; align-items: center; gap: 13px; width: 100%; text-align: left; cursor: pointer; font-family: inherit; color: var(--text-color); }
+        .training-video-choice:hover, .training-video-choice.active { background: #eaf7f3; border-color: #98cbc0; }
+        .training-video-thumb { width: 105px; aspect-ratio: 16/9; flex: 0 0 105px; border-radius: 9px; background: #267c77; overflow: hidden; display: flex; justify-content: center; align-items: center; color: #fff; }
+        .training-video-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .training-video-choice-title { font-size: 14px; line-height: 1.5; font-weight: 500; }
+        @media (max-width: 600px) { .training-video-info h3 { font-size: 15px; } .training-video-thumb { width: 86px; flex-basis: 86px; } .training-video-choice-title { font-size: 12px; } }
+
+        /* คลังสื่อวีดิทัศน์แบบหน้าปก: คลิกเพื่อเปิดแหล่งวิดีโอ */
+        .training-card-section { margin-bottom: 50px; }
+        .training-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr)); gap: 22px; }
+        .training-media-card { display: flex; flex-direction: column; overflow: hidden; background: #fff; border: 1px solid #dfefec; border-radius: 20px; box-shadow: var(--shadow-md); color: var(--text-color); text-decoration: none; transition: transform .2s, box-shadow .2s; }
+        a.training-media-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        a.training-media-card:focus-visible { outline: 3px solid var(--primary-color); outline-offset: 3px; }
+        .training-media-cover { position: relative; aspect-ratio: 16 / 9; background: linear-gradient(145deg, #184d4c, #339999); display: flex; align-items: center; justify-content: center; overflow: hidden; color: white; }
+        .training-media-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
+        .training-media-cover [hidden] { display: none !important; }
+        .training-media-cover .placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 20px; text-align: center; }
+        .training-media-cover .placeholder[hidden] { display: none !important; }
+        .training-media-cover .placeholder .cover-error { font-size: 11px; overflow-wrap: anywhere; opacity: .9; }
+        .training-media-cover .placeholder i { font-size: 36px; }
+        .training-media-play { position: absolute; right: 15px; bottom: 15px; width: 42px; height: 42px; border-radius: 50%; background: rgba(0,0,0,.58); display: grid; place-items: center; font-size: 17px; color: #fff; }
+        .training-media-copy { padding: 17px 19px 20px; display: flex; flex: 1; flex-direction: column; gap: 8px; }
+        .training-media-type { color: var(--primary-mid); font-size: 12px; font-weight: 600; }
+        .training-media-copy h3 { font-size: 16px; font-weight: 600; line-height: 1.65; color: var(--primary-dark); margin: 0; }
+        .training-media-action { margin-top: auto; padding-top: 9px; color: var(--primary-mid); font-size: 13px; font-weight: 600; }
+        .training-media-card.is-unlinked .training-media-action { color: #866525; }
     </style>
 </head>
 <body>
@@ -639,10 +683,9 @@
         <div class="dots" id="guideline-dots"></div>
 
         <div class="section-title">สื่อวีดิทัศน์</div>
-        <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/1zfnwjcOi04" title="YouTube video player" loading="lazy" allowfullscreen></iframe>
-        </div>
-
+        <section class="training-card-section" aria-label="คลังสื่อวีดิทัศน์">
+            <div class="training-card-grid" id="training-card-grid"></div>
+        </section>
         <div class="section-title">ประกาศจากสำนักวิจัยและพัฒนาการป่าไม้</div>
         <div class="procurement-wrapper">
             <div id="loading-announce-main" style="text-align: center; color: var(--text-muted); display: none;"><i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</div>
@@ -1297,5 +1340,96 @@
 })();
 </script>
 
+
+<script>
+    const trainingVideos = [
+        {
+            title: 'การอบรมเกี่ยวกับการใช้งานการลาออนไลน์ ผ่านระบบสารสนเทศทรัพยากรบุคคลกรมป่าไม้ (DPIS6)',
+            type: 'drive',
+            url: 'https://drive.google.com/file/d/18H57G0a5me1jXTnnOrU2OEj9tw7YSpxk/view?usp=sharing', 
+            poster: 'images/dpis6.png'
+        },
+        {
+            title: 'โครงการฝึกอบรม การเตรียมความพร้อมต่อสถานการณ์ฉุกเฉิน สำนักวิจัยและพัฒนาการป่าไม้ ปีงบประมาณ 2568',
+            type: 'youtube',
+            url: 'https://youtu.be/1zfnwjcOi04',
+            poster: 'images/emergency.png'
+        }
+    ];
+
+    (function () {
+        const grid = document.getElementById('training-card-grid');
+        if (!grid) return;
+        trainingVideos.forEach(item => {
+            // อนุญาตเฉพาะลิงก์ HTTPS เพื่อไม่ให้รัน URL อันตรายในเว็บไซต์
+            let validUrl = '';
+            try {
+                const u = new URL(item.url);
+                if (u.protocol === 'https:' && (
+                    (item.type === 'drive' && (u.hostname === 'drive.google.com' || u.hostname === 'docs.google.com')) ||
+                    (item.type === 'youtube' && ['youtu.be', 'youtube.com', 'www.youtube.com', 'm.youtube.com'].includes(u.hostname))
+                )) validUrl = u.href;
+            } catch (_) {}
+            const card = document.createElement(validUrl ? 'a' : 'article');
+            card.className = 'training-media-card' + (validUrl ? '' : ' is-unlinked');
+            if (validUrl) {
+                card.href = validUrl;
+                card.target = '_blank';
+                card.rel = 'noopener noreferrer';
+                card.setAttribute('aria-label', 'เปิดวิดีโอ: ' + item.title);
+            }
+            const cover = document.createElement('div');
+            cover.className = 'training-media-cover';
+            const placeholder = document.createElement('div');
+            placeholder.className = 'placeholder';
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-photo-film';
+            const hint = document.createElement('span');
+            hint.textContent = 'ภาพหน้าปกการอบรม';
+            placeholder.append(icon, hint);
+            cover.append(placeholder);
+            if (item.poster) {
+                const img = document.createElement('img');
+                img.alt = 'หน้าปก: ' + item.title;
+                // ไม่ใช้ lazy + hidden พร้อมกัน เพราะภาพที่ถูกซ่อนอาจไม่เริ่มโหลด
+                img.loading = 'eager';
+                img.style.opacity = '0';
+                img.addEventListener('load', () => {
+                    img.style.opacity = '1';
+                    placeholder.hidden = true;
+                });
+                img.addEventListener('error', () => {
+                    img.remove();
+                    placeholder.hidden = false;
+                    hint.textContent = 'ไม่พบไฟล์ภาพหน้าปก';
+                    const help = document.createElement('small');
+                    help.className = 'cover-error';
+                    help.textContent = 'ตรวจสอบชื่อไฟล์: ' + item.poster;
+                    placeholder.append(help);
+                }, { once: true });
+                cover.append(img);
+                img.src = item.poster;
+            }
+            const play = document.createElement('span');
+            play.className = 'training-media-play';
+            play.setAttribute('aria-hidden', 'true');
+            play.innerHTML = '<i class="fas fa-arrow-up-right-from-square"></i>';
+            cover.append(play);
+            const copy = document.createElement('div');
+            copy.className = 'training-media-copy';
+            const label = document.createElement('span');
+            label.className = 'training-media-type';
+            label.textContent = item.type === 'drive' ? 'Google Drive' : 'YouTube';
+            const title = document.createElement('h3');
+            title.textContent = item.title;
+            const action = document.createElement('span');
+            action.className = 'training-media-action';
+            action.textContent = validUrl ? 'คลิกเพื่อรับชมวิดีโอ ↗' : 'ยังไม่ได้กำหนดลิงก์วิดีโอ';
+            copy.append(label, title, action);
+            card.append(cover, copy);
+            grid.append(card);
+        });
+    })();
+</script>
 </body>
 </html>
